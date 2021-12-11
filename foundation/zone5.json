@@ -1,0 +1,36 @@
+{
+    "sections":[
+        {
+            "desc":"desc text",
+            "video":"https://www.youtube.com/watch?v=PkJIc5tBRUE",
+            "exercises":[
+                {
+                    "code":"exercise 1",
+                    "desc":"desc text"
+                },
+                {
+                    "code":"exercise 2",
+                    "desc":"desc text"
+                },
+                {
+                    "code":"exercise 3",
+                    "desc":"desc text"
+                }
+            ]
+        },
+        {
+            "desc":"desc text",
+            "video":"https://www.youtube.com/watch?v=PkJIc5tBRUE",
+            "exercises":[
+                {
+                    "code":"exercise 4",
+                    "desc":"desc text"
+                },
+                {
+                    "code":"exercise 5",
+                    "desc":"desc text"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{
+    "zones":[
+        {
+            "name":"zone1",
+            "desc":"zone1 desc"
+        },
+        {
+            "name":"zone2",
+            "desc":"zone2 desc"
+        },
+        {
+            "name":"zone3",
+            "desc":"zone3 desc"
+        },
+        {
+            "name":"zone4",
+            "desc":"zone4 desc"
+        },
+        {
+            "name":"zone5",
+            "desc":"zone5 desc"
+        }
+    ]
+}
