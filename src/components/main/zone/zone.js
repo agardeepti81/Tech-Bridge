@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./zone.css";
 import { Card, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 class Zone extends Component {
     render() {
@@ -8,11 +9,11 @@ class Zone extends Component {
         if(zoneData.status==="locked")
             button=<Button variant="danger" disabled>Locked</Button>;
         if(zoneData.status==="completed")
-            button=<Button variant="success">Completed</Button>;
+            button=<Link to={`/zone`}><Button variant="success">Completed</Button></Link>;
         if(zoneData.status==="active")
-            button=<Button variant="primary">Start</Button>;
+            button=<Link to={`/zone`}><Button variant="primary">Start</Button></Link>;
         if(zoneData.status==="resume")
-            button=<Button variant="warning">Resume</Button>;
+            button=<Link to={`/zone`}><Button variant="warning">Resume</Button></Link>;
         return (
             <Card className="zone">
                 {/* <Card.Img variant="top" src="images/holder100x180.svg" /> */}

@@ -2,7 +2,7 @@
     "sections":[
         {
             "desc":"section 1 desc",
-            "video":"https://www.youtube.com/watch?v=PkJIc5tBRUE",
+            "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
             "exercises":[
                 {
                     "code":"exercise 1",
@@ -20,7 +20,7 @@
         },
         {
             "desc":"section 2 desc",
-            "video":"https://www.youtube.com/watch?v=PkJIc5tBRUE",
+            "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
             "exercises":[
                 {
                     "code":"exercise 4",

@@ -9,13 +9,14 @@ import ZoneContent from './components/zone-content/zone-content';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 
 function App() {
+  console.log(React.version);
   return (
     <div className="App">
       <Router>
         <Header />
         <Routes>
-          <Route exact path="/" element={<ZoneContent />} />
-          <Route exact path="/zone" element={<Main />} />
+          <Route exact path="/" element={<Main />} />
+          <Route exact path="/zone" element={<ZoneContent />} />
         </Routes>
       </Router>
     </div>

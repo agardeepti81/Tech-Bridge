@@ -14,7 +14,6 @@ class ZoneContent extends Component {
                 <Accordion.Header>{sectionsData[i].desc}</Accordion.Header>
                 <Accordion.Body><ZoneSection sectionData={sectionsData[i]}/></Accordion.Body>
             </Accordion.Item>)
-            // sectionsHtml.push(<ZoneSection sectionData={sectionsData[i]} />);
         }
         return (<div className="sections">
             <Accordion defaultActiveKey="0">{sectionsHtml}</Accordion></div>)
