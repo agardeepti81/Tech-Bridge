@@ -1,12 +1,16 @@
 import React, { Component } from "react";
-import zones from "../../data/roadmap_foundation.json";
+import zonesJson from "../../data/roadmap_foundation.json";
+import Zone from "../zone/zone";
 
 class Main extends Component {
     render() {
-        console.log(zones);
+        let zonesData=zonesJson.zones,zonesHtml=[];
+        for(let i=0;i<zonesData.length;i++){
+            zonesHtml.push(<Zone zoneData={zonesData[i]}/>);
+        }
         return (<>
             <div className="zones">
-
+                {zonesHtml}
             </div>
         </>)
     }

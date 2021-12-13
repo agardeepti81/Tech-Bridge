@@ -3,27 +3,27 @@
         {
             "name":"zone1",
             "desc":"zone1 desc",
-            "status":"not started yet"
+            "status":"completed"
         },
         {
             "name":"zone2",
             "desc":"zone2 desc",
-            "status":"not started yet"
+            "status":"resume"
         },
         {
             "name":"zone3",
             "desc":"zone3 desc",
-            "status":"not started yet"
+            "status":"locked"
         },
         {
             "name":"zone4",
             "desc":"zone4 desc",
-            "status":"not started yet"
+            "status":"locked"
         },
         {
             "name":"zone5",
             "desc":"zone5 desc",
-            "status":"not started yet"
+            "status":"locked"
         }
     ]
 }

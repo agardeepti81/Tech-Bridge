@@ -4,7 +4,7 @@ import { Container,Navbar } from "react-bootstrap";
 class Header extends Component {
     render() {
         return (<>
-            <Navbar bg="dark" variant="dark" fixed="top">
+            <Navbar bg="dark" variant="dark" sticky="top">
                 <Container>
                     <Navbar.Brand href="#home">
                         <img
