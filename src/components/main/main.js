@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import zonesJson from "../../data/roadmap_foundation.json";
-import Zone from "../zone/zone";
+import Zone from "./zone/zone";
 
 class Main extends Component {
     render() {
