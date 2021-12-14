@@ -1,22 +1,65 @@
 import React, { Component } from "react";
 import "./zone-content.css"
 
+import { useParams } from "react-router-dom";
 import { Accordion } from "react-bootstrap";
-import zoneJson from "../../data/foundation/zone1.json";
 import ZoneSection from "./zone-section/zone-section";
 
-class ZoneContent extends Component {
-    render() {
-        let sectionsData = zoneJson.sections, sectionsHtml = [];
+const ZoneRoute = () => {
+    const params = useParams();
+    const zoneName = params.zoneName;
+    return (<ZoneContent zoneName={zoneName} />)
+}
 
-        for (let i = 0; i < sectionsData.length; i++) {
+class ZoneContent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: null,
+            isLoaded: false,
+            sectionsJson: []
+        };
+    }
+
+    componentDidMount() {
+        fetch(process.env.PUBLIC_URL + "/data/foundation/" + this.props.zoneName + ".json")
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        isLoaded: true,
+                        sectionsJson: result.sections
+                    });
+                },
+                (error) => {
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                }
+            )
+    }
+
+    render() {
+        const { error, isLoaded, sectionsJson } = this.state;
+        let sectionsHtml = [];
+
+        for (let i = 0; i < sectionsJson.length; i++) {
             sectionsHtml.push(<Accordion.Item eventKey={i}>
-                <Accordion.Header>{sectionsData[i].desc}</Accordion.Header>
-                <Accordion.Body><ZoneSection sectionData={sectionsData[i]}/></Accordion.Body>
+                <Accordion.Header>{sectionsJson[i].desc}</Accordion.Header>
+                <Accordion.Body><ZoneSection sectionData={sectionsJson[i]} /></Accordion.Body>
             </Accordion.Item>)
         }
-        return (<div className="sections">
-            <Accordion defaultActiveKey="0">{sectionsHtml}</Accordion></div>)
+        if (error) {
+            return <div>Error: {error.message}</div>;
+        } else if (!isLoaded) {
+            return <div>Loading...</div>;
+        } else {
+            return (
+                <div className="sections"><Accordion defaultActiveKey="0">{sectionsHtml}</Accordion></div>
+            );
+        }
     }
 }
-export default ZoneContent;
+
+export default ZoneRoute;

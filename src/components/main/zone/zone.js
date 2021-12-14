@@ -9,11 +9,11 @@ class Zone extends Component {
         if(zoneData.status==="locked")
             button=<Button variant="danger" disabled>Locked</Button>;
         if(zoneData.status==="completed")
-            button=<Link to={`/zone`}><Button variant="success">Completed</Button></Link>;
+            button=<Link to={`/zone/${zoneData.name}`}><Button variant="success">Completed</Button></Link>;
         if(zoneData.status==="active")
-            button=<Link to={`/zone`}><Button variant="primary">Start</Button></Link>;
+            button=<Link to={`/zone/${zoneData.name}`}><Button variant="primary">Start</Button></Link>;
         if(zoneData.status==="resume")
-            button=<Link to={`/zone`}><Button variant="warning">Resume</Button></Link>;
+            button=<Link to={`/zone/${zoneData.name}`}><Button variant="warning">Resume</Button></Link>;
         return (
             <Card className="zone">
                 {/* <Card.Img variant="top" src="images/holder100x180.svg" /> */}

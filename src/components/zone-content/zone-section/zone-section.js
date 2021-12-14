@@ -21,7 +21,6 @@ class ZoneSection extends Component {
     render() {
         const sectionData=this.props.sectionData,exerciseHtml =[];
         const exerciseData = sectionData.exercises;
-        console.log(exerciseData);
         for(let i=0;i<exerciseData.length;i++){
             exerciseHtml.push(
             <Card>
@@ -36,7 +35,6 @@ class ZoneSection extends Component {
                 </Accordion.Collapse>
             </Card>)
         }
-        console.log(exerciseHtml);
         return (<div>
             <Accordion>
                 <Card>
