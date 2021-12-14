@@ -1,0 +1,23 @@
+{
+    "UserId":"randomGeneratedId",
+    "LessonProgress":[
+        {
+            "zoneName":"NameOfZone",
+            "zoneProgress":[
+                {
+                    "video":true,
+                    "exercises":[true,true,true]
+                }
+            ]
+        },
+        {
+            "zoneName":"NameOfZone2",
+            "zoneProgress":[
+                {
+                    "video":true,
+                    "exercises":[true,false,false]
+                }
+            ]
+        }
+    ]
+}
