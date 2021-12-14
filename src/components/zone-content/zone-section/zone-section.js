@@ -19,14 +19,30 @@ function CustomToggle({ children, eventKey }) {
 
 class ZoneSection extends Component {
     render() {
-        const sectionData=this.props.sectionData;
+        const sectionData=this.props.sectionData,exerciseHtml =[];
+        const exerciseData = sectionData.exercises;
+        console.log(exerciseData);
+        for(let i=0;i<exerciseData.length;i++){
+            exerciseHtml.push(
+            <Card>
+                <Card.Header className="instructionHeader">
+                    <div className="instruction">{exerciseData[i].code}</div>
+                    <CustomToggle eventKey={i+1}>Start</CustomToggle>
+                </Card.Header>
+                <Accordion.Collapse eventKey={i+1}>
+                    <Card.Body>
+                        {exerciseData[i].desc}
+                    </Card.Body>
+                </Accordion.Collapse>
+            </Card>)
+        }
+        console.log(exerciseHtml);
         return (<div>
             <Accordion>
                 <Card>
                     <Card.Header className="instructionHeader">
                         <div className="instruction">Play Course Video</div>
                         <CustomToggle eventKey="0">Play</CustomToggle>
-                        {/* <Button  variant="primary">Play</Button> */}
                     </Card.Header>
                     <Accordion.Collapse eventKey="0">
                         <Card.Body>
@@ -37,14 +53,7 @@ class ZoneSection extends Component {
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>
-                {/* <Card>
-                    <Card.Header>
-                        <CustomToggle eventKey="1">Click me!</CustomToggle>
-                    </Card.Header>
-                    <Accordion.Collapse eventKey="1">
-                        <Card.Body>Hello! I'm another body</Card.Body>
-                    </Accordion.Collapse>
-                </Card> */}
+                {exerciseHtml}
             </Accordion>
         </div>)
     }
