@@ -1,0 +1,14 @@
+{
+    "apis": {
+        "signUp": {
+            "createUser": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/sign-up",
+            "getEmails": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/sign-up"
+        },
+        "login": {
+            "loginUser": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/login"
+        },
+        "main": {
+            "updateLesson": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/main"
+        }
+    }
+}

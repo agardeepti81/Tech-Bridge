@@ -1,12 +1,41 @@
 {
-    "UserId":"randomGeneratedId",
+    "EmailId":"user@email.com",
     "LessonProgress":[
         {
             "zoneName":"NameOfZone",
             "zoneProgress":[
                 {
                     "video":true,
-                    "exercises":[true,true,true]
+                    "exercises":[
+                        {
+                            "status":true,
+                            "startTime":"time",
+                            "endTime":"time",
+                            "response":"response of exercise"
+                        },
+						{
+                            "status":true,
+                            "startTime":"time",
+                            "endTime":"time",
+                            "response":"response of exercise"
+                        },{
+                            "status":true,
+                            "startTime":"time",
+                            "endTime":"time",
+                            "response":"response of exercise"
+                        }
+                    ]
+                },
+                {
+                    "video":true,
+                    "exercises":[
+                        {
+                            "status":true,
+                            "startTime":"time",
+                            "endTime":"time",
+                            "response":"response of exercise"
+                        }
+                    ]
                 }
             ]
         },
@@ -15,7 +44,14 @@
             "zoneProgress":[
                 {
                     "video":true,
-                    "exercises":[true,false,false]
+                    "exercises":[
+                        {
+                            "status":true,
+                            "startTime":"time",
+                            "endTime":"time",
+                            "response":"response of exercise"
+                        }
+                    ]
                 }
             ]
         }

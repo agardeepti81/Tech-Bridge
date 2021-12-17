@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./zone.css";
-import { Card, Button } from "react-bootstrap";
+import { Button, Card } from "reactstrap";
 import { Link } from "react-router-dom";
 
 class Zone extends Component {

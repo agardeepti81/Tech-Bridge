@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import './start-page.css';
 
 class StartPage extends Component {
     render() {
         return (<div id='start_page'>
             <div id='loginOptions'>
-                <Button className='loginButtons'>Sign Up</Button>
+                <Link to={`/signup`}><Button color="primary" className='loginButtons'>Sign Up</Button></Link>
                 <div id='or'>OR</div>
-                <Button className='loginButtons'>Login</Button>
+                <Link to={`/login`}><Button color="primary" className='loginButtons'>Login</Button></Link>
             </div>
         </div>)
     }

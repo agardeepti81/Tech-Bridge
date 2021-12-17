@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Zone from "./zone/zone";
+// import Zone from "./zone/zone";
 
 class Main extends Component {
     constructor(props) {
@@ -31,10 +31,10 @@ class Main extends Component {
     render() {
         const { error, isLoaded, zonesJson } = this.state;
         let zonesHtml = [];
-
-        for(let i=0;i<zonesJson.length;i++){
-            zonesHtml.push(<Zone zoneData={zonesJson[i]}/>);
-        }
+        console.log(this.props.lessonProgress)
+        // for(let i=0;i<zonesJson.length;i++){
+        //     zonesHtml.push(<Zone zoneData={zonesJson[i]}/>);
+        // }
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
