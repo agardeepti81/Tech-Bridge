@@ -1,55 +1,58 @@
 {
-    "EmailId":"user@email.com",
-    "LessonProgress":[
+    "EmailId": "user@email.com",
+    "LessonProgress": [
         {
-            "zoneName":"NameOfZone",
-            "zoneProgress":[
+            "zoneName": "NameOfZone",
+            "status": true,
+            "zoneProgress": [
                 {
-                    "video":true,
-                    "exercises":[
+                    "video": true,
+                    "exercises": [
                         {
-                            "status":true,
-                            "startTime":"time",
-                            "endTime":"time",
-                            "response":"response of exercise"
+                            "status": true,
+                            "startTime": "time",
+                            "endTime": "time",
+                            "response": "response of exercise"
                         },
-						{
-                            "status":true,
-                            "startTime":"time",
-                            "endTime":"time",
-                            "response":"response of exercise"
-                        },{
-                            "status":true,
-                            "startTime":"time",
-                            "endTime":"time",
-                            "response":"response of exercise"
+                        {
+                            "status": true,
+                            "startTime": "time",
+                            "endTime": "time",
+                            "response": "response of exercise"
+                        },
+                        {
+                            "status": true,
+                            "startTime": "time",
+                            "endTime": "time",
+                            "response": "response of exercise"
                         }
                     ]
                 },
                 {
-                    "video":true,
-                    "exercises":[
+                    "video": true,
+                    "exercises": [
                         {
-                            "status":true,
-                            "startTime":"time",
-                            "endTime":"time",
-                            "response":"response of exercise"
+                            "status": true,
+                            "startTime": "time",
+                            "endTime": "time",
+                            "response": "response of exercise"
                         }
                     ]
                 }
             ]
         },
         {
-            "zoneName":"NameOfZone2",
-            "zoneProgress":[
+            "zoneName": "NameOfZone2",
+            "status": false,
+            "zoneProgress": [
                 {
-                    "video":true,
-                    "exercises":[
+                    "video": true,
+                    "exercises": [
                         {
-                            "status":true,
-                            "startTime":"time",
-                            "endTime":"time",
-                            "response":"response of exercise"
+                            "status": false,
+                            "startTime": "time",
+                            "endTime": "time",
+                            "response": "response of exercise"
                         }
                     ]
                 }

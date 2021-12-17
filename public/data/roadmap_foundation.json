@@ -2,28 +2,23 @@
     "zones":[
         {
             "name":"zone1",
-            "desc":"zone1 desc",
-            "status":"completed"
+            "desc":"zone1 desc"
         },
         {
             "name":"zone2",
-            "desc":"zone2 desc",
-            "status":"resume"
+            "desc":"zone2 desc"
         },
         {
             "name":"zone3",
-            "desc":"zone3 desc",
-            "status":"locked"
+            "desc":"zone3 desc"
         },
         {
             "name":"zone4",
-            "desc":"zone4 desc",
-            "status":"locked"
+            "desc":"zone4 desc"
         },
         {
             "name":"zone5",
-            "desc":"zone5 desc",
-            "status":"locked"
+            "desc":"zone5 desc"
         }
     ]
 }

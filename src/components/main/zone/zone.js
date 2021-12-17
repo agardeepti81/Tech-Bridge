@@ -1,27 +1,33 @@
 import React, { Component } from "react";
 import "./zone.css";
-import { Button, Card } from "reactstrap";
+import { Button, Card, CardBody, CardTitle, CardText } from "reactstrap";
 import { Link } from "react-router-dom";
 
 class Zone extends Component {
     render() {
-        let zoneData=this.props.zoneData,button;
-        if(zoneData.status==="locked")
-            button=<Button variant="danger" disabled>Locked</Button>;
-        if(zoneData.status==="completed")
-            button=<Link to={`/zone/${zoneData.name}`}><Button variant="success">Completed</Button></Link>;
-        if(zoneData.status==="active")
-            button=<Link to={`/zone/${zoneData.name}`}><Button variant="primary">Start</Button></Link>;
-        if(zoneData.status==="resume")
-            button=<Link to={`/zone/${zoneData.name}`}><Button variant="warning">Resume</Button></Link>;
+        const { zoneData, status } = this.props;
+        let button;
+        if (status === "locked")
+            button = <Button color="danger" disabled>Locked</Button>;
+        if (status === "completed")
+            button = <Link to={`/zone/${zoneData.name}`}><Button color="success">Completed</Button></Link>;
+        if (status === "start")
+            button = <Link to={`/zone/${zoneData.name}`}><Button color="primary">Start</Button></Link>;
+        if (status === "inprogress")
+            button = <Link to={`/zone/${zoneData.name}`}><Button color="warning">Resume</Button></Link>;
         return (
             <Card className="zone">
-                {/* <Card.Img variant="top" src="images/holder100x180.svg" /> */}
-                <Card.Body>
-                    <Card.Title>{zoneData.name}</Card.Title>
-                    <Card.Text>{zoneData.desc}</Card.Text>
+                <CardBody>
+                    <CardTitle tag="h5">{zoneData.name}</CardTitle>
+                    {/* <CardSubtitle
+                        className="mb-2 text-muted"
+                        tag="h6"
+                    >
+                        Card subtitle
+                    </CardSubtitle> */}
+                    <CardText>{zoneData.desc}</CardText>
                     {button}
-                </Card.Body>
+                </CardBody>
             </Card>)
     }
 }

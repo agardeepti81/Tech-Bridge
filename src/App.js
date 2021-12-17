@@ -21,7 +21,7 @@ class App extends Component {
     this.getLessonProgress = this.getLessonProgress.bind(this);
   }
   componentDidMount() {
-    fetch(process.env.PUBLIC_URL + "/index.json")
+    fetch(process.env.PUBLIC_URL + "/data/index.json")
       .then(res => res.json())
       .then(
         (result) => {
