@@ -1,6 +1,6 @@
 import './App.css';
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css';
 import { Spinner } from 'reactstrap';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -39,32 +39,32 @@ class App extends Component {
   }
   render() {
     if (this.state.baseFile)
-      return (
-        <div className="App">
-          <Router>
-            <Header />
-            <Routes>
-              <Route exact path="/" element={<Navigate to="/startpage" />} />
-              <Route exact path="/startpage" element={<StartPage />} />
-              <Route exact path="/signup" element={<SignUp signUpApis={this.state.baseFile.apis.signUp} />} />
-              <Route exact path="/login" element={<Login loginApis={this.state.baseFile.apis.login} getLessonProgress={this.getLessonProgress} />} />
-              <Route exact path="/home" element={<Main lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} />} />
-              {/* <Route exact path="/zone/:zoneName" element={<ZoneRoute />} /> */}
-            </Routes>
-          </Router>
-        </div>
-      );
-    else
-      return (
-        <div className="App">
-          <Header />
-          <div id="loadingApp">
-            <Spinner id='appSpinner'>
-              Loading...
-            </Spinner>
+    return (
+          <div className="App">
+            <Router>
+              <Header />
+              <Routes>
+                <Route exact path="/" element={<Navigate to="/startpage" />} />
+                <Route exact path="/startpage" element={<StartPage />} />
+                <Route exact path="/signup" element={<SignUp signUpApis={this.state.baseFile.apis.signUp} />} />
+                <Route exact path="/login" element={<Login loginApis={this.state.baseFile.apis.login} getLessonProgress={this.getLessonProgress} />} />
+                <Route exact path="/home" element={<Main lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} />} />
+                {/* <Route exact path="/zone/:zoneName" element={<ZoneRoute />} /> */}
+              </Routes>
+            </Router>
           </div>
-        </div>
-      )
+        );
+      else
+        return (
+          <div className="App">
+            <Header />
+            <div id="loadingApp">
+              <Spinner id='appSpinner'>
+                Loading...
+              </Spinner>
+            </div>
+          </div>
+    )
   }
 }
 

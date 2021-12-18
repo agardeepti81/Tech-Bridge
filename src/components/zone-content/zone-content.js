@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./zone-content.css"
 
 import { useParams } from "react-router-dom";
-import { Accordion } from "react-bootstrap";
+import { Accordion, AccordionItem, AccordionHeader, AccordionBody } from "reactstrap";
 import ZoneSection from "./zone-section/zone-section";
 
 const ZoneRoute = () => {
@@ -45,10 +45,10 @@ class ZoneContent extends Component {
         let sectionsHtml = [];
 
         for (let i = 0; i < sectionsJson.length; i++) {
-            sectionsHtml.push(<Accordion.Item eventKey={i}>
-                <Accordion.Header>{sectionsJson[i].desc}</Accordion.Header>
-                <Accordion.Body><ZoneSection sectionData={sectionsJson[i]} /></Accordion.Body>
-            </Accordion.Item>)
+            sectionsHtml.push(<AccordionItem>
+                <AccordionHeader targetId={i}>{sectionsJson[i].desc}</AccordionHeader>
+                <AccordionBody accordionId={i}><ZoneSection sectionData={sectionsJson[i]} /></AccordionBody>
+            </AccordionItem>)
         }
         if (error) {
             return <div>Error: {error.message}</div>;
@@ -56,7 +56,7 @@ class ZoneContent extends Component {
             return <div>Loading...</div>;
         } else {
             return (
-                <div className="sections"><Accordion defaultActiveKey="0">{sectionsHtml}</Accordion></div>
+                <div className="sections"><Accordion open="0" toggle={function noRefCheck() { }}>{sectionsHtml}</Accordion></div>
             );
         }
     }
