@@ -1,89 +1,66 @@
 import React, { Component } from "react";
 import "./zone-section.css";
 
-import { Accordion, Button, Card, useAccordionButton } from "react-bootstrap";
-
-function CustomToggle({ children, eventKey }) {
-    const decoratedOnClick = useAccordionButton(eventKey);
-  
-    return (
-      <Button
-        className="instructionFunction" 
-        variant="primary"
-        onClick={decoratedOnClick}
-      >
-        {children}
-      </Button>
-    );
-}
+import { Button, Card, CardBody, CardHeader, CardTitle, Collapse, Input } from "reactstrap";
 
 class ZoneSection extends Component {
+    constructor(props){
+        super(props);
+        this.state={
+            openId:0
+        }
+        this.toggle = this.toggle.bind(this);
+    }
+
+    toggle(openId){
+        if(this.state.openId===openId)
+        this.setState({
+            openId:0
+        });
+        else
+        this.setState({
+            openId:openId
+        });
+    }
+
     render() {
-        const sectionData=this.props.sectionData,exerciseHtml =[];
-        const exerciseData = sectionData.exercises;
+        const sectionData=this.props.sectionData;
+        const exerciseData = sectionData.exercises,exerciseHtml =[];
         for(let i=0;i<exerciseData.length;i++){
             exerciseHtml.push(
-            <Card>
-                <Card.Header className="instructionHeader">
-                    <div className="instruction">{exerciseData[i].code}</div>
-                    <CustomToggle eventKey={i+1}>Start</CustomToggle>
-                </Card.Header>
-                <Accordion.Collapse eventKey={i+1}>
-                    <Card.Body>
-                        {exerciseData[i].desc}
-                    </Card.Body>
-                </Accordion.Collapse>
-            </Card>)
-        }
-        return (<div>
-            <Accordion>
                 <Card>
-                    <Card.Header className="instructionHeader">
-                        <div className="instruction">Play Course Video</div>
-                        <CustomToggle eventKey="0">Play</CustomToggle>
-                    </Card.Header>
-                    <Accordion.Collapse eventKey="0">
-                        <Card.Body>
-                            <video width="400" controls>
-                                <source src={sectionData.video} type="video/mp4"/>
-                                Your browser does not support HTML video.
-                            </video>
-                        </Card.Body>
-                    </Accordion.Collapse>
+                    <CardHeader className="instructionHeader">
+                        <CardTitle className="instruction">{exerciseData[i].code}</CardTitle>
+                        <Button className="instructionFunction" color="primary" onClick={() => this.toggle(i+2)}>Start</Button>
+                    </CardHeader>
+                    <Collapse isOpen={this.state.openId===(i+2)}>
+                        <CardBody>
+                            {exerciseData[i].desc}
+                            <Input type="textarea" placeholder="Enter your response"/>
+                            <Button color="primary">Submit</Button>
+                        </CardBody>
+                    </Collapse>
                 </Card>
-                {exerciseHtml}
-            </Accordion>
+        )};
+        return (<div>
+            <Card>
+                <CardHeader className="instructionHeader">
+                    <CardTitle className="instruction">Play Course Video</CardTitle>
+                    <Button className="instructionFunction" color="primary" onClick={() => this.toggle(1)}>Play</Button>
+                </CardHeader>
+                <Collapse isOpen={this.state.openId===1}>
+                    <CardBody>
+                        <video width="400" controls>
+                            <source src={sectionData.video} type="video/mp4"/>
+                            Your browser doesn't support HTML video
+                        </video>
+                    </CardBody>
+                </Collapse>
+            </Card>
+            {exerciseHtml}
         </div>)
     }
 }
 
 
 export default ZoneSection;
-
-
-
-  
-//   function Example() {
-//     return (
-//       <Accordion defaultActiveKey="0">
-//         <Card>
-//           <Card.Header>
-//             <CustomToggle eventKey="0">Click me!</CustomToggle>
-//           </Card.Header>
-//           <Accordion.Collapse eventKey="0">
-//             <Card.Body>Hello! I'm the body</Card.Body>
-//           </Accordion.Collapse>
-//         </Card>
-//         <Card>
-//           <Card.Header>
-//             <CustomToggle eventKey="1">Click me!</CustomToggle>
-//           </Card.Header>
-//           <Accordion.Collapse eventKey="1">
-//             <Card.Body>Hello! I'm another body</Card.Body>
-//           </Accordion.Collapse>
-//         </Card>
-//       </Accordion>
-//     );
-//   }
-  
-//   render(<Example />);

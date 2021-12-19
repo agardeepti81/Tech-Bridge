@@ -5,9 +5,13 @@ import { useParams } from "react-router-dom";
 import { Accordion, AccordionItem, AccordionHeader, AccordionBody } from "reactstrap";
 import ZoneSection from "./zone-section/zone-section";
 
-const ZoneRoute = () => {
+const ZoneRoute = (lessonProgress, zoneStatus, zonesData, mainApis) => {
     const params = useParams();
     const zoneName = params.zoneName;
+    console.log(lessonProgress);
+    console.log(zoneStatus);
+    console.log(zonesData);
+    console.log(mainApis);
     return (<ZoneContent zoneName={zoneName} />)
 }
 
@@ -17,8 +21,10 @@ class ZoneContent extends Component {
         this.state = {
             error: null,
             isLoaded: false,
-            sectionsJson: []
+            sectionsJson: [],
+            accordion: 1
         };
+        this.toggle = this.toggle.bind(this);
     }
 
     componentDidMount() {
@@ -40,14 +46,25 @@ class ZoneContent extends Component {
             )
     }
 
+    toggle(accordion) {
+        if (accordion === this.state.accordion)
+            this.setState({
+                accordion: 0
+            })
+        else
+            this.setState({
+                accordion: accordion
+            })
+    }
+
     render() {
         const { error, isLoaded, sectionsJson } = this.state;
         let sectionsHtml = [];
 
         for (let i = 0; i < sectionsJson.length; i++) {
             sectionsHtml.push(<AccordionItem>
-                <AccordionHeader targetId={i}>{sectionsJson[i].desc}</AccordionHeader>
-                <AccordionBody accordionId={i}><ZoneSection sectionData={sectionsJson[i]} /></AccordionBody>
+                <AccordionHeader targetId={i + 1}>{sectionsJson[i].desc}</AccordionHeader>
+                <AccordionBody accordionId={i + 1}><ZoneSection sectionData={sectionsJson[i]} /></AccordionBody>
             </AccordionItem>)
         }
         if (error) {
@@ -56,7 +73,7 @@ class ZoneContent extends Component {
             return <div>Loading...</div>;
         } else {
             return (
-                <div className="sections"><Accordion open="0" toggle={function noRefCheck() { }}>{sectionsHtml}</Accordion></div>
+                <div className="sections"><Accordion open={this.state.accordion} toggle={this.toggle}>{sectionsHtml}</Accordion></div>
             );
         }
     }

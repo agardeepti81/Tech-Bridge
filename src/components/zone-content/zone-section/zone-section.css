@@ -1,3 +1,6 @@
+.card-title {
+    margin: 0;
+}
 .instructionHeader {
     width:100%;
     display: inline-flex;
