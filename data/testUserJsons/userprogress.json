@@ -1,0 +1,63 @@
+{
+    "EmailId": "user@email.com",
+    "LessonProgress": [
+        {
+            "zoneName": "NameOfZone",
+            "status": true,
+            "zoneProgress": [
+                {
+                    "status": true,
+                    "video": true,
+                    "exercises": [
+                        {
+                            "status": true,
+                            "startTime": "time",
+                            "endTime": "time",
+                            "response": "response of exercise"
+                        },
+                        {
+                            "status": true,
+                            "startTime": "time",
+                            "endTime": "time",
+                            "response": "response of exercise"
+                        },
+                        {
+                            "status": true,
+                            "startTime": "time",
+                            "endTime": "time",
+                            "response": "response of exercise"
+                        }
+                    ]
+                },
+                {
+                    "video": true,
+                    "exercises": [
+                        {
+                            "status": true,
+                            "startTime": "time",
+                            "endTime": "time",
+                            "response": "response of exercise"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "zoneName": "NameOfZone2",
+            "status": false,
+            "zoneProgress": [
+                {
+                    "video": true,
+                    "exercises": [
+                        {
+                            "status": false,
+                            "startTime": "time",
+                            "endTime": "time",
+                            "response": "response of exercise"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
