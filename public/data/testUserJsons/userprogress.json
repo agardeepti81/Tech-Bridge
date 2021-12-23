@@ -6,6 +6,7 @@
             "status": true,
             "zoneProgress": [
                 {
+                    "status": true,
                     "video": true,
                     "exercises": [
                         {

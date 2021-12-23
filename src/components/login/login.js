@@ -23,13 +23,12 @@ class Login extends Component {
     }
     login(event) {
         event.preventDefault();
-        console.log(`${this.props.loginApis.loginUser}?email=${this.email.value}&password=${this.password.value}`)
         fetch(`${this.props.loginApis.loginUser}?email=${this.email.value}&password=${this.password.value}`)
             .then(res => res.json())
             .then(
                 (result) => {
                     if (result.authorized) {
-                        this.props.getLessonProgress(result.lessonProgress)
+                        this.props.getLessonProgressAndEmail(result.lessonProgress, this.email.value)
                         this.setState({
                             navigate: true
                         })

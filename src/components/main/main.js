@@ -19,19 +19,19 @@ class Main extends Component {
         }
         while (i < zones.length) {
             if (userZones.find(zone => zone === zones[i])) {
-                zonesHtml.push(<Zone zoneData={zonesJson[i]} status="completed" updateActiveZoneStatus={this.props.updateActiveZoneStatus} />)
+                zonesHtml.push(<Zone zoneData={zonesJson[i]} status="completed" />)
                 i++;
             }
             else
                 break;
         }
         if (resumeZone)
-            zonesHtml.push(<Zone zoneData={zonesJson[i]} status="inprogress" updateActiveZoneStatus={this.props.updateActiveZoneStatus} />)
+            zonesHtml.push(<Zone zoneData={zonesJson[i]} status="inprogress" />)
         else if (i < zones.length)
-            zonesHtml.push(<Zone zoneData={zonesJson[i]} status="start" updateActiveZoneStatus={this.props.updateActiveZoneStatus} />)
+            zonesHtml.push(<Zone zoneData={zonesJson[i]} status="start" />)
         i++;
         while (i < zones.length) {
-            zonesHtml.push(<Zone zoneData={zonesJson[i]} status="locked" updateActiveZoneStatus={this.props.updateActiveZoneStatus} />);
+            zonesHtml.push(<Zone zoneData={zonesJson[i]} status="locked" />);
             i++;
         }
         return (

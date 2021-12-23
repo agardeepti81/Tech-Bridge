@@ -17,11 +17,10 @@ class App extends Component {
     this.state = {
       baseFile: false,
       lessonProgress: false,
-      activeZoneStatus:"locked",
-      zonesJson:[]
+      zonesJson:[],
+      email:""
     }
-    this.getLessonProgress = this.getLessonProgress.bind(this);
-    this.getActiveZoneStatus = this.getActiveZoneStatus.bind(this);
+    this.getLessonProgressAndEmail = this.getLessonProgressAndEmail.bind(this);
   }
   componentDidMount() {
     fetch(process.env.PUBLIC_URL + "/data/index.json")
@@ -43,17 +42,11 @@ class App extends Component {
           }
       )
   }
-  getLessonProgress(lessonProgress) {
-    console.log(lessonProgress);
+  getLessonProgressAndEmail(lessonProgress, email) {
     this.setState({
-      lessonProgress: lessonProgress
+      lessonProgress: lessonProgress,
+      email: email
     });
-  }
-  getActiveZoneStatus(zoneStatus){
-    console.log(zoneStatus);
-    this.setState({
-      activeZoneStatus: zoneStatus
-    })
   }
   render() {
     if (this.state.baseFile)
@@ -65,9 +58,9 @@ class App extends Component {
                 <Route exact path="/" element={<Navigate to="/startpage" />} />
                 <Route exact path="/startpage" element={<StartPage />} />
                 <Route exact path="/signup" element={<SignUp signUpApis={this.state.baseFile.apis.signUp} />} />
-                <Route exact path="/login" element={<Login loginApis={this.state.baseFile.apis.login} getLessonProgress={this.getLessonProgress} />} />
-                <Route exact path="/home" element={<Main lessonProgress={this.state.lessonProgress} updateActiveZoneStatus={this.getActiveZoneStatus} zonesJson={this.state.zonesJson} />} />
-                <Route exact path="/zone/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} zoneStatus={this.state.activeZoneStatus} zonesData={this.state.zonesJson} mainApis={this.state.baseFile.apis.main}/>} />
+                <Route exact path="/login" element={<Login loginApis={this.state.baseFile.apis.login} getLessonProgressAndEmail={this.getLessonProgressAndEmail} />} />
+                <Route exact path="/home" element={<Main lessonProgress={this.state.lessonProgress} zonesJson={this.state.zonesJson} />} />
+                <Route exact path="/zone/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} email={this.state.email} />} />
               </Routes>
             </Router>
           </div>

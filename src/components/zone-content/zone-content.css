@@ -1,3 +1,20 @@
 .sections {
     padding: 2%;
 }
+.card-title {
+    margin: 0;
+}
+.instructionHeader {
+    width:100%;
+    display: inline-flex;
+}
+
+.instruction {
+    width: 80%;
+    margin: auto;
+    text-align: left;
+}
+
+.instructionFunction {
+    width: 20%;
+}
