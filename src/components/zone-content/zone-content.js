@@ -2,29 +2,13 @@ import React, { Component } from "react";
 import "./zone-content.css"
 
 import { useParams } from "react-router-dom";
-import { Card, CardHeader, CardTitle, Button, Collapse, CardBody } from "reactstrap";
+import { Accordion, AccordionItem, AccordionHeader, AccordionBody } from "reactstrap";
 import ZoneSection from "./zone-section/zone-section";
 
 const ZoneRoute = (props) => {
     const params = useParams();
     const zoneName = params.zoneName;
     return (<ZoneContent zoneName={zoneName} lessonProgress={props.lessonProgress} mainApis={props.mainApis} email={props.email} />)
-}
-
-class CustomButton extends Component {
-    render() {
-        const { sectionStatus, onClick } = this.props;
-        if (sectionStatus === "completed")
-            return (<Button className="instructionFunction" color="success" onClick={onClick}>Completed</Button>);
-        else if (sectionStatus === "resume")
-            return (<Button className="instructionFunction" color="warning" onClick={onClick}>Resume</Button>);
-        else if (sectionStatus === "start")
-            return (<Button className="instructionFunction" color="primary" onClick={onClick}>Start</Button>);
-        else if (sectionStatus === "locked")
-            return (<Button className="instructionFunction" color="danger" disabled>Locked</Button>);
-        else
-            return (<></>);
-    }
 }
 
 class ZoneContent extends Component {
@@ -168,56 +152,50 @@ class ZoneContent extends Component {
             while (sectionPos < sectionsJson.length && zoneProgress[sectionPos].status === true) {
                 let toggleValue=sectionPos+1;
                 sectionsHtml.push(
-                    <Card>
-                        <CardHeader className="instructionHeader">
-                            <CardTitle className="instruction">{sectionsJson[sectionPos].desc}</CardTitle>
-                            <CustomButton sectionStatus="completed" onClick={() => this.toggle(toggleValue)} />
-                        </CardHeader>
-                        <Collapse isOpen={this.state.activeCardNo === (toggleValue)}>
-                            <CardBody><ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue-1)} sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue-1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} /></CardBody>
-                        </Collapse>
-                    </Card>
+                    <AccordionItem>
+                        <AccordionHeader targetId={toggleValue}>
+                            {sectionsJson[sectionPos].desc}
+                        </AccordionHeader>
+                        <AccordionBody accordionId={toggleValue}>
+                            <ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue-1)} sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue-1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
+                        </AccordionBody>
+                    </AccordionItem>
                 );
                 sectionPos++;
             }
             if (sectionPos < sectionsJson.length) {
-                let sectionStatus;
-                if (zoneProgress[sectionPos].video === true)
-                    sectionStatus = "resume";
-                else
-                    sectionStatus = "start";
                 let toggleValue=sectionPos+1;
                 sectionsHtml.push(
-                    <Card>
-                        <CardHeader className="instructionHeader">
-                            <CardTitle className="instruction">{sectionsJson[sectionPos].desc}</CardTitle>
-                            <CustomButton sectionStatus={sectionStatus} onClick={() => this.toggle(toggleValue)} />
-                        </CardHeader>
-                        <Collapse isOpen={this.state.activeCardNo === (toggleValue)}>
-                            <CardBody><ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue-1)} sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue-1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} /></CardBody>
-                        </Collapse>
-                    </Card>
+                    <AccordionItem>
+                        <AccordionHeader targetId={toggleValue}>
+                            {sectionsJson[sectionPos].desc}
+                        </AccordionHeader>
+                        <AccordionBody accordionId={toggleValue}>
+                            <ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue-1)} sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue-1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
+                        </AccordionBody>
+                    </AccordionItem>
                 );
                 sectionPos++;
             }
             while (sectionPos < sectionsJson.length) {
                 let toggleValue=sectionPos+1;
                 sectionsHtml.push(
-                    <Card>
-                        <CardHeader className="instructionHeader">
-                            <CardTitle className="instruction">{sectionsJson[sectionPos].desc}</CardTitle>
-                            <CustomButton sectionStatus="locked" onClick={() => this.toggle(toggleValue)} />
-                        </CardHeader>
-                        <Collapse isOpen={this.state.activeCardNo === (toggleValue)}>
-                            <CardBody><ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue-1)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} /></CardBody>
-                        </Collapse>
-                    </Card>
+                    <AccordionItem>
+                        <AccordionHeader targetId={toggleValue}>
+                            {sectionsJson[sectionPos].desc}
+                        </AccordionHeader>
+                        <AccordionBody accordionId={toggleValue}>
+                            <ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue-1)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
+                        </AccordionBody>
+                    </AccordionItem>
                 );
                 sectionPos++;
             }
             return (
                 <div className="sections">
-                    {sectionsHtml}
+                    <Accordion open={this.state.activeCardNo}toggle={this.toggle}>
+                        {sectionsHtml}
+                    </Accordion>
                 </div>
             );
         }
