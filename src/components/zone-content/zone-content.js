@@ -174,7 +174,7 @@ class ZoneContent extends Component {
                             <CustomButton sectionStatus="completed" onClick={() => this.toggle(toggleValue)} />
                         </CardHeader>
                         <Collapse isOpen={this.state.activeCardNo === (toggleValue)}>
-                            <CardBody><ZoneSection sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue-1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} /></CardBody>
+                            <CardBody><ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue-1)} sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue-1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} /></CardBody>
                         </Collapse>
                     </Card>
                 );
@@ -194,7 +194,7 @@ class ZoneContent extends Component {
                             <CustomButton sectionStatus={sectionStatus} onClick={() => this.toggle(toggleValue)} />
                         </CardHeader>
                         <Collapse isOpen={this.state.activeCardNo === (toggleValue)}>
-                            <CardBody><ZoneSection sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue-1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} /></CardBody>
+                            <CardBody><ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue-1)} sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue-1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} /></CardBody>
                         </Collapse>
                     </Card>
                 );
