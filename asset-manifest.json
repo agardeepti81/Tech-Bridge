@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/Tech-Bridge/static/css/main.a928bcc3.chunk.css",
-    "main.js": "/Tech-Bridge/static/js/main.b14ff116.chunk.js",
-    "main.js.map": "/Tech-Bridge/static/js/main.b14ff116.chunk.js.map",
+    "main.js": "/Tech-Bridge/static/js/main.8fb38682.chunk.js",
+    "main.js.map": "/Tech-Bridge/static/js/main.8fb38682.chunk.js.map",
     "runtime-main.js": "/Tech-Bridge/static/js/runtime-main.69a6d2ec.js",
     "runtime-main.js.map": "/Tech-Bridge/static/js/runtime-main.69a6d2ec.js.map",
     "static/css/2.8c0e6b67.chunk.css": "/Tech-Bridge/static/css/2.8c0e6b67.chunk.css",
-    "static/js/2.2670839a.chunk.js": "/Tech-Bridge/static/js/2.2670839a.chunk.js",
-    "static/js/2.2670839a.chunk.js.map": "/Tech-Bridge/static/js/2.2670839a.chunk.js.map",
+    "static/js/2.a1bc5d75.chunk.js": "/Tech-Bridge/static/js/2.a1bc5d75.chunk.js",
+    "static/js/2.a1bc5d75.chunk.js.map": "/Tech-Bridge/static/js/2.a1bc5d75.chunk.js.map",
     "static/js/3.486fbd17.chunk.js": "/Tech-Bridge/static/js/3.486fbd17.chunk.js",
     "static/js/3.486fbd17.chunk.js.map": "/Tech-Bridge/static/js/3.486fbd17.chunk.js.map",
     "index.html": "/Tech-Bridge/index.html",
     "static/css/2.8c0e6b67.chunk.css.map": "/Tech-Bridge/static/css/2.8c0e6b67.chunk.css.map",
     "static/css/main.a928bcc3.chunk.css.map": "/Tech-Bridge/static/css/main.a928bcc3.chunk.css.map",
-    "static/js/2.2670839a.chunk.js.LICENSE.txt": "/Tech-Bridge/static/js/2.2670839a.chunk.js.LICENSE.txt"
+    "static/js/2.a1bc5d75.chunk.js.LICENSE.txt": "/Tech-Bridge/static/js/2.a1bc5d75.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.69a6d2ec.js",
     "static/css/2.8c0e6b67.chunk.css",
-    "static/js/2.2670839a.chunk.js",
+    "static/js/2.a1bc5d75.chunk.js",
     "static/css/main.a928bcc3.chunk.css",
-    "static/js/main.b14ff116.chunk.js"
+    "static/js/main.8fb38682.chunk.js"
   ]
 }
