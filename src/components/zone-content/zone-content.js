@@ -1,14 +1,25 @@
 import React, { Component } from "react";
 import "./zone-content.css"
 
-import { useParams } from "react-router-dom";
-import { Accordion, AccordionItem, AccordionHeader, AccordionBody } from "reactstrap";
+import { Link, useParams } from "react-router-dom";
+import { Accordion, AccordionItem, AccordionHeader, AccordionBody, Card, CardTitle, CardText, Button } from "reactstrap";
 import ZoneSection from "./zone-section/zone-section";
 
 const ZoneRoute = (props) => {
     const params = useParams();
     const zoneName = params.zoneName;
-    return (<ZoneContent zoneName={zoneName} lessonProgress={props.lessonProgress} mainApis={props.mainApis} email={props.email} />)
+    let i = 0;
+    while (i < props.lessonProgress.length) {
+        if (props.lessonProgress[i].zoneName === zoneName) {
+            if (props.lessonProgress[i].status) {
+                i++;
+                break;
+            }
+            i++;
+        }
+    }
+    i++;
+    return (<ZoneContent activeSectionIndex={i} zoneName={zoneName} lessonProgress={props.lessonProgress} mainApis={props.mainApis} email={props.email} zonesJson={props.zonesJson} />)
 }
 
 class ZoneContent extends Component {
@@ -18,7 +29,7 @@ class ZoneContent extends Component {
             error: null,
             isLoaded: false,
             sectionsJson: [],
-            activeCardNo: 0,
+            activeCardNo: this.props.activeSectionIndex,
             lessonProgress: this.props.lessonProgress
         };
         this.toggle = this.toggle.bind(this);
@@ -77,7 +88,7 @@ class ZoneContent extends Component {
                 lessonProgress[zoneIndex].status = true
         }
         this.updateLessonProgress(lessonProgress);
-        if (this.state.sectionsJson[sectionIndex].exercises.length === (exerciseIndex + 1)){
+        if (this.state.sectionsJson[sectionIndex].exercises.length === (exerciseIndex + 1)) {
             activeCardNo++;
         }
         this.setState({
@@ -120,8 +131,8 @@ class ZoneContent extends Component {
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
-            let sectionsHtml = [], sectionPos = 0, zoneProgress, zoneIndex;
-            const { zoneName } = this.props;
+            let sectionsHtml = [], sectionPos = 0, zoneProgress, zoneIndex, moveToNextZone = [];
+            const { zoneName, zonesJson } = this.props;
             if (!lessonProgress.find(zone => zone.zoneName === zoneName)) {
                 let newZoneJson = {
                     "zoneName": zoneName,
@@ -151,6 +162,24 @@ class ZoneContent extends Component {
             }
             zoneProgress = lessonProgress.find(zone => zone.zoneName === zoneName).zoneProgress;
             zoneIndex = lessonProgress.findIndex(zone => zone.zoneName === zoneName);
+            if (lessonProgress.find(zone => zone.zoneName === zoneName).status && zonesJson.length !== (zoneIndex+1)) {
+                moveToNextZone.push(
+                    <Card
+                        body
+                        className="text-center"
+                    >
+                        <CardTitle tag="h5">
+                            Zone Completed
+                        </CardTitle>
+                        <CardText>
+                            Congratulations on completing this zone, you can move to next zone by clicking on the button below.
+                        </CardText>
+                        <Link to={`/zone/${zonesJson[zoneIndex+1].name}`}>
+                            <Button color="primary">Go to Next Zone</Button>
+                        </Link>
+                    </Card>
+                )
+            }
             while (sectionPos < sectionsJson.length && zoneProgress[sectionPos].status === true) {
                 let toggleValue = sectionPos + 1;
                 sectionsHtml.push(
@@ -159,21 +188,21 @@ class ZoneContent extends Component {
                             {sectionsJson[sectionPos].desc}
                         </AccordionHeader>
                         <AccordionBody accordionId={toggleValue}>
-                            <ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue-1)} sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue-1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
+                            <ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue - 1)} sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue - 1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
                         </AccordionBody>
                     </AccordionItem>
                 );
                 sectionPos++;
             }
             if (sectionPos < sectionsJson.length) {
-                let toggleValue=sectionPos+1;
+                let toggleValue = sectionPos + 1;
                 sectionsHtml.push(
                     <AccordionItem>
                         <AccordionHeader targetId={toggleValue}>
                             {sectionsJson[sectionPos].desc}
                         </AccordionHeader>
                         <AccordionBody accordionId={toggleValue}>
-                            <ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue-1)} sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue-1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
+                            <ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue - 1)} sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue - 1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
                         </AccordionBody>
                     </AccordionItem>
                 );
@@ -186,8 +215,8 @@ class ZoneContent extends Component {
                         <AccordionHeader targetId={toggleValue}>
                             {sectionsJson[sectionPos].desc}
                         </AccordionHeader>
-                        <AccordionBody accordionId={toggleValue}>
-                            <ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue-1)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
+                        <AccordionBody>
+                            <ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue - 1)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
                         </AccordionBody>
                     </AccordionItem>
                 );
@@ -195,9 +224,10 @@ class ZoneContent extends Component {
             }
             return (
                 <div className="sections">
-                    <Accordion open={this.state.activeCardNo}toggle={this.toggle}>
+                    <Accordion open={this.state.activeCardNo} toggle={this.toggle}>
                         {sectionsHtml}
                     </Accordion>
+                    {moveToNextZone}
                 </div>
             );
         }

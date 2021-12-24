@@ -68,7 +68,7 @@ class ZoneSection extends Component {
         const exerciseData = sectionData.exercises, exerciseHtml = [], completeVideoButtton = [];
         let exercisesIndex = 0;
         if (!this.state.sectionProgress.video)
-            completeVideoButtton.push(<Button color="primary" onClick={() => this.completeVideo}>Mark Video as complete</Button>)
+            completeVideoButtton.push(<Button color="primary" onClick={() => this.completeVideo()}>Mark Video as complete</Button>)
         else {
             while (exercisesIndex < exerciseData.length && this.state.sectionProgress.exercises[exercisesIndex].status) {
                 let toggleIndex = exercisesIndex + 2;
