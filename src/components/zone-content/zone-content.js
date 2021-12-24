@@ -56,7 +56,7 @@ class ZoneContent extends Component {
             })
     }
 
-    completeVideo(zoneIndex, sectionIndex){
+    completeVideo(zoneIndex, sectionIndex) {
         let lessonProgress = this.state.lessonProgress;
         lessonProgress[zoneIndex].zoneProgress[sectionIndex].video = true;
         this.updateLessonProgress(lessonProgress);
@@ -65,24 +65,28 @@ class ZoneContent extends Component {
         })
     }
 
-    completeExercise(zoneIndex, sectionIndex, exerciseIndex, exerciseResponse, startTime){
-        let lessonProgress = this.state.lessonProgress;
+    completeExercise(zoneIndex, sectionIndex, exerciseIndex, exerciseResponse, startTime) {
+        let lessonProgress = this.state.lessonProgress, activeCardNo = this.state.activeCardNo;
         lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].response = exerciseResponse;
         lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].startTime = startTime;
-        lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].endTime = Math.round(new Date().getTime()/1000);
+        lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].endTime = Math.round(new Date().getTime() / 1000);
         lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].status = true;
-        if(lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises.length === (exerciseIndex+1)){
+        if (lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises.length === (exerciseIndex + 1)) {
             lessonProgress[zoneIndex].zoneProgress[sectionIndex].status = true;
-            if(lessonProgress[zoneIndex].zoneProgress.length === (sectionIndex+1))
-            lessonProgress[zoneIndex].status = true
+            if (lessonProgress[zoneIndex].zoneProgress.length === (sectionIndex + 1))
+                lessonProgress[zoneIndex].status = true
         }
         this.updateLessonProgress(lessonProgress);
+        if (this.state.sectionsJson[sectionIndex].exercises.length === (exerciseIndex + 1)){
+            activeCardNo++;
+        }
         this.setState({
-            lessonProgress: lessonProgress
+            lessonProgress: lessonProgress,
+            activeCardNo: activeCardNo
         })
     }
 
-    updateLessonProgress(lessonProgress){
+    updateLessonProgress(lessonProgress) {
         var lessonProgressDetails = JSON.stringify({
             "email": this.props.email,
             "lessonProgress": lessonProgress
@@ -95,8 +99,6 @@ class ZoneContent extends Component {
             body: lessonProgressDetails,
             redirect: 'follow'
         };
-        console.log(requestOptions);
-        console.log(lessonProgress);
         fetch(this.props.mainApis.updateLesson, requestOptions)
             .then(response => response.text())
             .then(response => {
@@ -150,7 +152,7 @@ class ZoneContent extends Component {
             zoneProgress = lessonProgress.find(zone => zone.zoneName === zoneName).zoneProgress;
             zoneIndex = lessonProgress.findIndex(zone => zone.zoneName === zoneName);
             while (sectionPos < sectionsJson.length && zoneProgress[sectionPos].status === true) {
-                let toggleValue=sectionPos+1;
+                let toggleValue = sectionPos + 1;
                 sectionsHtml.push(
                     <AccordionItem>
                         <AccordionHeader targetId={toggleValue}>
@@ -178,7 +180,7 @@ class ZoneContent extends Component {
                 sectionPos++;
             }
             while (sectionPos < sectionsJson.length) {
-                let toggleValue=sectionPos+1;
+                let toggleValue = sectionPos + 1;
                 sectionsHtml.push(
                     <AccordionItem>
                         <AccordionHeader targetId={toggleValue}>

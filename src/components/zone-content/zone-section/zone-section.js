@@ -34,6 +34,7 @@ class ZoneSection extends Component {
         }
         this.toggle = this.toggle.bind(this);
         this.sendExerciseResponse = this.sendExerciseResponse.bind(this);
+        this.completeVideo = this.completeVideo.bind(this);
     }
 
     toggle(openId) {
@@ -50,6 +51,16 @@ class ZoneSection extends Component {
 
     sendExerciseResponse(exerciseIndex){
         this.props.sendExerciseResponse(exerciseIndex, this.state.sectionProgress.exercises[exerciseIndex].response, this.state.startTime);
+        this.setState({
+            openId: 0
+        })
+    }
+
+    completeVideo(){
+        this.props.completeVideo();
+        this.setState({
+            openId: 0
+        })
     }
 
     render() {
@@ -57,7 +68,7 @@ class ZoneSection extends Component {
         const exerciseData = sectionData.exercises, exerciseHtml = [], completeVideoButtton = [];
         let exercisesIndex = 0;
         if (!this.state.sectionProgress.video)
-            completeVideoButtton.push(<Button color="primary" onClick={this.props.completeVideo}>Mark Video as complete</Button>)
+            completeVideoButtton.push(<Button color="primary" onClick={() => this.completeVideo}>Mark Video as complete</Button>)
         else {
             while (exercisesIndex < exerciseData.length && this.state.sectionProgress.exercises[exercisesIndex].status) {
                 let toggleIndex = exercisesIndex + 2;
