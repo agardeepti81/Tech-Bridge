@@ -2,24 +2,25 @@ import React, { Component } from "react";
 import "./zone-content.css"
 
 import { Link, useParams } from "react-router-dom";
-import { Accordion, AccordionItem, AccordionHeader, AccordionBody, Card, CardTitle, CardText, Button } from "reactstrap";
+import { Accordion, AccordionItem, AccordionHeader, AccordionBody, Card, CardTitle, CardText, Button, Badge } from "reactstrap";
 import ZoneSection from "./zone-section/zone-section";
 
 const ZoneRoute = (props) => {
     const params = useParams();
     const zoneName = params.zoneName;
-    let i = 0;
-    while (i < props.lessonProgress.length) {
+    let j = 0;
+    for (let i = 0; i < props.lessonProgress.length; i++) {
         if (props.lessonProgress[i].zoneName === zoneName) {
-            if (props.lessonProgress[i].status) {
-                i++;
-                break;
+            while (j < props.lessonProgress[i].zoneProgress.length) {
+                if (!props.lessonProgress[i].zoneProgress[j].status) {
+                    break;
+                }
+                j++;
             }
-            i++;
         }
     }
-    i++;
-    return (<ZoneContent activeSectionIndex={i} zoneName={zoneName} lessonProgress={props.lessonProgress} mainApis={props.mainApis} email={props.email} zonesJson={props.zonesJson} />)
+    j++;
+    return (<ZoneContent activeSectionIndex={j} zoneName={zoneName} lessonProgress={props.lessonProgress} mainApis={props.mainApis} email={props.email} zonesJson={props.zonesJson} />)
 }
 
 class ZoneContent extends Component {
@@ -29,8 +30,9 @@ class ZoneContent extends Component {
             error: null,
             isLoaded: false,
             sectionsJson: [],
-            activeCardNo: this.props.activeSectionIndex,
-            lessonProgress: this.props.lessonProgress
+            activeCardNo: 0,
+            lessonProgress: this.props.lessonProgress,
+            zoneName: this.props.zoneName
         };
         this.toggle = this.toggle.bind(this);
         this.completeVideo = this.completeVideo.bind(this);
@@ -38,13 +40,23 @@ class ZoneContent extends Component {
     }
 
     componentDidMount() {
-        fetch(process.env.PUBLIC_URL + "/data/foundation/" + this.props.zoneName + ".json")
+        this.fetchSectionsJson();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.zoneName !== this.props.zoneName)
+            this.fetchSectionsJson();
+    }
+
+    fetchSectionsJson() {
+        fetch(process.env.PUBLIC_URL + "/data/foundation/" + this.state.zoneName + ".json")
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        sectionsJson: result.sections
+                        sectionsJson: result.sections,
+                        activeCardNo: this.props.activeSectionIndex
                     });
                 },
                 (error) => {
@@ -125,14 +137,14 @@ class ZoneContent extends Component {
     }
 
     render() {
-        const { error, isLoaded, sectionsJson, lessonProgress } = this.state;
+        const { error, isLoaded, sectionsJson, lessonProgress, activeCardNo } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
             let sectionsHtml = [], sectionPos = 0, zoneProgress, zoneIndex, moveToNextZone = [];
-            const { zoneName, zonesJson } = this.props;
+            const { zonesJson, zoneName } = this.props;
             if (!lessonProgress.find(zone => zone.zoneName === zoneName)) {
                 let newZoneJson = {
                     "zoneName": zoneName,
@@ -162,7 +174,7 @@ class ZoneContent extends Component {
             }
             zoneProgress = lessonProgress.find(zone => zone.zoneName === zoneName).zoneProgress;
             zoneIndex = lessonProgress.findIndex(zone => zone.zoneName === zoneName);
-            if (lessonProgress.find(zone => zone.zoneName === zoneName).status && zonesJson.length !== (zoneIndex+1)) {
+            if (lessonProgress.find(zone => zone.zoneName === zoneName).status && zonesJson.length !== (zoneIndex + 1)) {
                 moveToNextZone.push(
                     <Card
                         body
@@ -174,7 +186,7 @@ class ZoneContent extends Component {
                         <CardText>
                             Congratulations on completing this zone, you can move to next zone by clicking on the button below.
                         </CardText>
-                        <Link to={`/zone/${zonesJson[zoneIndex+1].name}`}>
+                        <Link to={`/zone/${zonesJson[zoneIndex + 1].name}`}>
                             <Button color="primary">Go to Next Zone</Button>
                         </Link>
                     </Card>
@@ -195,11 +207,16 @@ class ZoneContent extends Component {
                 sectionPos++;
             }
             if (sectionPos < sectionsJson.length) {
-                let toggleValue = sectionPos + 1;
+                let toggleValue = sectionPos + 1, roomInfo=[];
+                if( activeCardNo === toggleValue)
+                roomInfo.push(
+                    <Badge color="primary">Room No: 1</Badge>
+                )
                 sectionsHtml.push(
                     <AccordionItem>
                         <AccordionHeader targetId={toggleValue}>
                             {sectionsJson[sectionPos].desc}
+                            {roomInfo}
                         </AccordionHeader>
                         <AccordionBody accordionId={toggleValue}>
                             <ZoneSection completeVideo={() => this.completeVideo(zoneIndex, toggleValue - 1)} sendExerciseResponse={(exerciseIndex, exerciseResponse, startTime) => this.completeExercise(zoneIndex, toggleValue - 1, exerciseIndex, exerciseResponse, startTime)} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
@@ -223,7 +240,7 @@ class ZoneContent extends Component {
                 sectionPos++;
             }
             return (
-                <div className="sections">
+                <div key={this.props.zoneName} className="sections">
                     <Accordion open={this.state.activeCardNo} toggle={this.toggle}>
                         {sectionsHtml}
                     </Accordion>
