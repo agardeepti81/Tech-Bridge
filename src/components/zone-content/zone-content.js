@@ -241,6 +241,7 @@ class ZoneContent extends Component {
             }
             return (
                 <div key={this.props.zoneName} className="sections">
+                    <Link to={`/home`}><Button color="primary">Back to Home</Button></Link>
                     <Accordion open={this.state.activeCardNo} toggle={this.toggle}>
                         {sectionsHtml}
                     </Accordion>
