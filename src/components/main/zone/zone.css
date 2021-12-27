@@ -2,3 +2,26 @@
     width: 80%;
     margin: 1.5% auto;
 }
+
+.card-body {
+    max-width: 100%;
+}
+
+.card-title {
+    position: relative;
+    width: 80%;
+}
+
+.card-text {
+    position: relative;
+    width: 100%;
+}
+
+a {
+    position: relative;
+    width: 20%;
+}
+
+.completed, .locked {
+    display: inline-flex;
+}

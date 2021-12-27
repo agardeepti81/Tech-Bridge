@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 class Zone extends Component {
     render() {
         const { zoneData, status } = this.props;
-        let button;
+        let button, zoneDesc=[];
         if (status === "locked")
             button = <Button color="danger" disabled>Locked</Button>;
         if (status === "completed")
@@ -15,9 +15,12 @@ class Zone extends Component {
             button = <Link to={`/zone/${zoneData.name}`}><Button color="primary">Start</Button></Link>;
         if (status === "inprogress")
             button = <Link to={`/zone/${zoneData.name}`}><Button color="warning">Resume</Button></Link>;
+        if(status === "start" || status === "inprogress"){
+            zoneDesc.push(<CardText>{zoneData.desc}</CardText>);
+        }
         return (
             <Card className="zone">
-                <CardBody>
+                <CardBody className={status}>
                     <CardTitle tag="h5">{zoneData.name}</CardTitle>
                     {/* <CardSubtitle
                         className="mb-2 text-muted"
@@ -25,7 +28,7 @@ class Zone extends Component {
                     >
                         Card subtitle
                     </CardSubtitle> */}
-                    <CardText>{zoneData.desc}</CardText>
+                    {zoneDesc}
                     {button}
                 </CardBody>
             </Card>)
