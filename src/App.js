@@ -18,9 +18,10 @@ class App extends Component {
       baseFile: false,
       lessonProgress: false,
       zonesJson:[],
-      email:""
+      email:"",
+      userName: false
     }
-    this.getLessonProgressAndEmail = this.getLessonProgressAndEmail.bind(this);
+    this.getLessonProgressEmailAndUserName = this.getLessonProgressEmailAndUserName.bind(this);
   }
   componentDidMount() {
     fetch(process.env.PUBLIC_URL + "/data/index.json")
@@ -42,10 +43,11 @@ class App extends Component {
           }
       )
   }
-  getLessonProgressAndEmail(lessonProgress, email) {
+  getLessonProgressEmailAndUserName(lessonProgress, email, userName) {
     this.setState({
       lessonProgress: lessonProgress,
-      email: email
+      email: email,
+      userName: userName
     });
   }
   render() {
@@ -60,7 +62,7 @@ class App extends Component {
                 <Route exact path="/signup" element={<SignUp signUpApis={this.state.baseFile.apis.signUp} />} />
                 <Route exact path="/login" element={<Login loginApis={this.state.baseFile.apis.login} getLessonProgressAndEmail={this.getLessonProgressAndEmail} />} />
                 <Route exact path="/home" element={<Main lessonProgress={this.state.lessonProgress} zonesJson={this.state.zonesJson} />} />
-                <Route exact path="/zone/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} email={this.state.email} zonesJson={this.state.zonesJson} />} />
+                <Route exact path="/zone/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} zonesJson={this.state.zonesJson} />} />
               </Routes>
             </Router>
           </div>

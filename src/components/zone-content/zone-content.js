@@ -20,7 +20,7 @@ const ZoneRoute = (props) => {
         }
     }
     j++;
-    return (<ZoneContent activeSectionIndex={j} zoneName={zoneName} lessonProgress={props.lessonProgress} mainApis={props.mainApis} email={props.email} zonesJson={props.zonesJson} />)
+    return (<ZoneContent activeSectionIndex={j} zoneName={zoneName} lessonProgress={props.lessonProgress} mainApis={props.mainApis} roomManagementApis={props.roomManagementApis} email={props.email} zonesJson={props.zonesJson} />)
 }
 
 class ZoneContent extends Component {
@@ -32,7 +32,8 @@ class ZoneContent extends Component {
             sectionsJson: [],
             activeCardNo: 0,
             lessonProgress: this.props.lessonProgress,
-            zoneName: this.props.zoneName
+            zoneName: this.props.zoneName,
+            room: ""
         };
         this.toggle = this.toggle.bind(this);
         this.completeVideo = this.completeVideo.bind(this);
@@ -41,11 +42,15 @@ class ZoneContent extends Component {
 
     componentDidMount() {
         this.fetchSectionsJson();
+        this.getRoomNo();
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.zoneName !== this.props.zoneName)
+        if (prevProps.zoneName !== this.props.zoneName) {
             this.fetchSectionsJson();
+            this.getRoomNo();
+            console.log("room updated")
+        }
     }
 
     fetchSectionsJson() {
@@ -66,6 +71,46 @@ class ZoneContent extends Component {
                     });
                 }
             )
+    }
+
+    getRoomNo() {
+        let zone = this.state.lessonProgress.find(zone => zone.zoneName === this.props.zoneName);
+        console.log(zone);
+        if (zone) {
+            if (!zone.status) {
+                for (let i = 0; i < zone.zoneProgress.length; i++) {
+                    if (!zone.zoneProgress[i].status) {
+                        fetch(this.props.roomManagementApis.getRoomNo + "?email=" + this.props.email + "&roadmap=foundation&zone=" + this.state.zoneName + "&section=Section" + (i + 1))
+                            .then(res => res.json())
+                            .then(
+                                (result) => {
+                                    this.setState({
+                                        room: result.roomsName
+                                    });
+                                },
+                                (error) => {
+                                    console.error(error);
+                                }
+                            )
+                        break;
+                    }
+                }
+            }
+        }
+        else {
+            fetch(this.props.roomManagementApis.getRoomNo + "?email=" + this.props.email + "&roadmap=foundation&zone=" + this.state.zoneName + "&section=Section1")
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        this.setState({
+                            room: result.roomsName
+                        });
+                    },
+                    (error) => {
+                        console.error(error);
+                    }
+                )
+        }
     }
 
     toggle(cardToggleNo) {
@@ -89,7 +134,7 @@ class ZoneContent extends Component {
     }
 
     completeExercise(zoneIndex, sectionIndex, exerciseIndex, exerciseResponse, startTime) {
-        let lessonProgress = this.state.lessonProgress, activeCardNo = this.state.activeCardNo;
+        let lessonProgress = this.state.lessonProgress, activeCardNo = this.state.activeCardNo, updateRoom=false;
         lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].response = exerciseResponse;
         lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].startTime = startTime;
         lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].endTime = Math.round(new Date().getTime() / 1000);
@@ -98,6 +143,8 @@ class ZoneContent extends Component {
             lessonProgress[zoneIndex].zoneProgress[sectionIndex].status = true;
             if (lessonProgress[zoneIndex].zoneProgress.length === (sectionIndex + 1))
                 lessonProgress[zoneIndex].status = true
+            else
+            updateRoom=true;
         }
         this.updateLessonProgress(lessonProgress);
         if (this.state.sectionsJson[sectionIndex].exercises.length === (exerciseIndex + 1)) {
@@ -107,6 +154,8 @@ class ZoneContent extends Component {
             lessonProgress: lessonProgress,
             activeCardNo: activeCardNo
         })
+        if(updateRoom)
+        this.getRoomNo();
     }
 
     updateLessonProgress(lessonProgress) {
@@ -137,7 +186,7 @@ class ZoneContent extends Component {
     }
 
     render() {
-        const { error, isLoaded, sectionsJson, lessonProgress, activeCardNo } = this.state;
+        const { error, isLoaded, sectionsJson, lessonProgress, activeCardNo, room } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -207,11 +256,11 @@ class ZoneContent extends Component {
                 sectionPos++;
             }
             if (sectionPos < sectionsJson.length) {
-                let toggleValue = sectionPos + 1, roomInfo=[];
-                if( activeCardNo === toggleValue)
-                roomInfo.push(
-                    <Badge color="primary">Room No: 1</Badge>
-                )
+                let toggleValue = sectionPos + 1, roomInfo = [];
+                if (activeCardNo === toggleValue)
+                    roomInfo.push(
+                        <Badge color="primary">{room}</Badge>
+                    )
                 sectionsHtml.push(
                     <AccordionItem>
                         <AccordionHeader targetId={toggleValue}>
