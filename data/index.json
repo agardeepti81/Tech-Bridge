@@ -5,10 +5,14 @@
             "getEmails": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/sign-up"
         },
         "login": {
-            "loginUser": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/login"
+            "loginUser": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/login",
+            "logOut": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/room-allocation"
         },
         "main": {
             "updateLesson": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/main"
+        },
+        "roomManagement": {
+            "getRoomNo": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/room-allocation"
         }
     }
 }
