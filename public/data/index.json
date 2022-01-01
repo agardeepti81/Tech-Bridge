@@ -6,7 +6,7 @@
         },
         "login": {
             "loginUser": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/login",
-            "logOut": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/room-allocation"
+            "logout": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/room-allocation"
         },
         "main": {
             "updateLesson": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/main"

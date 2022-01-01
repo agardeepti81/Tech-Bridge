@@ -22,6 +22,7 @@ class App extends Component {
       userName: false
     }
     this.getLessonProgressEmailAndUserName = this.getLessonProgressEmailAndUserName.bind(this);
+    this.logout = this.logout.bind(this);
   }
   componentDidMount() {
     fetch(process.env.PUBLIC_URL + "/data/index.json")
@@ -50,12 +51,18 @@ class App extends Component {
       userName: userName
     });
   }
+
+  logout() {
+    this.setState({
+      userName: false
+    })
+  }
   render() {
     if (this.state.baseFile)
     return (
           <div className="App">
             <Router>
-              <Header />
+              <Header userName={this.state.userName} email={this.state.email} logoutApi={this.state.baseFile.apis.login.logout} logout={this.logout} />
               <Routes>
                 <Route exact path="/" element={<Navigate to="/startpage" />} />
                 <Route exact path="/startpage" element={<StartPage />} />
