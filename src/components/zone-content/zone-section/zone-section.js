@@ -80,7 +80,8 @@ class ZoneSection extends Component {
                         </CardHeader>
                         <Collapse isOpen={this.state.openId === (toggleIndex)}>
                             <CardBody>
-                                {exerciseData[exercisesIndex].desc}
+                                <div dangerouslySetInnerHTML={{ __html: exerciseData[exercisesIndex].desc }}></div>
+
                                 <Input
                                     type="textarea"
                                     placeholder="Enter your response" 
@@ -110,7 +111,7 @@ class ZoneSection extends Component {
                         </CardHeader>
                         <Collapse isOpen={this.state.openId === (toggleIndex)}>
                             <CardBody>
-                                {exerciseData[exercisesIndex].desc}
+                                <div dangerouslySetInnerHTML={{ __html: exerciseData[exercisesIndex].desc }}></div>
                                 <Input
                                     type="textarea"
                                     placeholder="Enter your response" 
@@ -141,7 +142,7 @@ class ZoneSection extends Component {
                     </CardHeader>
                     <Collapse isOpen={this.state.openId === (toggleIndex)}>
                         <CardBody>
-                            {exerciseData[exercisesIndex].desc}
+                            <div dangerouslySetInnerHTML={{ __html: exerciseData[exercisesIndex].desc }}></div>
                             <Input type="textarea" placeholder="Enter your response" />
                             <Button color="primary">Submit</Button>
                         </CardBody>
