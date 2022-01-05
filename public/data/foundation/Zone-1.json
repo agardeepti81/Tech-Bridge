@@ -47,9 +47,85 @@
             ]
         },
         {
-            "desc":"section 2 desc",
+            "desc":"flow charts, operators, branching",
             "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
             "exercises":[
+                {
+                    "code":"exercise 1",
+                    "desc":"<p>Write a program to receive three numbers as user input, and print the maximum of the three</p> <p>For example, if the user provides 98.0, 107.9, 87 as input, the program must print</p> <p><span style=\"color: #339966;\">Maximum of 98.0, 107.9, 87 will be 107.9</span></p>"
+                },
+                {
+                    "code":"exercise 2",
+                    "desc":"Write a program to accept the marks obtained by a student, and print the grade according to the table below   <table border=01 ><tbody><tr><td><strong>Score in subject</strong></td><td><strong>Grade</strong></td></tr><tr><td>&gt;=90</td><td>A</td></tr><tr><td>80-89</td><td>B</td></tr><tr><td>70-79</td><td>C</td></tr><tr><td>60-69</td><td>D</td></tr><tr><td>50-59</td><td>E</td></tr><tr><td>&lt;50</td><td>F</td></tr></tbody></table>"
+                },
+                {
+                    "code":"exercise 3",
+                    "desc":"<p><span style=\"font-weight: 400;\">Accept a number as user input, and display following message, when input to the program is less than 1 and more than 99</span></p> <p><span style=\"font-weight: 400; color: #339966;\">Please specify a number greater than 0 and less than 100.</span></p> <p>&nbsp;</p> <p><br /><br /></p>"
+                },
+                {
+                    "code":"exercise 4",
+                    "desc":"<p><span style=\"font-weight: 400;\">Write a program to recieve two numbers as input from user, subtract the smaller number from larger one and print the result. </span><span style=\"font-weight: 400;\">Example</span></p> <p><span style=\"color: #339966;\">If the first number is 10 and second is 15, print 5</span></p> <p><span style=\"color: #339966;\">If the first number is 18 and second number is 5, print 13</span></p> <p>&nbsp;</p> <p><br /><br /></p>"
+                },
+                {
+                    "code":"exercise 5",
+                    "desc":"<p>Write a program to determine if a person is Thin, Normal, Overweight, or Obese</p> <p>This is determined based on the value of BMI (Body Mass Index)</p> <p>&nbsp;</p> <table border=\"1px\"> <tbody> <tr> <td class=\"has-text-align-center\" data-align=\"center\"><em><strong>BMI Range</strong></em></td> <td class=\"has-text-align-center\" data-align=\"center\"><em><strong>Category</strong></em></td> </tr> <tr> <td class=\"has-text-align-center\" data-align=\"center\">&lt; 18.5</td> <td class=\"has-text-align-center\" data-align=\"center\">Thin</td> </tr> <tr> <td class=\"has-text-align-center\" data-align=\"center\">18.5 &ndash; 25</td> <td class=\"has-text-align-center\" data-align=\"center\">Normal</td> </tr> <tr> <td class=\"has-text-align-center\" data-align=\"center\">25 &ndash; 30</td> <td class=\"has-text-align-center\" data-align=\"center\">Overweight</td> </tr> <tr> <td class=\"has-text-align-center\" data-align=\"center\">&gt; 30</td> <td class=\"has-text-align-center\" data-align=\"center\">Obese</td> </tr> </tbody> </table> <p>You need to recieve weight and height as input to the program, and calculate the BMI first.</p> <p>This is the formula for Calculating BMI in Metric Units,</p> <p><strong><em>BMI = (Weight in Kg) / (Height in Meters * Height in Meters)</em></strong></p> <p>&nbsp;</p> <p>For example, if<br />weight = 75 kg, height = 1.5 m<br />BMI = 75 / (1.5*1.5) = 33.33</p> <p>program must print</p> <p><span style=\"color: #339966;\">This person is Obese</span></p> <p>&nbsp;</p> <p><br /><br /></p>"
+                },
+                {
+                    "code":"exercise 6",
+                    "desc":"<p>Write a program to calculate the electricity bill for the given unit. Here is how the tariff is calculated</p> <table border=\"1px\"> <tbody> <tr> <td><strong>Fixed Price</strong></td> <td><strong>Unit</strong></td> <td><strong>Charges per unit</strong></td> </tr> <tr> <td>100</td> <td>0-100</td> <td>6.30</td> </tr> <tr> <td>100</td> <td>101-200</td> <td>6.85</td> </tr> <tr> <td>100</td> <td>&gt;200</td> <td>7.40</td> </tr> </tbody> </table> <p>For example:-</p> <p>Unit = 270<br />Total bill = fixed price + bill for first 100 unit (0-100) + bill for next 100 unit (101-200) + bill for remaiing unit (&gt;200)<br />= 100 + 100 * 6.30 + 100 * 6.85 + (270-200)*7.40<br />= 100 + 630 + 685 + 518<br />= 1933</p> <p>the program must print&nbsp;</p> <p><span style=\"color: #339966;\">Your toral bill: 1933</span></p> <p><span style=\"color: #339966;\">Total units consumed: 270</span></p> <p><span style=\"color: #339966;\">Breakup:</span></p> <p><span style=\"color: #339966;\">Fixed charges: 100</span></p> <p><span style=\"color: #339966;\">Charges for first 100 units: 630</span></p> <p><span style=\"color: #339966;\">Charges for 101 to 200 units: 685</span></p> <p><span style=\"color: #339966;\">Changes for consumption beyond 200 units: 518</span></p> <p>&nbsp;</p>"
+                }
+            ]
+        },
+        {
+            "desc":"functions, integer division and modulo operator",
+            "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
+            "exercises":[
+                {
+                    "code":"exercise 1",
+                    "desc":"<p>Write a program to determine if a year is a leap year or not.&nbsp;</p> <p>A year is called leap year if the year is divisible by four, except for the years which are divisible by 100 but not divisible by 400. Therefore, the year 2000 was a leap year, but the years 1700, 1800, and 1900 were not.</p> <p>for example if the user gives 2000 as an input, print</p> <p><strong><span style=\"color: #339966;\">Year 2000 was a leap year</span></strong></p> <p>and if the user gives 1700 as an input, print</p> <p><strong><span style=\"color: #339966;\">Year 1700 was not a leap year</span></strong></p> <p>&nbsp;</p>"
+                },
+                {
+                    "code":"exercise 2",
+                    "desc":"<p>Write a program to calculate the total value, if compunding interest is charged.</p> <p>If you do not know the concept of compounding interest, <a href=\"https://www.youtube.com/watch?v=kplwkMifuKQ&amp;t=12s\">this video</a> can help. You can take help from other resources available on internet</p> <p>For the purpose of this program you need to get following inputs from the user</p> <p><strong>P</strong>&nbsp;= the principal investment amount (the initial deposit or loan amount)<br /><strong>r</strong> = the annual interest rate<br /><strong>n</strong>&nbsp;= the number of times that interest is compounded per unit t<br /><strong>t</strong>&nbsp;= the time the money is invested or borrowed for</p> <p>&nbsp;</p> <p>So if someone borrowed Rs. 10000, we will set <strong>P to 10000</strong></p> <p>If the interest rate was 12% per annum, we will set <strong>r to 12.0</strong></p> <p>If it is compounding quarterly, than interest is accrued 4 times a year, so we will set <strong>n to 4</strong></p> <p>If the money is borrowed for 5 years, we will set <strong>t to 5</strong></p> <p>&nbsp;</p> <p>We will use this formula to calculate the total value after 5 years</p> <p><strong>A = P * (1 + r/(n*100))^(n*t)</strong></p> <p><strong>Here A</strong> denotes the future value of the investment/loan, including interest</p> <p><span style=\"text-decoration: underline;\"><strong>Note</strong>: As we need to calculate the power of a number here, please learn about the <a href=\"https://www.javatpoint.com/java-math-pow-method\">Math.pow</a> function before you attempt to write this program</span></p> <p>&nbsp;</p> <p>so in this example, we should print</p> <p><span style=\"color: #339966;\"><strong>Future value of this investment is: 18061.11</strong></span></p> <p>&nbsp;</p> <p>&nbsp;</p>"
+                },
+                {
+                    "code":"exercise 3",
+                    "desc":"<p>Write a program to calculate the distance between two points</p> <p>Assume we have two points M and N, with coordinates (x<sub>1</sub>, y<sub>1</sub>) and (x<sub>2</sub>, y<sub>2</sub>) respectively. Their distance&nbsp; can be represented as MN and it can be calculated as given below formula,</p> <div class=\"code-block code-block-1\">&nbsp;</div> <p>The first point (M):- (x<sub>1</sub>, y<sub>1</sub>)<br />Second point (N):- (x<sub>2</sub>, y<sub>2</sub>)<br />Distance (MN):- &radic;((x<sub>2</sub>&nbsp;&ndash; x<sub>1</sub>)<sup>2</sup>&nbsp;+ (y<sub>2</sub>&nbsp;-y<sub>1</sub>)<sup>2</sup>)</p> <p>Example:-<br />M = (4, 8)<br />N = (12, 14)<br />Then distance between M and N is, MN = &radic;((12-4)<sup>2</sup>&nbsp;+ (14-8)<sup>2</sup>) = &radic;(64 + 36) = &radic;(100) = 10</p> <p>&nbsp;</p> <p>So we need to accept 4 inputs from the user. x1, y1, x2, y2</p> <p>Calculate the distance, and print the distance.</p> <p>In the example given here, the program must print</p> <p><span style=\"color: #339966;\"><strong>Dstance between the points is 10</strong></span></p> <p>&nbsp;</p> <p><span style=\"text-decoration: underline;\"><strong>Note</strong>: Pleaes use <a href=\"https://www.javatpoint.com/java-math-sqrt-method\">Math.sqrt</a> function to calculate the square root</span></p> <p>&nbsp;</p>"
+                },
+                {
+                    "code":"exercise 4",
+                    "desc":"<div>Write a program to print if a number is even or odd.</div> <div>&nbsp;</div> <div>A number is called an even number if it is divisible by 2. Example:- 4,8,12</div> <div>If it is not divisble by 2, it is called an odd number, Example:- 9,11</div> <div>&nbsp;</div> <div>So if the user inputs the nunber 12, the program must print</div> <div><span style=\"color: #339966;\"><strong>12 is an Even number</strong></span></div> <div>&nbsp;</div> <div>and if the user inputs number 13, the program must print</div> <div> <div><span style=\"color: #339966;\"><strong>13 is Odd number</strong></span></div> <div>&nbsp;</div> </div>"
+                },
+                {
+                    "code":"exercise 5",
+                    "desc":"<div>Write a program to evaluate if a number is perfect square or not.&nbsp;</div> <div>&nbsp;</div> <div>A perfect square is a number, which has a whole number as its square root</div> <div>Ref: <a href=\"https://www.javatpoint.com/java-math-sqrt-method\">Math.sqrt</a></div> <div>&nbsp;</div> <div>for example 16 is a perfect square, because its square root is 4, and 4 is a whole number</div> <div>&nbsp;</div> <div>on the other hand, 30 is not a perfect square, as its square root is 5.47, which is not a whole number</div> <div>&nbsp;</div> <div>so how do you find if a number is a perfect square or not?</div> <div>&nbsp;</div> <div>you will first take the square root of the number. Refer Math.sqrt</div> <div>&nbsp;</div> <div>so if the number is 30, its square root is 5.47</div> <div>&nbsp;</div> <div>now we get the integer part of this number, to get this we can use the function <a href=\"https://www.javatpoint.com/java-math-floor-method\">Math.floor</a>, and the integer part is 5</div> <div>&nbsp;</div> <div>now if the square root is bigger than the integer part, it is not a perfect square else it is a perfect square</div> <div>&nbsp;</div> <div>as 5.47 is greater than 5, we know 30 is not a perfect square</div> <div>&nbsp;</div> <div>if the user provided 30 as input, the program must print</div> <div><span style=\"color: #339966;\"><strong>30 is not a perfect square</strong></span></div> <div>&nbsp;</div> <div> <div>if the user provided 25 as input, the program must print</div> <div><span style=\"color: #339966;\"><strong>25 is a perfect square</strong></span></div> <div>&nbsp;</div> </div>"
+                },
+                {
+                    "code":"exercise 6",
+                    "desc":"desc text"
+                },
+                {
+                    "code":"exercise 7",
+                    "desc":"desc text"
+                }
+            ]
+        },
+        {
+            "desc":"logical operations",
+            "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
+            "exercises":[
+                {
+                    "code":"exercise 1",
+                    "desc":"desc text"
+                },
+                {
+                    "code":"exercise 2",
+                    "desc":"desc text"
+                },
+                {
+                    "code":"exercise 3",
+                    "desc":"desc text"
+                },
                 {
                     "code":"exercise 4",
                     "desc":"desc text"
@@ -57,8 +133,69 @@
                 {
                     "code":"exercise 5",
                     "desc":"desc text"
+                },
+                {
+                    "code":"exercise 6",
+                    "desc":"desc text"
+                },
+                {
+                    "code":"exercise 7",
+                    "desc":"desc text"
+                },
+                {
+                    "code":"exercise 8",
+                    "desc":"desc text"
+                },
+                {
+                    "code":"exercise 9",
+                    "desc":"desc text"
+                },
+                {
+                    "code":"exercise 10",
+                    "desc":"desc text"
                 }
             ]
+        },
+        {
+            "desc":"Loops",
+            "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
+            "exercises":[
+                {"code":"exercise 1","desc":"desc text"},
+                {"code":"exercise 2","desc":"desc text"},
+                {"code":"exercise 3","desc":"desc text"},
+                {"code":"exercise 4","desc":"desc text"},
+                {"code":"exercise 5","desc":"desc text"},
+                {"code":"exercise 6","desc":"desc text"},
+                {"code":"exercise 7","desc":"desc text"},
+                {"code":"exercise 8","desc":"desc text"},
+                {"code":"exercise 9","desc":"desc text"},
+                {"code":"exercise 10","desc":"desc text"},
+                {"code":"exercise 11","desc":"desc text"},
+                {"code":"exercise 12","desc":"desc text"},
+                {"code":"exercise 13","desc":"desc text"},
+                {"code":"exercise 14","desc":"desc text"},
+                {"code":"exercise 15","desc":"desc text"},
+                {"code":"exercise 16","desc":"desc text"},
+                {"code":"exercise 17","desc":"desc text"},
+                {"code":"exercise 18","desc":"desc text"},
+                {"code":"exercise 19","desc":"desc text"},
+                {"code":"exercise 20","desc":"desc text"},
+                {"code":"exercise 21","desc":"desc text"},
+                {"code":"exercise 22","desc":"desc text"},
+                {"code":"exercise 23","desc":"desc text"},
+                {"code":"exercise 24","desc":"desc text"},
+                {"code":"exercise 25","desc":"desc text"},
+                {"code":"exercise 26","desc":"desc text"},
+                {"code":"exercise 27","desc":"desc text"},
+                {"code":"exercise 28","desc":"desc text"},
+                {"code":"exercise 29","desc":"desc text"},
+                {"code":"exercise 30","desc":"desc text"},
+                {"code":"exercise 31","desc":"desc text"},
+                {"code":"exercise 32","desc":"desc text"},
+                {"code":"exercise 33","desc":"desc text"},
+                {"code":"exercise 34","desc":"desc text"},
+                {"code":"exercise 35","desc":"desc text"},
+                {"code":"exercise 36","desc":"desc text"}                            ]
         }
     ]
 }
