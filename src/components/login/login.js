@@ -28,7 +28,7 @@ class Login extends Component {
             .then(
                 (result) => {
                     if (result.authorized) {
-                        this.props.getLessonProgressAndEmail(result.lessonProgress, this.email.value)
+                        this.props.getLessonProgressEmailAndUserName(result.lessonProgress, this.email.value, result.name);
                         this.setState({
                             navigate: true
                         })
