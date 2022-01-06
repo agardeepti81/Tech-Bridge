@@ -116,15 +116,15 @@
             "exercises":[
                 {
                     "code":"exercise 1",
-                    "desc":"desc text"
+                    "desc":"<p><code><code></code></code></p> <div><strong>Write a program to print if a number is a buzz number.</strong></div> <div>&nbsp;</div> <div>A number is called a buzz number if it is divisible by 7 or it ends with 7.</div> <div>&nbsp;</div> <div>For example- 7, 17, 27, 37, 47 are buzz numbers because they end with 7. Similarly, the numbers 7, 14, 21, 28, 35, 49 are also buzz numbers because they are divisible by the number 7.</div> <div>&nbsp;</div> <div>So if the user gives 17 as input, the program must print</div> <div><span style=\"color: #339966;\"><strong>17 is a Buzz number</strong></span></div> <div>&nbsp;</div> <div>and if the user gives 23 as input, the program must print</div> <div><span style=\"color: #339966;\"><strong>23 is not a buzz number</strong></span></div> <div>&nbsp;</div> <p><code> </code></p>"
                 },
                 {
                     "code":"exercise 2",
-                    "desc":"desc text"
+                    "desc":"<p><code><code></code></code></p> <div>Write a program to check if a person is allowed to take a specific ride in an ammusement park.</div> <div>&nbsp;</div> <div>Age should be above 15 years, and if the age is above 45 years, but the person does not have any heart disease, the person is allowed</div> <div>&nbsp;</div> <div>Lets understand it with some examples</div> <div>&nbsp;</div> <div> <table style=\"border-collapse: collapse; width: 100%;\" border=\"1\"> <tbody> <tr> <td style=\"width: 33.3333%;\">Age</td> <td style=\"width: 33.3333%;\"> <p>0: no heart disease</p> <p>1: heart disease</p> </td> <td style=\"width: 33.3333%;\">Allowed</td> </tr> <tr> <td style=\"width: 33.3333%;\">14</td> <td style=\"width: 33.3333%;\">0</td> <td style=\"width: 33.3333%;\">no</td> </tr> <tr> <td style=\"width: 33.3333%;\">16</td> <td style=\"width: 33.3333%;\">1</td> <td style=\"width: 33.3333%;\">yes</td> </tr> <tr> <td style=\"width: 33.3333%;\">45</td> <td style=\"width: 33.3333%;\">1</td> <td style=\"width: 33.3333%;\">no</td> </tr> <tr> <td style=\"width: 33.3333%;\">45</td> <td style=\"width: 33.3333%;\">0</td> <td style=\"width: 33.3333%;\">yes</td> </tr> </tbody> </table> &nbsp;</div> <div>&nbsp;</div> <p><code> </code></p>"
                 },
                 {
                     "code":"exercise 3",
-                    "desc":"desc text"
+                    "desc":"<p><code><code></code></code></p> <div>Write a program that checks if the code provided by uesr is valid or not.</div> <div>&nbsp;</div> <div>A code is considered valid, if it is greater than or equal to 1000, and less than 10000</div> <div>&nbsp;</div> <div>and the number is divisible by either 3 or 5</div> <div>&nbsp;</div> <div><span style=\"text-decoration: underline;\">Note: Only a single if condition must be used</span></div> <div>&nbsp;</div> <div>For example, if the user gives 1305 as input, the program must print</div> <div><span style=\"color: #339966;\"><strong>your code is valid</strong></span></div> <div>&nbsp;</div> <div>and if the user provides 5627 as code, the program must print</div> <div><span style=\"color: #339966;\"><strong>invalid code, try again</strong></span></div> <div>&nbsp;</div> <div>&nbsp;</div> <p><code> </code></p>"
                 },
                 {
                     "code":"exercise 4",
