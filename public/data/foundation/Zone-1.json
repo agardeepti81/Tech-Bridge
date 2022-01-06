@@ -102,11 +102,11 @@
                 },
                 {
                     "code":"exercise 6",
-                    "desc":"desc text"
+                    "desc":"<div>Write a program to evaluate if a number is a sunny number or not.</div> <div>&nbsp;</div> <div>If we increase a number by one, and if the new number is a perfect square, the number is said to be a sunny number</div> <div>&nbsp;</div> <div><span style=\"text-decoration: underline;\"><em>Clue: reuse the code we wrote when testing for a perfect square</em></span></div> <div>&nbsp;</div> <div>if the user provided 36 as input, the program must print</div> <div><span style=\"color: #339966;\"><strong>36 is not a sunny square</strong></span></div> <div>&nbsp;</div> <div> <div>if the user provided 24 as input, the program must print</div> <div><span style=\"color: #339966;\"><strong>24 is a sunny number</strong></span></div> <div>&nbsp;</div> </div>"
                 },
                 {
                     "code":"exercise 7",
-                    "desc":"desc text"
+                    "desc":"<div>Write a program to evaluate if a number is a nelson number or not.</div> <div>&nbsp;</div> <div>A number is known to be a nelson number, if it is divisble by 111</div> <div>&nbsp;</div> <div>if the user provided 222 as input, the program must print</div> <div><span style=\"color: #339966;\"><strong>222 is a nelson number</strong></span></div> <div>&nbsp;</div> <div> <div>if the user provided 121 as input, the program must print</div> <div><span style=\"color: #339966;\"><strong>121 is not a nelson number</strong></span></div> <div>&nbsp;</div> </div>"
                 }
             ]
         },
