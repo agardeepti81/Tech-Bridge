@@ -128,31 +128,31 @@
                 },
                 {
                     "code":"exercise 4",
-                    "desc":"desc text"
+                    "desc":"<p><code><code></code></code></p> <div>Write a program that checks if the code provided by uesr is valid or not.</div> <div>&nbsp;</div> <div>A code is considered valid, if it is greater than or equal to 1000, and less than 10000</div> <div>&nbsp;</div> <div>and the number is divisible by either <span style=\"text-decoration: underline;\">3 and 13</span> or <span style=\"text-decoration: underline;\">5 and 17</span></div> <div>&nbsp;</div> <div><span style=\"text-decoration: underline;\">Note: Only a single if condition must be used</span></div> <div>&nbsp;</div> <div>For example, if the user gives any of 3315/2613/6800 as input, the program must print</div> <div><span style=\"color: #339966;\"><strong>your code is valid</strong></span></div> <div>&nbsp;</div> <div>and if the user provides any of 595/975/6275 or as code, the program must print</div> <div><span style=\"color: #339966;\"><strong>invalid code, try again</strong></span></div> <div>&nbsp;</div> <div>&nbsp;</div> <p><code> </code></p>"
                 },
                 {
                     "code":"exercise 5",
-                    "desc":"desc text"
+                    "desc":"<p><code><code></code></code></p> <div>Write a program that checks if the code provided by uesr is valid or not.</div> <div>&nbsp;</div> <div>A code is considered valid, if it is not divisible by any of 3 or 17</div> <div>&nbsp;</div> <div><span style=\"text-decoration: underline;\">Note: Only a single if condition must be used</span></div> <div>&nbsp;</div> <div>For example, if the user gives any of 35/19 as input, the program must print</div> <div><span style=\"color: #339966;\"><strong>your code is valid</strong></span></div> <div>&nbsp;</div> <div>and if the user provides any of 15/34 or as code, the program must print</div> <div><span style=\"color: #339966;\"><strong>invalid code, try again</strong></span></div> <div>&nbsp;</div> <div>&nbsp;</div> <p><code> </code></p>"
                 },
                 {
                     "code":"exercise 6",
-                    "desc":"desc text"
+                    "desc":"<p>When mouseX is 173 and mouseY is 271, what will be the value of currentSquare?</p> <p>if (mouseX &lt; 200 &amp;&amp; mouseY &lt; 200) <br />{ <br />&nbsp; currentSquare = 1 <br />} <br />else <br />{ <br />&nbsp; if (mouseX &gt; 200 &amp;&amp; mouseY &lt; 200) <br />&nbsp; { <br />&nbsp; &nbsp; currentSquare = 4 <br />&nbsp; } <br />&nbsp; else <br />&nbsp; { <br />&nbsp; &nbsp; if (mouseX &lt; 200 &amp;&amp; mouseY &gt; 200) <br />&nbsp; &nbsp; { <br />&nbsp; &nbsp; &nbsp; currentSquare = 2 <br />&nbsp; &nbsp; } <br />&nbsp; &nbsp; else <br />&nbsp; &nbsp; { <br />&nbsp; &nbsp; &nbsp; if (mouseX &gt; 200 &amp;&amp; mouseY &gt; 200) <br />&nbsp; &nbsp; &nbsp; { <br />&nbsp; &nbsp; &nbsp; &nbsp; currentSquare = 3 <br />&nbsp; &nbsp; &nbsp; } <br />&nbsp; &nbsp; } <br />&nbsp; } <br />}</p>"
                 },
                 {
                     "code":"exercise 7",
-                    "desc":"desc text"
+                    "desc":"<p>what will be the output of this program? please explain why did the program got this output</p> <p>int x = 10;</p> <p>if ( x &gt; 15 || (x % 2) == 0 ) <br />{ <br />&nbsp; &nbsp;x = 90;<br />} <br /><br /></p> <p>System.out.println(x);</p> <p>&nbsp;</p>"
                 },
                 {
                     "code":"exercise 8",
-                    "desc":"desc text"
+                    "desc":"<p>what will be the output of this program? please explain why did the program got this output</p> <p>int x = 10;</p> <p>if ( x &gt; 15 || ( x%2==0 &amp;&amp; x/7&gt;1) ) <br />{ <br />&nbsp; &nbsp;x = 90;<br />} <br /><br /></p> <p>System.out.println(x);</p> <p>&nbsp;</p>"
                 },
                 {
                     "code":"exercise 9",
-                    "desc":"desc text"
+                    "desc":"<p>what will be the output of this program? please explain why did the program got this output</p> <p>int x = 10;</p> <p>if ( (x &lt; 15 || x/7&gt;1) &amp;&amp; x%2==0 )<br />{ <br />&nbsp; &nbsp;x = 90;<br />} <br /><br /></p> <p>System.out.println(x);</p> <p>&nbsp;</p>"
                 },
                 {
                     "code":"exercise 10",
-                    "desc":"desc text"
+                    "desc":"<p>what will be the output of this program? please explain why did the program got this output</p> <p>int x = 10;</p> <p>if ( x &lt; 15 &amp;&amp; x/7&gt;1 &amp;&amp; x%2==0 )<br />{ <br />&nbsp; &nbsp;x = 90;<br />} <br /><br /></p> <p>System.out.println(x);</p> <p>&nbsp;</p>"
                 }
             ]
         },
