@@ -127,7 +127,7 @@ class ZoneContent extends Component {
     completeVideo(zoneIndex, sectionIndex) {
         let lessonProgress = this.state.lessonProgress;
         lessonProgress[zoneIndex].zoneProgress[sectionIndex].video = true;
-        this.updateLessonProgress(lessonProgress);
+        this.updateLessonProgress(lessonProgress, false);
         this.setState({
             lessonProgress: lessonProgress
         })
@@ -146,7 +146,14 @@ class ZoneContent extends Component {
             else
             updateRoom=true;
         }
-        this.updateLessonProgress(lessonProgress);
+        let exerciseData = {
+            "roadmap": "foundation",
+            "zone": lessonProgress[zoneIndex].zoneName,
+            "sectionIndex": sectionIndex,
+            "exerciseIndex": exerciseIndex,
+            "timeTaken": lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].endTime - startTime
+        }
+        this.updateLessonProgress(lessonProgress, exerciseData);
         if (this.state.sectionsJson[sectionIndex].exercises.length === (exerciseIndex + 1)) {
             activeCardNo++;
         }
@@ -158,10 +165,11 @@ class ZoneContent extends Component {
         this.getRoomNo();
     }
 
-    updateLessonProgress(lessonProgress) {
+    updateLessonProgress(lessonProgress,exerciseUpdate) {
         var lessonProgressDetails = JSON.stringify({
             "email": this.props.email,
-            "lessonProgress": lessonProgress
+            "lessonProgress": lessonProgress,
+            "exerciseAnalytics": exerciseUpdate
         });
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
