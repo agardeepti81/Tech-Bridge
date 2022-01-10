@@ -151,7 +151,8 @@ class ZoneContent extends Component {
             "zone": lessonProgress[zoneIndex].zoneName,
             "sectionIndex": sectionIndex,
             "exerciseIndex": exerciseIndex,
-            "timeTaken": lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].endTime - startTime
+            "timeTaken": lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].endTime - startTime,
+            "startTime": startTime
         }
         this.updateLessonProgress(lessonProgress, exerciseData);
         if (this.state.sectionsJson[sectionIndex].exercises.length === (exerciseIndex + 1)) {
