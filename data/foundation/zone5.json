@@ -1,7 +1,7 @@
 {
     "sections":[
         {
-            "desc":"section 1 desc",
+            "desc":"desc text",
             "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
             "exercises":[
                 {
@@ -19,7 +19,7 @@
             ]
         },
         {
-            "desc":"section 2 desc",
+            "desc":"desc text",
             "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
             "exercises":[
                 {
