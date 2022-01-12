@@ -74,7 +74,7 @@ class Header extends Component {
                         You can go to start page to login again
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" href="/" onClick={this.closeModal}>Start Page</Button>
+                        <Button color="primary" href={process.env.PUBLIC_URL} onClick={this.closeModal}>Start Page</Button>
                     </ModalFooter>
                 </Modal>
                 <Navbar
@@ -82,7 +82,7 @@ class Header extends Component {
                     dark
                     fixed="top"
                 >
-                    <NavbarBrand href="/">
+                    <NavbarBrand href={process.env.PUBLIC_URL}>
                         Tech-Bridge
                     </NavbarBrand>
                     {userToggle}
