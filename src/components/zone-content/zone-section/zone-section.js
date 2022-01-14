@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Button, Card, CardBody, CardHeader, CardTitle, Collapse, Input } from "reactstrap";
+import { Button, Card, CardBody, CardHeader, CardTitle, Collapse, Input, Modal, ModalBody, ModalHeader, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 
 class VideoButton extends Component {
     render() {
@@ -30,11 +30,16 @@ class ZoneSection extends Component {
         this.state = {
             openId: 0,
             startTime: "",
-            sectionProgress: this.props.sectionProgress
+            sectionProgress: this.props.sectionProgress,
+            help: false,
+            activeHelpTab: "1",
+            helpTabsClasses: ['active','','','']
         }
         this.toggle = this.toggle.bind(this);
         this.sendExerciseResponse = this.sendExerciseResponse.bind(this);
         this.completeVideo = this.completeVideo.bind(this);
+        this.toggleHelpWindow = this.toggleHelpWindow.bind(this);
+        this.changeHelpActiveTab = this.changeHelpActiveTab.bind(this);
     }
 
     toggle(openId) {
@@ -45,21 +50,35 @@ class ZoneSection extends Component {
         else
             this.setState({
                 openId: openId,
-                startTime: Math.round(new Date().getTime()/1000)
+                startTime: Math.round(new Date().getTime() / 1000)
             });
     }
 
-    sendExerciseResponse(exerciseIndex){
+    sendExerciseResponse(exerciseIndex) {
         this.props.sendExerciseResponse(exerciseIndex, this.state.sectionProgress.exercises[exerciseIndex].response, this.state.startTime);
         this.setState({
             openId: 0
         })
     }
 
-    completeVideo(){
+    completeVideo() {
         this.props.completeVideo();
         this.setState({
             openId: 0
+        })
+    }
+
+    toggleHelpWindow() {
+        this.setState({
+            help: !this.state.help
+        });
+    }
+    changeHelpActiveTab(tabNo){
+        let helpTabsClasses=['','',''];
+        helpTabsClasses[tabNo-1]='active';
+        this.setState({
+            activeHelpTab: tabNo+"",
+            helpTabsClasses: helpTabsClasses
         })
     }
 
@@ -84,17 +103,18 @@ class ZoneSection extends Component {
 
                                 <Input
                                     type="textarea"
-                                    placeholder="Enter your response" 
+                                    placeholder="Enter your response"
                                     value={this.state.sectionProgress.exercises[exercisesIndex].response}
                                     onChange={(e) => {
                                         let sectionProgress = this.state.sectionProgress;
-                                        sectionProgress.exercises[toggleIndex-2].response = e.target.value
+                                        sectionProgress.exercises[toggleIndex - 2].response = e.target.value
                                         this.setState({
-                                            sectionProgress : sectionProgress
+                                            sectionProgress: sectionProgress
                                         })
-                                    }} 
+                                    }}
                                 />
-                                <Button color="primary" onClick={() => this.sendExerciseResponse(toggleIndex-2)} >Submit</Button>
+                                <Button color="primary" onClick={() => this.sendExerciseResponse(toggleIndex - 2)} >Submit</Button>
+                                <Button color="primary" onClick={() => this.toggleHelpWindow()}>Ask for help</Button>
                             </CardBody>
                         </Collapse>
                     </Card>
@@ -114,17 +134,18 @@ class ZoneSection extends Component {
                                 <div dangerouslySetInnerHTML={{ __html: exerciseData[exercisesIndex].desc }}></div>
                                 <Input
                                     type="textarea"
-                                    placeholder="Enter your response" 
+                                    placeholder="Enter your response"
                                     value={this.state.sectionProgress.exercises[exercisesIndex].response}
                                     onChange={(e) => {
                                         let sectionProgress = this.state.sectionProgress;
-                                        sectionProgress.exercises[toggleIndex-2].response = e.target.value
+                                        sectionProgress.exercises[toggleIndex - 2].response = e.target.value
                                         this.setState({
-                                            sectionProgress : sectionProgress
+                                            sectionProgress: sectionProgress
                                         })
-                                    }} 
+                                    }}
                                 />
-                                <Button color="primary" onClick={() => this.sendExerciseResponse(toggleIndex-2)} >Submit</Button>
+                                <Button color="primary" onClick={() => this.sendExerciseResponse(toggleIndex - 2)} >Submit</Button>
+                                <Button color="primary" onClick={() => this.toggleHelpWindow()}>Ask for help</Button>
                             </CardBody>
                         </Collapse>
                     </Card>
@@ -168,6 +189,59 @@ class ZoneSection extends Component {
                 </Collapse>
             </Card>
             {exerciseHtml}
+            <Modal
+                isOpen={this.state.help}
+            >
+                <ModalHeader
+                    toggle={this.toggleHelpWindow}
+                >
+                    Help Window
+                </ModalHeader>
+                <ModalBody>
+                    <Nav tabs>
+                        <NavItem>
+                            <NavLink
+                                className={this.state.helpTabsClasses[0]}
+                                onClick={() => this.changeHelpActiveTab(1)}
+                            >
+                                Hint
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                className={this.state.helpTabsClasses[1]}
+                                onClick={() => this.changeHelpActiveTab(2)}
+                            >
+                                See Solution
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                className={this.state.helpTabsClasses[2]}
+                                onClick={() => this.changeHelpActiveTab(3)}
+                            >
+                                Ask your problem
+                            </NavLink>
+                        </NavItem>
+                    </Nav>
+
+                
+                    <TabContent activeTab={this.state.activeHelpTab}>
+                        <TabPane tabId="1">
+                            This is your hint
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi laudantium quam fuga aut quo recusandae. Consectetur ex delectus dolores repellendus, exercitationem reiciendis unde laboriosam explicabo esse ducimus tenetur recusandae totam impedit error! Praesentium, fuga exercitationem neque, perferendis nam, debitis cumque repudiandae dolore consectetur quia repellat dignissimos soluta? Tempore, labore blanditiis.
+                        </TabPane>
+                        <TabPane tabId="2">
+                            Solution of the problem
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi laudantium quam fuga aut quo recusandae. Consectetur ex delectus dolores repellendus, exercitationem reiciendis unde laboriosam explicabo esse ducimus tenetur recusandae totam impedit error! Praesentium, fuga exercitationem neque, perferendis nam, debitis cumque repudiandae dolore consectetur quia repellat dignissimos soluta? Tempore, labore blanditiis.
+                        </TabPane>
+                        <TabPane tabId="3">
+                            You can ask your problem here
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi laudantium quam fuga aut quo recusandae. Consectetur ex delectus dolores repellendus, exercitationem reiciendis unde laboriosam explicabo esse ducimus tenetur recusandae totam impedit error! Praesentium, fuga exercitationem neque, perferendis nam, debitis cumque repudiandae dolore consectetur quia repellat dignissimos soluta? Tempore, labore blanditiis.
+                        </TabPane>
+                    </TabContent>
+                </ModalBody>
+            </Modal>
         </div>)
     }
 }
