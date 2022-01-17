@@ -302,6 +302,7 @@ class ZoneSection extends Component {
                                     </CardBody>
                                 </Card>
                             </div>
+                            <Button color="info">Ask as a fresh Problem</Button>
                         </TabPane>
                     </TabContent>
                 </ModalBody>

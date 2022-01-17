@@ -32,6 +32,8 @@
 #searchResultsPane .card:hover {
     cursor: pointer;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    margin: 3px;
+    margin-top: 0px;
 }
 
 .exerciseButtons{
