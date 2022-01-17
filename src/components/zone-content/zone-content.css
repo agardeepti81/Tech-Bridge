@@ -36,7 +36,12 @@
     margin-top: 0px;
 }
 
+
 .exerciseButtons{
     margin: 5px;
     margin-left: 0px;
+}
+
+#newProblem {
+    width: 100%;
 }
