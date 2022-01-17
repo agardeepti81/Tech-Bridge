@@ -1,7 +1,7 @@
 {
     "sections":[
         {
-            "desc":"variables, expressions, input and output",
+            "desc":"Variables, Expressions, Input and Output",
             "video":"https://s3.ap-southeast-1.amazonaws.com/www.sakhilearning.in/techbridge/TeachBridge+Foundation+V01+Z1S1+Variables+IO+Expressions.mp4",
             "exercises":[
                 {
@@ -47,8 +47,8 @@
             ]
         },
         {
-            "desc":"flow charts, operators, branching",
-            "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
+            "desc":"Flow Charts, Operators, Branching",
+            "video":"https://s3.ap-southeast-1.amazonaws.com/www.sakhilearning.in/techbridge/videos/TeachBridge+Foundation+V01+Z1S2+Logical+Operators+Branching+FlowCharts.mp4",
             "exercises":[
                 {
                     "code":"exercise 1",
@@ -77,8 +77,8 @@
             ]
         },
         {
-            "desc":"functions, integer division and modulo operator",
-            "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
+            "desc":"Functions, Integer Division and Modulo Operator",
+            "video":"https://s3.ap-southeast-1.amazonaws.com/www.sakhilearning.in/techbridge/videos/TeachBridge+Foundation+V01+Z1S3+Functions+Integer+Division+Modulo+Operator.mp4",
             "exercises":[
                 {
                     "code":"exercise 1",
