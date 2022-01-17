@@ -22,3 +22,19 @@
 .badge {
     margin-left: 10px;
 }
+
+#searchResultsPane {
+    height: 380px;
+    margin: 10px 0px;
+    overflow-y: scroll;
+}
+
+#searchResultsPane .card:hover {
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+.exerciseButtons{
+    margin: 5px;
+    margin-left: 0px;
+}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Button, Card, CardBody, CardHeader, CardTitle, Collapse, Input, Modal, ModalBody, ModalHeader, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
+import { Button, Card, CardBody, CardHeader, CardText, CardTitle, Collapse, Input, InputGroup, Modal, ModalBody, ModalHeader, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 
 class VideoButton extends Component {
     render() {
@@ -113,8 +113,8 @@ class ZoneSection extends Component {
                                         })
                                     }}
                                 />
-                                <Button color="primary" onClick={() => this.sendExerciseResponse(toggleIndex - 2)} >Submit</Button>
-                                <Button color="primary" onClick={() => this.toggleHelpWindow()}>Ask for help</Button>
+                                <Button className="exerciseButtons" color="primary" onClick={() => this.sendExerciseResponse(toggleIndex - 2)} >Submit</Button>
+                                <Button className="exerciseButtons" color="primary" onClick={() => this.toggleHelpWindow()}>Ask for help</Button>
                             </CardBody>
                         </Collapse>
                     </Card>
@@ -144,8 +144,8 @@ class ZoneSection extends Component {
                                         })
                                     }}
                                 />
-                                <Button color="primary" onClick={() => this.sendExerciseResponse(toggleIndex - 2)} >Submit</Button>
-                                <Button color="primary" onClick={() => this.toggleHelpWindow()}>Ask for help</Button>
+                                <Button className="exerciseButtons" color="primary" onClick={() => this.sendExerciseResponse(toggleIndex - 2)} >Submit</Button>
+                                <Button className="exerciseButtons" color="primary" onClick={() => this.toggleHelpWindow()}>Ask for help</Button>
                             </CardBody>
                         </Collapse>
                     </Card>
@@ -228,16 +228,80 @@ class ZoneSection extends Component {
                 
                     <TabContent activeTab={this.state.activeHelpTab}>
                         <TabPane tabId="1">
-                            This is your hint
+                            This is your hint<br/>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi laudantium quam fuga aut quo recusandae. Consectetur ex delectus dolores repellendus, exercitationem reiciendis unde laboriosam explicabo esse ducimus tenetur recusandae totam impedit error! Praesentium, fuga exercitationem neque, perferendis nam, debitis cumque repudiandae dolore consectetur quia repellat dignissimos soluta? Tempore, labore blanditiis.
                         </TabPane>
                         <TabPane tabId="2">
-                            Solution of the problem
+                            Solution of the problem<br/>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi laudantium quam fuga aut quo recusandae. Consectetur ex delectus dolores repellendus, exercitationem reiciendis unde laboriosam explicabo esse ducimus tenetur recusandae totam impedit error! Praesentium, fuga exercitationem neque, perferendis nam, debitis cumque repudiandae dolore consectetur quia repellat dignissimos soluta? Tempore, labore blanditiis.
                         </TabPane>
                         <TabPane tabId="3">
-                            You can ask your problem here
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi laudantium quam fuga aut quo recusandae. Consectetur ex delectus dolores repellendus, exercitationem reiciendis unde laboriosam explicabo esse ducimus tenetur recusandae totam impedit error! Praesentium, fuga exercitationem neque, perferendis nam, debitis cumque repudiandae dolore consectetur quia repellat dignissimos soluta? Tempore, labore blanditiis.
+                            <InputGroup>
+                                <Input />
+                                <Button>Search</Button>
+                            </InputGroup>
+                            <div id="searchResultsPane">
+                                <Card>
+                                    <CardBody>
+                                        <CardTitle tag="h5">
+                                            Solution Title
+                                        </CardTitle>
+                                        <CardText>
+                                            Some solution content
+                                        </CardText>
+                                    </CardBody>
+                                </Card>
+                                <Card>
+                                    <CardBody>
+                                        <CardTitle tag="h5">
+                                            Solution Title
+                                        </CardTitle>
+                                        <CardText>
+                                            Some solution content
+                                        </CardText>
+                                    </CardBody>
+                                </Card>
+                                <Card>
+                                    <CardBody>
+                                        <CardTitle tag="h5">
+                                            Solution Title
+                                        </CardTitle>
+                                        <CardText>
+                                            Some solution content
+                                        </CardText>
+                                    </CardBody>
+                                </Card>
+                                <Card>
+                                    <CardBody>
+                                        <CardTitle tag="h5">
+                                            Solution Title
+                                        </CardTitle>
+                                        <CardText>
+                                            Some solution content
+                                        </CardText>
+                                    </CardBody>
+                                </Card>
+                                <Card>
+                                    <CardBody>
+                                        <CardTitle tag="h5">
+                                            Solution Title
+                                        </CardTitle>
+                                        <CardText>
+                                            Some solution content
+                                        </CardText>
+                                    </CardBody>
+                                </Card>
+                                <Card>
+                                    <CardBody>
+                                        <CardTitle tag="h5">
+                                            Solution Title
+                                        </CardTitle>
+                                        <CardText>
+                                            Some solution content
+                                        </CardText>
+                                    </CardBody>
+                                </Card>
+                            </div>
                         </TabPane>
                     </TabContent>
                 </ModalBody>
