@@ -1,6 +1,37 @@
+.zones {
+    width: 82%;
+    margin: 0% 9%;
+}
+
 .zone {
-    width: 80%;
-    margin: 1.5% auto;
+    max-width: 100%;
+    height: 300px;
+    background: black;
+    margin-top: 10px;
+}
+
+.zoneHead {
+    text-align: center;
+    color: white;
+    font-size: 30px;
+    padding: 10px;
+}
+
+.zoneContent {
+    text-align: justify;
+    padding: 0% 10%;
+    color: white;
+    font-size: 18px;
+    height: 150px;
+}
+
+.zoneButton {
+    text-align: right;
+    padding: 0% 10%;
+}
+
+.zoneButton button {
+    width: 200px;
 }
 
 .zone .card-body, .completed .btn {
@@ -29,9 +60,3 @@
 .locked .btn {
     width: 20%;
 }
-
-.custom-tag {
-    max-width: 100%;
-    height: 500px;
-    background: black;
-  }

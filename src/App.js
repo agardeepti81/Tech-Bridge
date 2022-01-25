@@ -65,7 +65,7 @@ class App extends Component {
             <Router>
               <Header userName={this.state.userName} email={this.state.email} logoutApi={this.state.baseFile.apis.login.logout} logout={this.logout} />
               <Routes>
-                <Route exact path="/" element={<Navigate to="/agile-sd/foundation" />} />
+                <Route exact path="/" element={<Navigate to="/start-page" />} />
                 <Route exact path="/start-page" element={<StartPage />} />
                 <Route exact path="/signup" element={<SignUp signUpApis={this.state.baseFile.apis.signUp} />} />
                 <Route exact path="/login" element={<Login loginApis={this.state.baseFile.apis.login} getLessonProgressEmailAndUserName={this.getLessonProgressEmailAndUserName} />} />
