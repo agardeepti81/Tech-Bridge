@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./zone.css";
 import { Button, Card, CardBody, CardTitle, CardText } from "reactstrap";
 import { Link } from "react-router-dom";
 

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarText, Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
 
 class Header extends Component {

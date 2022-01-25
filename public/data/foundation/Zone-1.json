@@ -6,7 +6,12 @@
             "exercises":[
                 {
                     "code":"exercise 1",
-                    "desc":"<p>Create a program that asks the user to input two numbers.&nbsp;</p>  <p>The program should then print the sum of the numbers provided by the user.&nbsp;</p>  <p>Here is an example to clarify:</p>  <p>If the user-provided 90, and 67 as inputs. The program will have the output</p>  <p><span style=\"color: #339966;\">The sum of 90 and 67 is 157</span></p>  <p>&nbsp;</p>"
+                    "desc":"<p>Create a program that asks the user to input two numbers.&nbsp;</p>  <p>The program should then print the sum of the numbers provided by the user.&nbsp;</p>  <p>Here is an example to clarify:</p>  <p>If the user-provided 90, and 67 as inputs. The program will have the output</p>  <p><span style=\"color: #339966;\">The sum of 90 and 67 is 157</span></p>  <p>&nbsp;</p>",
+                    "hints":[],
+                    "solution":{
+                        "text":"",
+                        "video":""
+                    }
                 },
                 {
                     "code":"exercise 2",
