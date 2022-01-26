@@ -1,8 +1,15 @@
 import React, { Component } from "react";
 import "./main.css";
-import { Button, Card, CardBody, CardSubtitle, CardText, CardTitle, Carousel, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem } from "reactstrap";
+import { Carousel, CarouselControl, CarouselIndicators, CarouselItem } from "reactstrap";
 import Zone from "./zone/zone";
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import { useParams } from "react-router-dom";
+
+const MainRoute = (props) => {
+    const params = useParams();
+    const profile = params.profile, pathName = params.pathName;
+
+    return(<Main lessonProgress={props.lessonProgress} zonesJson={props.zonesJson} profile={profile} pathName={pathName} />);
+}
 
 class Main extends Component {
     constructor(props) {
@@ -42,9 +49,10 @@ class Main extends Component {
     }
 
     render() {
-        const { zonesJson } = this.props;
-        const { viewZoneIndex, items, zoneAnimating } = this.state;
+        const { zonesJson, profile, pathName } = this.props;
+        const { viewZoneIndex, zoneAnimating } = this.state;
         let zones = [];
+        console.log(profile, pathName);
         for (let i = 0; i < zonesJson.length; i++) {
             zones.push(zonesJson[i].name);
         }
@@ -64,7 +72,7 @@ class Main extends Component {
                     onExited={() => this.setZoneAnimating(false)}
                     onExiting={() => this.setZoneAnimating(true)}
                 >
-                    <Zone zoneData={zonesJson[i]} status="completed" />
+                    <Zone profile={profile} pathName={pathName} zoneData={zonesJson[i]} status="completed" />
                 </CarouselItem>)
                 i++;
             }
@@ -77,7 +85,7 @@ class Main extends Component {
                 onExited={() => this.setZoneAnimating(false)}
                 onExiting={() => this.setZoneAnimating(true)}
             >
-                <Zone zoneData={zonesJson[i]} status="inprogress" />\
+                <Zone profile={profile} pathName={pathName} zoneData={zonesJson[i]} status="inprogress" />\
             </CarouselItem>)
         else if (i < zones.length)
             zonesHtml.push(<CarouselItem
@@ -85,7 +93,7 @@ class Main extends Component {
                 onExited={() => this.setZoneAnimating(false)}
                 onExiting={() => this.setZoneAnimating(true)}
             >
-                <Zone zoneData={zonesJson[i]} status="start" />
+                <Zone profile={profile} pathName={pathName} zoneData={zonesJson[i]} status="start" />
             </CarouselItem>)
         i++;
         while (i < zones.length) {
@@ -94,11 +102,18 @@ class Main extends Component {
                 onExited={() => this.setZoneAnimating(false)}
                 onExiting={() => this.setZoneAnimating(true)}
             >
-                <Zone zoneData={zonesJson[i]} status="locked" />
+                <Zone profile={profile} pathName={pathName} zoneData={zonesJson[i]} status="locked" />
             </CarouselItem>);
             i++;
         }
-        return (
+        return (<div id="home">
+            {/* <div id="segmentInfo">
+                <div className="infoText"></div>
+                <video width="400" controls>
+                    <source src={sectionData.video} type="video/mp4" />
+                    Your browser doesn't support HTML video
+                </video>
+            </div> */}
             <div className="zones">
                 <Carousel
                     activeIndex={viewZoneIndex}
@@ -127,8 +142,9 @@ class Main extends Component {
                     />
                 </Carousel>
             </div>
+        </div>
         );
     }
 }
 
-export default Main;
+export default MainRoute;
