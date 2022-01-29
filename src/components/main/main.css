@@ -1,20 +1,48 @@
-.zones {
-    width: 82%;
-    margin: 0% 9%;
-}
-
-.zone {
-    max-width: 100%;
-    height: 300px;
-    background: black;
-    margin-top: 10px;
-}
-
 .zoneHead {
+    display: flex;
+    width: 100%;
+}
+
+.emptySpace {
+    width: 25%;
+}
+
+.zoneTitle {
     text-align: center;
     color: white;
     font-size: 30px;
     padding: 10px;
+    width: 50%;
+}
+
+.zoneButton {
+    width: 25%;
+    padding: 10px 10% 10px 0px;
+}
+
+.zoneButton a {
+    width: 100%;
+}
+
+.zoneButton button {
+    width: 100%;
+    height: 45px;
+}
+
+#home {
+    width: 82%;
+    margin: 0% 9%;
+}
+
+.zones {
+    width: 100%;
+}
+
+.zone {
+    max-width: 100%;
+    height: 250px;
+    background: black;
+    margin-top: 10px;
 }
 
 .zoneContent {
@@ -23,15 +51,6 @@
     color: white;
     font-size: 18px;
     height: 150px;
-}
-
-.zoneButton {
-    text-align: right;
-    padding: 0% 10%;
-}
-
-.zoneButton button {
-    width: 200px;
 }
 
 .zone .card-body, .completed .btn {
@@ -48,15 +67,26 @@
     width: 100%;
 }
 
-.zone a {
-    position: relative;
-    width: 20%;
-}
-
 .zone .completed, .zone .locked {
     display: inline-flex;
 }
 
 .locked .btn {
     width: 20%;
+}
+
+#segmentInfo {
+    padding: 10px 0px;
+    height: 340px;
+    display: flex;
+    background-color: black;
+}
+
+#segmentInfo #infoText {
+    width: 50%;
+    color: white;
+}
+
+#segmentInfo #infoVideo {
+    width: 50%;
 }

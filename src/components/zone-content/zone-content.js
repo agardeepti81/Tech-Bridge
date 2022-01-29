@@ -7,7 +7,7 @@ import ZoneSection from "./zone-section/zone-section";
 
 const ZoneRoute = (props) => {
     const params = useParams();
-    const zoneName = params.zoneName;
+    const zoneName = params.zoneName, profile = params.profile, pathName = params.pathName;
     let j = 0;
     for (let i = 0; i < props.lessonProgress.length; i++) {
         if (props.lessonProgress[i].zoneName === zoneName) {
@@ -20,7 +20,7 @@ const ZoneRoute = (props) => {
         }
     }
     j++;
-    return (<ZoneContent activeSectionIndex={j} zoneName={zoneName} lessonProgress={props.lessonProgress} mainApis={props.mainApis} roomManagementApis={props.roomManagementApis} email={props.email} zonesJson={props.zonesJson} />)
+    return (<ZoneContent activeSectionIndex={j} zoneName={zoneName} lessonProgress={props.lessonProgress} mainApis={props.mainApis} roomManagementApis={props.roomManagementApis} email={props.email} zonesJson={props.zonesJson} profile={profile} pathName={pathName} />)
 }
 
 class ZoneContent extends Component {
@@ -33,7 +33,9 @@ class ZoneContent extends Component {
             activeCardNo: 0,
             lessonProgress: this.props.lessonProgress,
             zoneName: this.props.zoneName,
-            room: ""
+            room: "",
+            profile: this.props.profile,
+            pathName: this.props.pathName
         };
         this.toggle = this.toggle.bind(this);
         this.completeVideo = this.completeVideo.bind(this);
@@ -195,7 +197,7 @@ class ZoneContent extends Component {
     }
 
     render() {
-        const { error, isLoaded, sectionsJson, lessonProgress, activeCardNo, room } = this.state;
+        const { error, isLoaded, sectionsJson, lessonProgress, activeCardNo, room, profile, pathName } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -299,7 +301,7 @@ class ZoneContent extends Component {
             }
             return (
                 <div key={this.props.zoneName} className="sections">
-                    <Link to={`/home`}><Button color="primary">Back to Home</Button></Link>
+                    <Link to={`/${profile}/${pathName}`}><Button color="primary">Back to Home</Button></Link>
                     <Accordion open={this.state.activeCardNo} toggle={this.toggle}>
                         {sectionsHtml}
                     </Accordion>

@@ -1,24 +1,27 @@
 import React, { Component } from "react";
 
-import { Button, Card, CardBody, CardHeader, CardText, CardTitle, Collapse, Input, InputGroup, Modal, ModalBody, ModalHeader, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
+import { Button, Card, CardBody, CardHeader, CardText, CardTitle, Col, Collapse, Container, Input, InputGroup, Modal, ModalBody, ModalHeader, Nav, NavItem, NavLink, Row, TabContent, TabPane } from "reactstrap";
+import { BsLockFill, BsPlayCircle } from "react-icons/bs";
+
+import ZoneSectionContent from "./zone-section-content/zone-section-content";
 
 class VideoButton extends Component {
     render() {
         if (this.props.status)
-            return (<Button className="instructionFunction" color="success" onClick={this.props.onClick}>Watch Again</Button>);
+            return (<Button color="success" onClick={this.props.onClick}>Video<BsPlayCircle id="videoIcon" /></Button>);
         else
-            return (<Button className="instructionFunction" color="primary" onClick={this.props.onClick}>Play</Button>)
+            return (<Button color="primary" onClick={this.props.onClick}>Video<BsPlayCircle id="videoIcon" /></Button>)
     }
 }
 
 class ExerciseButton extends Component {
     render() {
         if (this.props.status === "completed")
-            return (<Button className="instructionFunction" color="success" onClick={this.props.onClick}>Completed</Button>);
+            return (<Button color="success" onClick={this.props.onClick}>{this.props.name}</Button>);
         else if (this.props.status === "start")
-            return (<Button className="instructionFunction" color="primary" onClick={this.props.onClick}>Start</Button>);
+            return (<Button color="primary" onClick={this.props.onClick}>{this.props.name}</Button>);
         else if (this.props.status === "locked")
-            return (<Button className="instructionFunction" color="danger" onClick={this.props.onClick} disabled>Locked</Button>);
+            return (<Button color="danger" onClick={this.props.onClick} disabled>{this.props.name}</Button>);
         else
             return (<></>);
     }
@@ -33,13 +36,29 @@ class ZoneSection extends Component {
             sectionProgress: this.props.sectionProgress,
             help: false,
             activeHelpTab: "1",
-            helpTabsClasses: ['active','','','']
+            helpTabsClasses: ['active', '', '', ''],
+            type: "",
+            exerciseIndex: 0
         }
         this.toggle = this.toggle.bind(this);
         this.sendExerciseResponse = this.sendExerciseResponse.bind(this);
         this.completeVideo = this.completeVideo.bind(this);
         this.toggleHelpWindow = this.toggleHelpWindow.bind(this);
         this.changeHelpActiveTab = this.changeHelpActiveTab.bind(this);
+        this.openVideo = this.openVideo.bind(this);
+    }
+
+    openVideo() {
+        this.setState({
+            type: "video"
+        });
+    }
+
+    openExercise(exerciseIndex) {
+        this.setState({
+            type: "exercise",
+            exerciseIndex: exerciseIndex
+        })
     }
 
     toggle(openId) {
@@ -73,22 +92,21 @@ class ZoneSection extends Component {
             help: !this.state.help
         });
     }
-    changeHelpActiveTab(tabNo){
-        let helpTabsClasses=['','',''];
-        helpTabsClasses[tabNo-1]='active';
+    changeHelpActiveTab(tabNo) {
+        let helpTabsClasses = ['', '', ''];
+        helpTabsClasses[tabNo - 1] = 'active';
         this.setState({
-            activeHelpTab: tabNo+"",
+            activeHelpTab: tabNo + "",
             helpTabsClasses: helpTabsClasses
         })
     }
 
     render() {
         const { sectionData } = this.props;
-        const exerciseData = sectionData.exercises, exerciseHtml = [], completeVideoButtton = [];
+        const { type, exerciseIndex } = this.state;
+        const exerciseData = sectionData.exercises, exerciseHtml = [], exerciseNav = [];
         let exercisesIndex = 0;
-        if (!this.state.sectionProgress.video)
-            completeVideoButtton.push(<Button color="primary" onClick={() => this.completeVideo()}>Mark Video as complete</Button>)
-        else {
+        if (this.state.sectionProgress.video) {
             while (exercisesIndex < exerciseData.length && this.state.sectionProgress.exercises[exercisesIndex].status) {
                 let toggleIndex = exercisesIndex + 2;
                 exerciseHtml.push(
@@ -119,6 +137,7 @@ class ZoneSection extends Component {
                         </Collapse>
                     </Card>
                 )
+                exerciseNav.push(<Col className="zoneSectionNavButton"><ExerciseButton status="completed" onClick={(exercisesIndex) => this.openExercise(exercisesIndex)} name={exerciseData[exercisesIndex].code} /></Col>);
                 exercisesIndex++;
             }
             if (exercisesIndex < exerciseData.length) {
@@ -150,6 +169,7 @@ class ZoneSection extends Component {
                         </Collapse>
                     </Card>
                 )
+                exerciseNav.push(<Col className="zoneSectionNavButton"><ExerciseButton status="start" onClick={(exercisesIndex) => this.openExercise(exercisesIndex)} name={exerciseData[exercisesIndex].code} /></Col>);
                 exercisesIndex++;
             }
         }
@@ -170,24 +190,23 @@ class ZoneSection extends Component {
                     </Collapse>
                 </Card>
             )
+            exerciseNav.push(<Col className="zoneSectionNavButton"><ExerciseButton status="locked" onClick={(exercisesIndex) => this.openExercise(exercisesIndex)} name={exerciseData[exercisesIndex].code} /></Col>);
             exercisesIndex++;
         }
-        return (<div>
-            <Card>
-                <CardHeader className="instructionHeader">
-                    <CardTitle className="instruction">Play Course Video</CardTitle>
-                    <VideoButton status={this.state.sectionProgress.video} onClick={() => this.toggle(1)} />
-                </CardHeader>
-                <Collapse isOpen={this.state.openId === 1}>
-                    <CardBody>
-                        <video width="400" controls>
-                            <source src={sectionData.video} type="video/mp4" />
-                            Your browser doesn't support HTML video
-                        </video>
-                        {completeVideoButtton}
-                    </CardBody>
-                </Collapse>
-            </Card>
+        let tempExercise = []
+        for (let i = 0; i < exerciseData.length; i++) {
+            tempExercise.push(<Col className="zoneSectionNavButton"><Button>{exerciseData[i].code}</Button></Col>)
+        }
+        return (<div className="zoneSection">
+            <Container>
+                <Row>
+                    <Col className="zoneSectionNavButton" xs="2">
+                        <VideoButton status={this.state.sectionProgress.video} onClick={this.openVideo} />
+                    </Col>
+                    {exerciseNav}
+                </Row>
+            </Container>
+            <ZoneSectionContent type={type} completeVideo={this.completeVideo} sectionProgress={this.state.sectionProgress} sectionData={sectionData} exerciseIndex={exerciseIndex} />
             {exerciseHtml}
             <Modal
                 isOpen={this.state.help}
@@ -225,14 +244,14 @@ class ZoneSection extends Component {
                         </NavItem>
                     </Nav>
 
-                
+
                     <TabContent activeTab={this.state.activeHelpTab}>
                         <TabPane tabId="1">
-                            This is your hint<br/>
+                            This is your hint<br />
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi laudantium quam fuga aut quo recusandae. Consectetur ex delectus dolores repellendus, exercitationem reiciendis unde laboriosam explicabo esse ducimus tenetur recusandae totam impedit error! Praesentium, fuga exercitationem neque, perferendis nam, debitis cumque repudiandae dolore consectetur quia repellat dignissimos soluta? Tempore, labore blanditiis.
                         </TabPane>
                         <TabPane tabId="2">
-                            Solution of the problem<br/>
+                            Solution of the problem<br />
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi laudantium quam fuga aut quo recusandae. Consectetur ex delectus dolores repellendus, exercitationem reiciendis unde laboriosam explicabo esse ducimus tenetur recusandae totam impedit error! Praesentium, fuga exercitationem neque, perferendis nam, debitis cumque repudiandae dolore consectetur quia repellat dignissimos soluta? Tempore, labore blanditiis.
                         </TabPane>
                         <TabPane tabId="3">

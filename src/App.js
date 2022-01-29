@@ -17,9 +17,8 @@ class App extends Component {
     super(props);
     this.state = {
       baseFile: false,
-      lessonProgress: false,
-      zonesJson:[],
-      email:"",
+      lessonProgress: [],
+      email: "",
       userName: false
     }
     this.getLessonProgressEmailAndUserName = this.getLessonProgressEmailAndUserName.bind(this);
@@ -34,15 +33,6 @@ class App extends Component {
             baseFile: result
           });
         }
-      )
-      fetch(process.env.PUBLIC_URL + "/data/roadmap_foundation.json")
-      .then(res => res.json())
-      .then(
-          (result) => {
-              this.setState({
-                  zonesJson: result.zones
-              });
-          }
       )
   }
   getLessonProgressEmailAndUserName(lessonProgress, email, userName) {
@@ -60,34 +50,33 @@ class App extends Component {
   }
   render() {
     if (this.state.baseFile)
-    return (
-          <div className="App">
-            <Router>
-              <Header userName={this.state.userName} email={this.state.email} logoutApi={this.state.baseFile.apis.login.logout} logout={this.logout} />
-              <Routes>
-                <Route exact path="/" element={<Navigate to="/start-page" />} />
-                <Route exact path="/start-page" element={<StartPage />} />
-                <Route exact path="/signup" element={<SignUp signUpApis={this.state.baseFile.apis.signUp} />} />
-                <Route exact path="/login" element={<Login loginApis={this.state.baseFile.apis.login} getLessonProgressEmailAndUserName={this.getLessonProgressEmailAndUserName} />} />
-                <Route exact path="/home"
-                element={<Home />} />
-                <Route exact path="/:profile/:pathName" element={<MainRoute lessonProgress={this.state.lessonProgress} zonesJson={this.state.zonesJson} />} />
-                <Route exact path="/:profile/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} zonesJson={this.state.zonesJson} />} />
-              </Routes>
-            </Router>
+      return (
+        <div className="App">
+          <Router>
+            <Header userName={this.state.userName} email={this.state.email} logoutApi={this.state.baseFile.apis.login.logout} logout={this.logout} />
+            <Routes>
+              <Route exact path="/" element={<Navigate to="/home" />} />
+              <Route exact path="/start-page" element={<StartPage />} />
+              <Route exact path="/signup" element={<SignUp signUpApis={this.state.baseFile.apis.signUp} />} />
+              <Route exact path="/login" element={<Login loginApis={this.state.baseFile.apis.login} getLessonProgressEmailAndUserName={this.getLessonProgressEmailAndUserName} />} />
+              <Route exact path="/home" element={<Home lessonProgress={this.state.lessonProgress} />} />
+              <Route exact path="/:profile/:roadmap/:pathName" element={<MainRoute lessonProgress={this.state.lessonProgress} />} />
+              <Route exact path="/:profile/:roadmap/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} />} />
+            </Routes>
+          </Router>
+        </div>
+      );
+    else
+      return (
+        <div className="App">
+          <Header />
+          <div id="loadingApp">
+            <Spinner id='appSpinner'>
+              Loading...
+            </Spinner>
           </div>
-        );
-      else
-        return (
-          <div className="App">
-            <Header />
-            <div id="loadingApp">
-              <Spinner id='appSpinner'>
-                Loading...
-              </Spinner>
-            </div>
-          </div>
-    )
+        </div>
+      )
   }
 }
 
