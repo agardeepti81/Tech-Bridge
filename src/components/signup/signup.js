@@ -6,7 +6,7 @@ const NavigateToStartPage = ({nav}) => {
     const navigate = useNavigate();
 
     if(nav)
-    navigate('/startpage');
+    navigate('/start-page');
 
     return (
         <></>

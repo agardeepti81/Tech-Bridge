@@ -1,5 +1,9 @@
+.navbar {
+    height: 10vh;
+}
+
 #navbar {
-    margin-top: 56px;
+    margin-top: 10vh;
 }
 
 #loadingApp {

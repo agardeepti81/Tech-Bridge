@@ -33,8 +33,8 @@ class Main extends Component {
         const roadmapProgress = roadmaps?.find(roadmap => roadmap.name === this.props.roadmap)?.paths;
         const pathProgress = roadmapProgress?.find(path => path.code === this.props.pathName)?.progress;
         if (pathProgress) {
-            const zoneIndex = pathProgress.length;
-            if (pathProgress[zoneIndex - 1].status)
+            let zoneIndex = pathProgress.length;
+            if (!pathProgress[zoneIndex - 1].status)
                 zoneIndex--;
             this.setState({
                 viewZoneIndex: zoneIndex,

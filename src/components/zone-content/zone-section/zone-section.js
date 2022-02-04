@@ -31,9 +31,7 @@ class ZoneSection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            openId: 0,
-            startTime: "",
-            sectionProgress: this.props.sectionProgress,
+            startTime: Math.round(new Date().getTime() / 1000),
             help: false,
             activeHelpTab: "1",
             helpTabsClasses: ['active', '', '', ''],
@@ -41,11 +39,32 @@ class ZoneSection extends Component {
             exerciseIndex: 0
         }
         this.toggle = this.toggle.bind(this);
-        this.sendExerciseResponse = this.sendExerciseResponse.bind(this);
         this.completeVideo = this.completeVideo.bind(this);
         this.toggleHelpWindow = this.toggleHelpWindow.bind(this);
         this.changeHelpActiveTab = this.changeHelpActiveTab.bind(this);
         this.openVideo = this.openVideo.bind(this);
+    }
+
+    componentDidMount() {
+        let { sectionProgress } = this.props;
+        if (sectionProgress.video) {
+            let type = "exercise", exerciseIndex = 0;
+            for (exerciseIndex = 0; exerciseIndex < sectionProgress.exercises.length; exerciseIndex++){
+                if(!sectionProgress.exercises[exerciseIndex].status)
+                break;
+            }
+            exerciseIndex++;
+            this.setState({
+                type: type,
+                exerciseIndex: exerciseIndex
+            });
+        }
+        else {
+            let type = "video";
+            this.setState({
+                type: type
+            });
+        }
     }
 
     openVideo() {
@@ -73,17 +92,16 @@ class ZoneSection extends Component {
             });
     }
 
-    sendExerciseResponse(exerciseIndex) {
-        this.props.sendExerciseResponse(exerciseIndex, this.state.sectionProgress.exercises[exerciseIndex].response, this.state.startTime);
-        this.setState({
-            openId: 0
-        })
+    submitExercise(exerciseInput) {
+        const { startTime, exerciseIndex } = this.state;
+        this.props.submitExercise(exerciseInput, startTime, exerciseIndex);
     }
 
     completeVideo() {
         this.props.completeVideo();
         this.setState({
-            openId: 0
+            type: "exercise",
+            exerciseIndex: this.state.exerciseIndex+1
         })
     }
 
@@ -92,6 +110,7 @@ class ZoneSection extends Component {
             help: !this.state.help
         });
     }
+
     changeHelpActiveTab(tabNo) {
         let helpTabsClasses = ['', '', ''];
         helpTabsClasses[tabNo - 1] = 'active';
@@ -102,12 +121,12 @@ class ZoneSection extends Component {
     }
 
     render() {
-        const { sectionData } = this.props;
+        const { sectionData, sectionProgress } = this.props;
         const { type, exerciseIndex } = this.state;
         const exerciseData = sectionData.exercises, exerciseHtml = [], exerciseNav = [];
         let exercisesIndex = 0;
-        if (this.state.sectionProgress.video) {
-            while (exercisesIndex < exerciseData.length && this.state.sectionProgress.exercises[exercisesIndex].status) {
+        if (sectionProgress.video) {
+            while (exercisesIndex < exerciseData.length && sectionProgress.exercises[exercisesIndex].status) {
                 let toggleIndex = exercisesIndex + 2;
                 exerciseHtml.push(
                     <Card>
@@ -122,9 +141,9 @@ class ZoneSection extends Component {
                                 <Input
                                     type="textarea"
                                     placeholder="Enter your response"
-                                    value={this.state.sectionProgress.exercises[exercisesIndex].response}
+                                    value={sectionProgress.exercises[exercisesIndex].response}
                                     onChange={(e) => {
-                                        let sectionProgress = this.state.sectionProgress;
+                                        let sectionProgress = sectionProgress;
                                         sectionProgress.exercises[toggleIndex - 2].response = e.target.value
                                         this.setState({
                                             sectionProgress: sectionProgress
@@ -154,9 +173,9 @@ class ZoneSection extends Component {
                                 <Input
                                     type="textarea"
                                     placeholder="Enter your response"
-                                    value={this.state.sectionProgress.exercises[exercisesIndex].response}
+                                    value={sectionProgress.exercises[exercisesIndex].response}
                                     onChange={(e) => {
-                                        let sectionProgress = this.state.sectionProgress;
+                                        let sectionProgress = sectionProgress;
                                         sectionProgress.exercises[toggleIndex - 2].response = e.target.value
                                         this.setState({
                                             sectionProgress: sectionProgress
@@ -197,17 +216,17 @@ class ZoneSection extends Component {
         for (let i = 0; i < exerciseData.length; i++) {
             tempExercise.push(<Col className="zoneSectionNavButton"><Button>{exerciseData[i].code}</Button></Col>)
         }
-        return (<div className="zoneSection">
+        return (<div className="zoneSection" key={this.props.sectionProgress}>
             <Container>
                 <Row>
                     <Col className="zoneSectionNavButton" xs="2">
-                        <VideoButton status={this.state.sectionProgress.video} onClick={this.openVideo} />
+                        <VideoButton status={sectionProgress.video} onClick={this.openVideo} />
                     </Col>
                     {exerciseNav}
                 </Row>
             </Container>
-            <ZoneSectionContent type={type} completeVideo={this.completeVideo} sectionProgress={this.state.sectionProgress} sectionData={sectionData} exerciseIndex={exerciseIndex} />
-            {exerciseHtml}
+            <ZoneSectionContent type={type} completeVideo={this.completeVideo} sectionProgress={sectionProgress} sectionData={sectionData} exerciseIndex={exerciseIndex} toggleHelpWindow={this.toggleHelpWindow} submitExercise={this.submitExercise} />
+            {/* {exerciseHtml} */}
             <Modal
                 isOpen={this.state.help}
             >

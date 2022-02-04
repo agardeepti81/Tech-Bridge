@@ -2,15 +2,42 @@ import { Component } from "react";
 import { Button, Input } from "reactstrap";
 
 export default class ZoneSectionContent extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            exerciseInput:""
+            exerciseInput: "",
+            improveAnswer: false
         }
     }
+    componentDidMount() {
+        const { sectionProgress, type, exerciseIndex } = this.props;
+        let n = sectionProgress.exercises[exerciseIndex].response.length;
+        if (type === "exercise" && n !== 0) {
+            this.setState({
+                exerciseInput: sectionProgress.exercises[exerciseIndex].response[n - 1],
+                improveAnswer: true
+            })
+        }
+    }
+
+    submitExercise() {
+        const { exerciseInput } = this.state;
+        if (exerciseInput.trim() === "")
+            alert("Enter exercise response");
+        else
+            this.props.submitExercise(exerciseInput);
+    }
+
+    improveAnswer() {
+        this.setState({
+            improveAnswer: false
+        })
+    }
+
     render() {
-        const { type, sectionProgress, sectionData,exerciseIndex } = this.props;
-        const completeVideoButtton = [], exerciseData=sectionData.exercises;
+        const { type, sectionProgress, sectionData, exerciseIndex } = this.props;
+        const { exerciseInput, improveAnswer } = this.state;
+        const completeVideoButtton = [], exerciseData = sectionData.exercises;
         if (!sectionProgress.video)
             completeVideoButtton.push(<Button color="primary" onClick={this.props.completeVideo}>Mark Video as complete</Button>)
         if (type === "video")
@@ -21,22 +48,36 @@ export default class ZoneSectionContent extends Component {
                 </video>
                 {completeVideoButtton}
             </div>)
-        else if (type === "exercise")
+        else if (type === "exercise") {
+            if(improveAnswer)
             return (<div>
                 <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex].desc }}></div>
-
                 <Input
                     type="textarea"
                     placeholder="Enter your response"
-                    value={sectionProgress.exercises[exerciseIndex].response}
+                    value={this.state.exerciseInput}
+                    disabled
+                />
+                <Button className="exerciseButtons" color="primary" onClick={this.improveAnswer} >Improve Answer</Button>
+                <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
+            </div>)
+            else
+            return (<div>
+                <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex].desc }}></div>
+                <Input
+                    type="textarea"
+                    placeholder="Enter your response"
+                    value={this.state.exerciseInput}
                     onChange={(e) => {
-                        let sectionProgress = sectionProgress;
-                        sectionProgress.exercises[exerciseIndex].response = e.target.value
+                        this.setState({
+                            exerciseInput: e.target.value
+                        });
                     }}
                 />
-                <Button className="exerciseButtons" color="primary" onClick={() => this.sendExerciseResponse(exerciseIndex)} >Submit</Button>
-                <Button className="exerciseButtons" color="primary" onClick={() => this.toggleHelpWindow()}>Ask for help</Button>
+                <Button className="exerciseButtons" color="primary" onClick={this.submitExercise} >Submit</Button>
+                <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
             </div>)
+        }
         else
             return (<div></div>)
     }

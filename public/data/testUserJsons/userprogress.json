@@ -13,9 +13,9 @@
                             "status":false,
                             "progress": [
                                 {
-                                    "zoneName": "NameOfZone",
+                                    "name": "NameOfZone",
                                     "status": true,
-                                    "zoneProgress": [
+                                    "progress": [
                                         {
                                             "status": true,
                                             "video": true,
@@ -45,23 +45,6 @@
                                             "exercises": [
                                                 {
                                                     "status": true,
-                                                    "startTime": "time",
-                                                    "endTime": "time",
-                                                    "response": "response of exercise"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
-                                {
-                                    "zoneName": "NameOfZone2",
-                                    "status": false,
-                                    "zoneProgress": [
-                                        {
-                                            "video": true,
-                                            "exercises": [
-                                                {
-                                                    "status": false,
                                                     "startTime": "time",
                                                     "endTime": "time",
                                                     "response": "response of exercise"
