@@ -2,11 +2,17 @@ import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 
-const NavigateToHome = ({ nav }) => {
+const NavigateToHome = ({ nav, role }) => {
     const navigate = useNavigate();
 
-    if (nav)
+    if (nav){
+        if(role === "Learner")
         navigate('/home');
+        else if(role === "Facilitator")
+        navigate('/facilitator');
+        else
+        alert("Some error occured");
+    }
 
     return (
         <></>
@@ -17,20 +23,22 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            navigate: false
+            navigate: false,
+            role: ""
         }
         this.login = this.login.bind(this);
     }
     login(event) {
         event.preventDefault();
-        fetch(`${this.props.loginApis.loginUser}?email=${this.email.value}&password=${this.password.value}`)
+        fetch(`${this.props.loginApis.loginUser}?email=${this.email.value.trim()}&password=${this.password.value}`)
             .then(res => res.json())
             .then(
                 (result) => {
                     if (result.authorized) {
-                        this.props.getLessonProgressEmailAndUserName(result.lessonProgress, this.email.value, result.name);
+                        this.props.getLessonProgressEmailAndUserName(result.lessonProgress, this.email.value.trim(), result.name);
                         this.setState({
-                            navigate: true
+                            navigate: true,
+                            role: result.role
                         })
                     }
                     else
@@ -69,7 +77,7 @@ class Login extends Component {
                 <Button type="submit" color="primary">
                     Submit
                 </Button>
-                <NavigateToHome nav={this.state.navigate} />
+                <NavigateToHome nav={this.state.navigate} role={this.state.role} />
             </Form>
         )
     }
