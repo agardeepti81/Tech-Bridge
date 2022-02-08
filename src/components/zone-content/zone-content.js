@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./zone-content.css"
 
 import { Link, useParams } from "react-router-dom";
-import { Accordion, AccordionItem, AccordionHeader, AccordionBody, Card, CardTitle, CardText, Button, Badge } from "reactstrap";
+import { Accordion, AccordionItem, AccordionHeader, AccordionBody, Button, Badge } from "reactstrap";
 import ZoneSection from "./zone-section/zone-section";
 
 const ZoneRoute = (props) => {
@@ -31,6 +31,7 @@ class ZoneContent extends Component {
         };
         this.toggle = this.toggle.bind(this);
         this.completeVideo = this.completeVideo.bind(this);
+        this.submitExercise = this.submitExercise.bind(this);
     }
 
     async componentDidMount() {
@@ -193,36 +194,49 @@ class ZoneContent extends Component {
     }
 
     submitExercise(exerciseInput, startTime, exerciseIndex) {
-        let { lessonProgress, sectionsLocationIndex, activeSectionIndex } = this.state;
-        let updateRoom = false;
-        lessonProgress[sectionsLocationIndex.profileIndex].roadmaps[sectionsLocationIndex.roadmapIndex].paths[sectionsLocationIndex.pathIndex].progress[sectionsLocationIndex.zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex].status = true;
-        lessonProgress[sectionsLocationIndex.profileIndex].roadmaps[sectionsLocationIndex.roadmapIndex].paths[sectionsLocationIndex.pathIndex].progress[sectionsLocationIndex.zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex].startTime = startTime;
-        lessonProgress[sectionsLocationIndex.profileIndex].roadmaps[sectionsLocationIndex.roadmapIndex].paths[sectionsLocationIndex.pathIndex].progress[sectionsLocationIndex.zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex].endTime = Math.round(new Date().getTime() / 1000);
-        if (lessonProgress[sectionsLocationIndex.profileIndex].roadmaps[sectionsLocationIndex.roadmapIndex].paths[sectionsLocationIndex.pathIndex].progress[sectionsLocationIndex.zoneIndex].progress[activeSectionIndex - 1].exercises.length === (exerciseIndex + 1)) {
-            lessonProgress[sectionsLocationIndex.profileIndex].roadmaps[sectionsLocationIndex.roadmapIndex].paths[sectionsLocationIndex.pathIndex].progress[sectionsLocationIndex.zoneIndex].progress[activeSectionIndex - 1].status = true;
-            if (lessonProgress[sectionsLocationIndex.profileIndex].roadmaps[sectionsLocationIndex.roadmapIndex].paths[sectionsLocationIndex.pathIndex].progress[sectionsLocationIndex.zoneIndex].progress.length === activeSectionIndex)
-            lessonProgress[sectionsLocationIndex.profileIndex].roadmaps[sectionsLocationIndex.roadmapIndex].paths[sectionsLocationIndex.pathIndex].progress[sectionsLocationIndex.zoneIndex].status = true
-            else
-                updateRoom = true;
-        }
+        let { lessonProgress, sectionsLocationIndex, activeSectionIndex, sectionsLocation } = this.state;
+        let { profile, roadmap, pathName, zoneName } = sectionsLocation;
+        let { profileIndex, roadmapIndex, pathIndex, zoneIndex } = sectionsLocationIndex;
+        lessonProgress = this.updateLessonProgressOnExerciseAndUpdateRoomIfRequired(lessonProgress, startTime, exerciseInput, sectionsLocationIndex, activeSectionIndex, exerciseIndex);
+        
         let exerciseData = {
-        //     "roadmap": "foundation",
-        //     "zone": lessonProgress[zoneIndex].zoneName,
-        //     "sectionIndex": sectionIndex,
-        //     "exerciseIndex": exerciseIndex,
-        //     "timeTaken": lessonProgress[zoneIndex].zoneProgress[sectionIndex].exercises[exerciseIndex].endTime - startTime,
-        //     "startTime": startTime
+            "profile": profile,
+            "roadmap": roadmap,
+            "pathName": pathName,
+            "zoneName": zoneName,
+            "sectionIndex": activeSectionIndex-1,
+            "exerciseIndex": exerciseIndex-1,
+            "timeTaken": lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex-1].endTime - startTime,
+            "startTime": startTime
         }
         this.updateLessonProgress(lessonProgress, exerciseData);
-        // if (this.state.sectionsJson[sectionIndex].exercises.length === (exerciseIndex + 1)) {
-        //     activeSectionIndex++;
-        // }
+        if (this.state.sectionsJson[activeSectionIndex-1].exercises.length === exerciseIndex) {
+            activeSectionIndex++;
+        }
         this.setState({
             lessonProgress: lessonProgress,
             activeSectionIndex: activeSectionIndex
         })
-        if (updateRoom)
-            this.getRoomNo();
+        // if (updateRoom)
+        //     this.getRoomNo();
+    }
+
+    updateLessonProgressOnExerciseAndUpdateRoomIfRequired(lessonProgress, startTime, exerciseInput, sectionsLocationIndex, activeSectionIndex, exerciseIndex){
+        let updateRoom=false;
+        let { profileIndex, roadmapIndex, pathIndex, zoneIndex } = sectionsLocationIndex;
+        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex-1].status = true;
+        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex-1].startTime = startTime;
+        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex-1].endTime = Math.round(new Date().getTime() / 1000);
+        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex-1].response.push(exerciseInput);
+        if (lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises.length === exerciseIndex) {
+            lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].status = true;
+            if (lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress.length === activeSectionIndex){
+                lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].status = true
+            }
+            else
+                updateRoom = true;
+        }
+        return lessonProgress;
     }
 
     updateLessonProgress(lessonProgress, exerciseUpdate) {

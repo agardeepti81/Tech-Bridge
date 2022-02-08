@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Button, ListGroup, ListGroupItem } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { ListGroup, ListGroupItem } from 'reactstrap';
 import './facilitator.css';
 
 class Facilitator extends Component {

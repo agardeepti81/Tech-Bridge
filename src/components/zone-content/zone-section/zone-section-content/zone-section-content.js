@@ -8,14 +8,32 @@ export default class ZoneSectionContent extends Component {
             exerciseInput: "",
             improveAnswer: false
         }
+        this.submitExercise = this.submitExercise.bind(this);
+        this.improveAnswer = this.improveAnswer.bind(this);
     }
     componentDidMount() {
+        this.setExerciseView();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps !== this.props) {
+            this.setExerciseView();
+        }
+    }
+
+    setExerciseView(){
         const { sectionProgress, type, exerciseIndex } = this.props;
-        let n = sectionProgress.exercises[exerciseIndex].response.length;
+        let n = sectionProgress.exercises[exerciseIndex-1]?.response.length;
         if (type === "exercise" && n !== 0) {
             this.setState({
-                exerciseInput: sectionProgress.exercises[exerciseIndex].response[n - 1],
+                exerciseInput: sectionProgress.exercises[exerciseIndex-1].response[n - 1],
                 improveAnswer: true
+            })
+        }
+        else {
+            this.setState({
+                exerciseInput: '',
+                improveAnswer: false
             })
         }
     }
@@ -36,7 +54,7 @@ export default class ZoneSectionContent extends Component {
 
     render() {
         const { type, sectionProgress, sectionData, exerciseIndex } = this.props;
-        const { exerciseInput, improveAnswer } = this.state;
+        const { improveAnswer } = this.state;
         const completeVideoButtton = [], exerciseData = sectionData.exercises;
         if (!sectionProgress.video)
             completeVideoButtton.push(<Button color="primary" onClick={this.props.completeVideo}>Mark Video as complete</Button>)
@@ -49,34 +67,34 @@ export default class ZoneSectionContent extends Component {
                 {completeVideoButtton}
             </div>)
         else if (type === "exercise") {
-            if(improveAnswer)
-            return (<div>
-                <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex].desc }}></div>
-                <Input
-                    type="textarea"
-                    placeholder="Enter your response"
-                    value={this.state.exerciseInput}
-                    disabled
-                />
-                <Button className="exerciseButtons" color="primary" onClick={this.improveAnswer} >Improve Answer</Button>
-                <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
-            </div>)
+            if (improveAnswer)
+                return (<div>
+                    <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex-1].desc }}></div>
+                    <Input
+                        type="textarea"
+                        placeholder="Enter your response"
+                        value={this.state.exerciseInput}
+                        disabled
+                    />
+                    <Button className="exerciseButtons" color="primary" onClick={this.improveAnswer} >Improve Answer</Button>
+                    <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
+                </div>)
             else
-            return (<div>
-                <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex].desc }}></div>
-                <Input
-                    type="textarea"
-                    placeholder="Enter your response"
-                    value={this.state.exerciseInput}
-                    onChange={(e) => {
-                        this.setState({
-                            exerciseInput: e.target.value
-                        });
-                    }}
-                />
-                <Button className="exerciseButtons" color="primary" onClick={this.submitExercise} >Submit</Button>
-                <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
-            </div>)
+                return (<div>
+                    <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex-1].desc }}></div>
+                    <Input
+                        type="textarea"
+                        placeholder="Enter your response"
+                        value={this.state.exerciseInput}
+                        onChange={(e) => {
+                            this.setState({
+                                exerciseInput: e.target.value
+                            });
+                        }}
+                    />
+                    <Button className="exerciseButtons" color="primary" onClick={this.submitExercise} >Submit</Button>
+                    <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
+                </div>)
         }
         else
             return (<div></div>)
