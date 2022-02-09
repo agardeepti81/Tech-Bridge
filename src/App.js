@@ -71,7 +71,7 @@ class App extends Component {
               <Route exact path="/login" element={<Login loginApis={this.state.baseFile.apis.login} getLessonProgressEmailAndUserName={this.getLessonProgressEmailAndUserName} />} />
               <Route exact path="/home" element={<Home lessonProgress={this.state.lessonProgress} />} />
               <Route exact path="/:profile/:roadmap/:pathName" element={<MainRoute lessonProgress={this.state.lessonProgress} />} />
-              <Route exact path="/:profile/:roadmap/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} updateLessonProgress={this.updateLessonProgress} />} />
+              <Route exact path="/:profile/:roadmap/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} updateLessonProgress={this.updateLessonProgress} helpApis={this.state.baseFile.apis.help} />} />
             </Routes>
           </Router>
         </div>

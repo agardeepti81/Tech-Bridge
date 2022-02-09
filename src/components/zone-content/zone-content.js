@@ -8,7 +8,7 @@ import ZoneSection from "./zone-section/zone-section";
 const ZoneRoute = (props) => {
     const params = useParams();
     const profile = params.profile, roadmap = params.roadmap, pathName = params.pathName, zoneName = params.zoneName;
-    return (<ZoneContent lessonProgress={props.lessonProgress} updateLessonProgress={props.updateLessonProgress} mainApis={props.mainApis} roomManagementApis={props.roomManagementApis} email={props.email} profile={profile} roadmap={roadmap} pathName={pathName} zoneName={zoneName} />)
+    return (<ZoneContent lessonProgress={props.lessonProgress} updateLessonProgress={props.updateLessonProgress} mainApis={props.mainApis} roomManagementApis={props.roomManagementApis} helpApis={props.helpApis} email={props.email} profile={profile} roadmap={roadmap} pathName={pathName} zoneName={zoneName} />)
 }
 
 class ZoneContent extends Component {
@@ -305,7 +305,7 @@ class ZoneContent extends Component {
                             {sectionsJson[sectionPos].desc}
                         </AccordionHeader>
                         <AccordionBody accordionId={toggleValue}>
-                            <ZoneSection completeVideo={this.completeVideo} submitExercise={this.submitExercise} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
+                            <ZoneSection completeVideo={this.completeVideo} submitExercise={this.submitExercise} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} helpApis={this.props.helpApis} sectionsLocation={sectionsLocation} sectionIndex={toggleValue-1} email={this.props.email} />
                         </AccordionBody>
                     </AccordionItem>
                 );
@@ -324,7 +324,7 @@ class ZoneContent extends Component {
                             {roomInfo}
                         </AccordionHeader>
                         <AccordionBody accordionId={toggleValue}>
-                            <ZoneSection completeVideo={this.completeVideo} submitExercise={this.submitExercise} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} />
+                            <ZoneSection completeVideo={this.completeVideo} submitExercise={this.submitExercise} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} helpApis={this.props.helpApis} sectionsLocation={sectionsLocation} sectionIndex={toggleValue-1} email={this.props.email} />
                         </AccordionBody>
                     </AccordionItem>
                 );

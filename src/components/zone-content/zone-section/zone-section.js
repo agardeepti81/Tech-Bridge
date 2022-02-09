@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Button, Card, CardBody, CardHeader, CardText, CardTitle, Col, Collapse, Container, Input, InputGroup, Modal, ModalBody, ModalHeader, Nav, NavItem, NavLink, Row, TabContent, TabPane } from "reactstrap";
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Button, Card, CardBody, CardHeader, CardText, CardTitle, Col, Collapse, Container, Input, InputGroup, Modal, ModalBody, ModalHeader, Nav, NavItem, NavLink, Row, TabContent, TabPane } from "reactstrap";
 import { BsPlayCircle } from "react-icons/bs";
 
 import ZoneSectionContent from "./zone-section-content/zone-section-content";
@@ -33,27 +33,38 @@ class ZoneSection extends Component {
         this.state = {
             startTime: Math.round(new Date().getTime() / 1000),
             help: false,
+            contactFacilitator: false,
             activeHelpTab: "1",
-            helpTabsClasses: ['active', '', '', ''],
+            helpTabsClasses: ['active', ''],
             type: "",
-            exerciseIndex: 0
+            exerciseIndex: 0,
+            solutions: [],
+            helpWindowActiveProblem: 0,
+            askedProblem: false,
+            problemDesc: "",
+            facilitatorRoom: ""
         }
         this.toggle = this.toggle.bind(this);
         this.completeVideo = this.completeVideo.bind(this);
         this.toggleHelpWindow = this.toggleHelpWindow.bind(this);
+        this.toggleContactFacilitator = this.toggleContactFacilitator.bind(this);
         this.changeHelpActiveTab = this.changeHelpActiveTab.bind(this);
         this.openVideo = this.openVideo.bind(this);
         this.openExercise = this.openExercise.bind(this);
         this.submitExercise = this.submitExercise.bind(this);
+        this.changeHelpWindowActiveProblem = this.changeHelpWindowActiveProblem.bind(this);
+        this.contactFacilitator = this.contactFacilitator.bind(this);
+        this.sendProblem = this.sendProblem.bind(this);
+        this.submitProblem = this.submitProblem.bind(this);
     }
 
     componentDidMount() {
         let { sectionProgress } = this.props;
         if (sectionProgress.video) {
             let type = "exercise", exerciseIndex = 0;
-            for (exerciseIndex = 0; exerciseIndex < sectionProgress.exercises.length; exerciseIndex++){
-                if(!sectionProgress.exercises[exerciseIndex].status)
-                break;
+            for (exerciseIndex = 0; exerciseIndex < sectionProgress.exercises.length; exerciseIndex++) {
+                if (!sectionProgress.exercises[exerciseIndex].status)
+                    break;
             }
             exerciseIndex++;
             this.setState({
@@ -67,6 +78,22 @@ class ZoneSection extends Component {
                 type: type
             });
         }
+        this.getExerciseSolutions();
+    }
+
+    getExerciseSolutions() {
+        const { helpApis, sectionsLocation, sectionIndex } = this.props;
+        const { exerciseIndex } = this.state;
+        const { profile, roadmap, pathName, zoneName } = sectionsLocation;
+        fetch(`${helpApis.getSolutions}?profile=${profile}&roadmap=${roadmap}&path=${pathName}&zone=${zoneName}&section=${sectionIndex}&exercise=${exerciseIndex}`)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        solutions: result
+                    });
+                }
+            )
     }
 
     openVideo() {
@@ -76,7 +103,6 @@ class ZoneSection extends Component {
     }
 
     openExercise(exerciseIndex) {
-        console.log(exerciseIndex);
         this.setState({
             type: "exercise",
             exerciseIndex: exerciseIndex
@@ -97,10 +123,10 @@ class ZoneSection extends Component {
 
     submitExercise(exerciseInput) {
         const { startTime, exerciseIndex } = this.state;
-        if(!this.props.sectionProgress.exercises[exerciseIndex-1].status)
-        this.setState({
-            exerciseIndex: this.state.exerciseIndex+1
-        })
+        if (!this.props.sectionProgress.exercises[exerciseIndex - 1].status)
+            this.setState({
+                exerciseIndex: this.state.exerciseIndex + 1
+            })
         this.props.submitExercise(exerciseInput, startTime, exerciseIndex);
     }
 
@@ -108,13 +134,19 @@ class ZoneSection extends Component {
         this.props.completeVideo();
         this.setState({
             type: "exercise",
-            exerciseIndex: this.state.exerciseIndex+1
+            exerciseIndex: this.state.exerciseIndex + 1
         })
     }
 
     toggleHelpWindow() {
         this.setState({
             help: !this.state.help
+        });
+    }
+
+    toggleContactFacilitator() {
+        this.setState({
+            contactFacilitator: !this.state.contactFacilitator
         });
     }
 
@@ -127,16 +159,74 @@ class ZoneSection extends Component {
         })
     }
 
+    changeHelpWindowActiveProblem(problemIndex) {
+        if (problemIndex === this.state.helpWindowActiveProblem)
+            this.setState({
+                helpWindowActiveProblem: 0
+            })
+        else
+            this.setState({
+                helpWindowActiveProblem: problemIndex
+            })
+    }
+
+    contactFacilitator() {
+        this.setState({
+            help: false,
+            contactFacilitator: true
+        })
+    }
+
+    submitProblem() {
+        let problemDesc = JSON.stringify({
+            "problem": this.state.problemDesc,
+            "email": this.props.email,
+            "exerciseLocation": {
+                "profile": this.props.sectionsLocation.profile,
+                "roadmap": this.props.sectionsLocation.roadmap,
+                "path": this.props.sectionsLocation.pathName,
+                "zone": this.props.sectionsLocation.zoneName,
+                "section": this.props.sectionIndex,
+                "exercise": this.state.exerciseIndex
+            }
+        });
+        this.sendProblem(problemDesc);
+    }
+
+    sendProblem(dataToSend) {
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: dataToSend,
+            redirect: 'follow'
+        };
+
+        fetch(this.props.helpApis.getSolutions, requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                this.setState({
+                    facilitatorRoom: response.room,
+                    askedProblem: true
+                })
+            })
+            .catch(error => {
+                alert("Some error occured, Please try again later");
+                console.log('error', error)
+            });
+    }
+
     render() {
         const { sectionData, sectionProgress } = this.props;
-        const { type, exerciseIndex } = this.state;
+        const { type, exerciseIndex, solutions, helpWindowActiveProblem, askedProblem } = this.state;
         const exerciseData = sectionData.exercises, exerciseHtml = [], exerciseNav = [];
         let exercisesIndex = 0;
         if (sectionProgress.video) {
             while (exercisesIndex < exerciseData.length && sectionProgress.exercises[exercisesIndex].status) {
-                let toggleIndex = exercisesIndex + 2, activeClass='';
-                if(exerciseIndex===toggleIndex-1)
-                activeClass=' active';
+                let toggleIndex = exercisesIndex + 2, activeClass = '';
+                if (exerciseIndex === toggleIndex - 1)
+                    activeClass = ' active';
                 exerciseHtml.push(
                     <Card>
                         <CardHeader className="instructionHeader">
@@ -165,13 +255,13 @@ class ZoneSection extends Component {
                         </Collapse>
                     </Card>
                 )
-                exerciseNav.push(<Col className={"zoneSectionNavButton"+activeClass}><ExerciseButton status="completed" onClick={() => this.openExercise(toggleIndex-1)} name={exerciseData[exercisesIndex].code} /></Col>);
+                exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="completed" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
                 exercisesIndex++;
             }
             if (exercisesIndex < exerciseData.length) {
-                let toggleIndex = exercisesIndex + 2, activeClass='';
-                if(exerciseIndex===toggleIndex-1)
-                activeClass=' active';
+                let toggleIndex = exercisesIndex + 2, activeClass = '';
+                if (exerciseIndex === toggleIndex - 1)
+                    activeClass = ' active';
                 exerciseHtml.push(
                     <Card>
                         <CardHeader className="instructionHeader">
@@ -199,14 +289,14 @@ class ZoneSection extends Component {
                         </Collapse>
                     </Card>
                 )
-                exerciseNav.push(<Col className={"zoneSectionNavButton"+activeClass}><ExerciseButton status="start" onClick={() => this.openExercise(toggleIndex-1)} name={exerciseData[exercisesIndex].code} /></Col>);
+                exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="start" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
                 exercisesIndex++;
             }
         }
         while (exercisesIndex < exerciseData.length) {
-            let toggleIndex = exercisesIndex + 2, activeClass='';
-            if(exerciseIndex===toggleIndex-1)
-            activeClass=' active';
+            let toggleIndex = exercisesIndex + 2, activeClass = '';
+            if (exerciseIndex === toggleIndex - 1)
+                activeClass = ' active';
             exerciseHtml.push(
                 <Card>
                     <CardHeader className="instructionHeader">
@@ -222,12 +312,77 @@ class ZoneSection extends Component {
                     </Collapse>
                 </Card>
             )
-            exerciseNav.push(<Col className={"zoneSectionNavButton"+activeClass}><ExerciseButton status="locked" onClick={() => this.openExercise(toggleIndex-1)} name={exerciseData[exercisesIndex].code} /></Col>);
+            exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="locked" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
             exercisesIndex++;
         }
         let tempExercise = []
         for (let i = 0; i < exerciseData.length; i++) {
             tempExercise.push(<Col className="zoneSectionNavButton"><Button>{exerciseData[i].code}</Button></Col>)
+        }
+        let hintsUI = [], hintNav = [];
+        if (sectionData.exercises[exerciseIndex - 1]?.hints?.length > 0) {
+            console.log("working")
+            for (let i = 0; i < sectionData.exercises[exerciseIndex - 1].hints.length; i++) {
+                hintsUI.push(<div>
+                    <div className="hintHeader">Hint {i + 1}</div>
+                    <div dangerouslySetInnerHTML={{ __html: sectionData.exercises[exerciseIndex - 1].hints[i] }}></div>
+                </div>
+                )
+            }
+            hintNav.push(
+                <NavItem>
+                    <NavLink
+                        className={this.state.helpTabsClasses[0]}
+                        onClick={() => this.changeHelpActiveTab(1)}
+                    >
+                        Hint
+                    </NavLink>
+                </NavItem>
+            )
+        }
+        let solutionsListUI = [];
+        for (let i = 0; i < solutions.length; i++) {
+            solutionsListUI.push(
+                <AccordionItem>
+                    <AccordionHeader targetId={i + 1}>
+                        {solutions[i].problem}
+                    </AccordionHeader>
+                    <AccordionBody accordionId={i + 1}>
+                        {solutions[i].solution}
+                    </AccordionBody>
+                </AccordionItem>
+                // <Card>
+                //     <CardBody>
+                //         <CardTitle tag="h5">
+                //             {solutions[i].problem}
+                //         </CardTitle>
+                //         <CardText>
+                //             {solutions[i].solution}
+                //         </CardText>
+                //     </CardBody>
+                // </Card>
+            )
+        }
+        let askProblemUI = [];
+        if (!askedProblem) {
+            askProblemUI = <div>
+                <Input
+                    type="textarea"
+                    placeholder="Enter your problem here"
+                    value={this.state.problemDesc}
+                    onChange={(e) => {
+                        this.setState({
+                            problemDesc: e.target.value
+                        });
+                    }}
+                />
+                <Button onClick={this.submitProblem}>Ask your problem</Button>
+            </div>
+        }
+        else {
+            askProblemUI = <div>
+                Your problem is recorded. Please join facilitator room : {this.state.facilitatorRoom}. Hopefully this will resolve your problem.
+            </div>
         }
         return (<div className="zoneSection" key={this.props.sectionProgress}>
             <Container>
@@ -249,26 +404,11 @@ class ZoneSection extends Component {
                 </ModalHeader>
                 <ModalBody>
                     <Nav tabs>
-                        <NavItem>
-                            <NavLink
-                                className={this.state.helpTabsClasses[0]}
-                                onClick={() => this.changeHelpActiveTab(1)}
-                            >
-                                Hint
-                            </NavLink>
-                        </NavItem>
+                        {hintNav}
                         <NavItem>
                             <NavLink
                                 className={this.state.helpTabsClasses[1]}
                                 onClick={() => this.changeHelpActiveTab(2)}
-                            >
-                                See Solution
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                className={this.state.helpTabsClasses[2]}
-                                onClick={() => this.changeHelpActiveTab(3)}
                             >
                                 Ask your problem
                             </NavLink>
@@ -278,85 +418,35 @@ class ZoneSection extends Component {
 
                     <TabContent activeTab={this.state.activeHelpTab}>
                         <TabPane tabId="1">
-                            This is your hint<br />
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi laudantium quam fuga aut quo recusandae. Consectetur ex delectus dolores repellendus, exercitationem reiciendis unde laboriosam explicabo esse ducimus tenetur recusandae totam impedit error! Praesentium, fuga exercitationem neque, perferendis nam, debitis cumque repudiandae dolore consectetur quia repellat dignissimos soluta? Tempore, labore blanditiis.
+                            {hintsUI}
                         </TabPane>
                         <TabPane tabId="2">
-                            Solution of the problem<br />
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi laudantium quam fuga aut quo recusandae. Consectetur ex delectus dolores repellendus, exercitationem reiciendis unde laboriosam explicabo esse ducimus tenetur recusandae totam impedit error! Praesentium, fuga exercitationem neque, perferendis nam, debitis cumque repudiandae dolore consectetur quia repellat dignissimos soluta? Tempore, labore blanditiis.
-                        </TabPane>
-                        <TabPane tabId="3">
-                            <InputGroup>
-                                <Input />
-                                <Button>Search</Button>
-                            </InputGroup>
                             <div id="searchResultsPane">
-                                <Card>
-                                    <CardBody>
-                                        <CardTitle tag="h5">
-                                            Solution Title
-                                        </CardTitle>
-                                        <CardText>
-                                            Some solution content
-                                        </CardText>
-                                    </CardBody>
-                                </Card>
-                                <Card>
-                                    <CardBody>
-                                        <CardTitle tag="h5">
-                                            Solution Title
-                                        </CardTitle>
-                                        <CardText>
-                                            Some solution content
-                                        </CardText>
-                                    </CardBody>
-                                </Card>
-                                <Card>
-                                    <CardBody>
-                                        <CardTitle tag="h5">
-                                            Solution Title
-                                        </CardTitle>
-                                        <CardText>
-                                            Some solution content
-                                        </CardText>
-                                    </CardBody>
-                                </Card>
-                                <Card>
-                                    <CardBody>
-                                        <CardTitle tag="h5">
-                                            Solution Title
-                                        </CardTitle>
-                                        <CardText>
-                                            Some solution content
-                                        </CardText>
-                                    </CardBody>
-                                </Card>
-                                <Card>
-                                    <CardBody>
-                                        <CardTitle tag="h5">
-                                            Solution Title
-                                        </CardTitle>
-                                        <CardText>
-                                            Some solution content
-                                        </CardText>
-                                    </CardBody>
-                                </Card>
-                                <Card>
-                                    <CardBody>
-                                        <CardTitle tag="h5">
-                                            Solution Title
-                                        </CardTitle>
-                                        <CardText>
-                                            Some solution content
-                                        </CardText>
-                                    </CardBody>
-                                </Card>
+                                <Accordion
+                                    open={helpWindowActiveProblem}
+                                    toggle={this.changeHelpWindowActiveProblem}
+                                >
+                                    {solutionsListUI}
+                                </Accordion>
                             </div>
-                            <Button id="newProblem" color="info">Ask as a fresh Problem</Button>
+                            <Button id="newProblem" color="info" onClick={this.contactFacilitator}>Contact Facilitator</Button>
                         </TabPane>
                     </TabContent>
                 </ModalBody>
             </Modal>
+            <Modal
+                isOpen={this.state.contactFacilitator}
+            >
+                <ModalHeader
+                    toggle={this.toggleContactFacilitator}
+                >
+                    Describe your Problem
+                </ModalHeader>
+                <ModalBody>
+                    {askProblemUI}
+                </ModalBody>
+            </Modal>
+
         </div>)
     }
 }
