@@ -6,7 +6,7 @@ const NavigateToStartPage = ({nav}) => {
     const navigate = useNavigate();
 
     if(nav)
-    navigate('/startpage');
+    navigate('/start-page');
 
     return (
         <></>
@@ -36,6 +36,9 @@ class SignUp extends Component {
     }
     signUpAccount(event) {
         event.preventDefault();
+        let isEmpty = this.checkEmptyValues();
+        if(isEmpty)
+        return;
         if (this.state.emails.find(email => email === this.email.value)) {
             alert("Account with this email altready exists");
             return;
@@ -46,11 +49,29 @@ class SignUp extends Component {
         }
         var newUserData = JSON.stringify({
             "emailId": this.email.value,
-            "name": this.name.value,
-            "password": this.password.value
+            "name": this.userName.value,
+            "password": this.password.value,
+            "role": "Learner"
         });
         this.sendSignUpToServerAndReportToUser(newUserData);
     }
+
+    checkEmptyValues(){
+        if(this.email.value.trim() === ""){
+            alert("Please Enter your Email ID");
+            return true;
+        }
+        if(this.userName.value.trim() === ""){
+            alert("Please Enter your User Name");
+            return true;
+        }
+        if(this.password.value.length < 8){
+            alert("Your password must contain atleast 8 characters");
+            return true;
+        }
+        return false;
+    }
+
     sendSignUpToServerAndReportToUser(dataToSend) {
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -95,14 +116,14 @@ class SignUp extends Component {
                 </FormGroup>
                 <FormGroup>
                     <Label for="name">
-                        Name
+                        User Name
                     </Label>
                     <Input
-                        id="signupName"
-                        name="name"
-                        placeholder="Enter your Name"
+                        id="signupUserName"
+                        name="UserName"
+                        placeholder="Enter your User Name"
                         type="text"
-                        innerRef={(input) => this.name = input}
+                        innerRef={(input) => this.userName = input}
                     />
                 </FormGroup>
                 <FormGroup>
