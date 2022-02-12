@@ -25,8 +25,9 @@ export default class ZoneSectionContent extends Component {
         const { sectionProgress, type, exerciseIndex } = this.props;
         let n = sectionProgress.exercises[exerciseIndex-1]?.response.length;
         if (type === "exercise" && n !== 0) {
+            console.log(sectionProgress.exercises, exerciseIndex, n)
             this.setState({
-                exerciseInput: sectionProgress.exercises[exerciseIndex-1].response[n - 1],
+                exerciseInput: sectionProgress.exercises[exerciseIndex-1]?.response[n - 1],
                 improveAnswer: true
             })
         }
@@ -56,6 +57,7 @@ export default class ZoneSectionContent extends Component {
         const { type, sectionProgress, sectionData, exerciseIndex } = this.props;
         const { improveAnswer } = this.state;
         const completeVideoButtton = [], exerciseData = sectionData.exercises;
+        console.log(exerciseIndex, exerciseData)
         if (!sectionProgress.video)
             completeVideoButtton.push(<Button color="primary" onClick={this.props.completeVideo}>Mark Video as complete</Button>)
         if (type === "video")
@@ -69,7 +71,7 @@ export default class ZoneSectionContent extends Component {
         else if (type === "exercise") {
             if (improveAnswer)
                 return (<div>
-                    <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex-1].desc }}></div>
+                    <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex-1]?.desc }}></div>
                     <Input
                         type="textarea"
                         placeholder="Enter your response"
@@ -81,7 +83,7 @@ export default class ZoneSectionContent extends Component {
                 </div>)
             else
                 return (<div>
-                    <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex-1].desc }}></div>
+                    <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex-1]?.desc }}></div>
                     <Input
                         type="textarea"
                         placeholder="Enter your response"
