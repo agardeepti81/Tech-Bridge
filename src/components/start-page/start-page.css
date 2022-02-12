@@ -4,27 +4,9 @@
     color: #eceded;
 }
 
-#loginOptions {
-    width: 200px;
-    height: 130px;
-    margin: auto;
-}
-
 .mainpage h1 {
     padding: 30px;
     padding-bottom: 5px;
-}
-
-.loginButtons {
-    width: 200px;
-    height: 50px;
-    font-size: 20px;
-}
-
-#or {
-    font-size: 20px;
-    text-align: center;
-    height: 30px;
 }
 
 .stepTile {
@@ -56,4 +38,25 @@
 #signupLogin button {
     float: right;
     width: 320px;
+}
+
+.featureTile {
+    width: 100%;
+    display: flex;
+}
+
+.featureTile img, .featureTile .info {
+    width: 50%;
+}
+
+.featureTile .left {
+    padding: 2% 5% 0% 10%;
+}
+
+.featureTile .right {
+    padding: 2% 10% 0% 5%;
+}
+
+.featureTile .info {
+    text-align: left;
 }

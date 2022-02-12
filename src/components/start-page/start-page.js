@@ -27,6 +27,31 @@ class StepTile extends Component {
     }
 }
 
+class FeatureTile extends Component {
+    render() {
+        let img = <img src={this.props.imgSrc} className={this.props.float} />
+        let infoClass=this.props.float==="left"?"right":"left";
+        let content = <div className={infoClass+" info"}>
+            <h2 className="title">{this.props.title}</h2>
+            <div className="content">{this.props.content}</div>
+        </div>
+        if (this.props.float === "left")
+            return (
+                <div className="featureTile">
+                    {img}
+                    {content}
+                </div>
+            )
+        else
+            return (
+                <div className="featureTile">
+                    {content}
+                    {img}
+                </div>
+            )
+    }
+}
+
 class StartPage extends Component {
     constructor(props) {
         super(props);
@@ -51,6 +76,38 @@ class StartPage extends Component {
                     text: 'Step 3'
                 }
 
+            ],
+            features: [
+                {
+                    title: "Trust",
+                    content: "Verified experienced guides taking learners through an effective roadmap. These roadmaps are crafted out of their own rich experience earned from the years of great work.",
+                    imgSrc: "https://picsum.photos/256/186",
+                },
+                {
+                    title: "Focus",
+                    content: "Learners are protected from confusion arising out of new technologies emerging all the time",
+                    imgSrc: "https://picsum.photos/256/186",
+                },
+                {
+                    title: "Consistency",
+                    content: "Along with learning at their own pace, learners are supported by learning groups, these groups interact regularly through conference calls. This helps in progressing faster, staying motivated, and embracing interpersonal skills that are critical to be effective in the complex domain of software development.",
+                    imgSrc: "https://picsum.photos/256/186",
+                },
+                {
+                    title: "Speed",
+                    content: "AI powered support framework, that helps the learners move ahead when they get stuck, along with access to facilitators through conference calls",
+                    imgSrc: "https://picsum.photos/256/186",
+                },
+                {
+                    title: "Growth",
+                    content: "Possibility to work as a facilitator, that helps in improving the conceptual understanding, along with the growth in different soft skills like listening, communication and problem solving",
+                    imgSrc: "https://picsum.photos/256/186",
+                },
+                {
+                    title: "Opportunity",
+                    content: "Opportunity to build interesting solutions as a development partner, while being facilitated by industry experts. This helps in improving problem solving capabilities, strengthening personal brand, and it may also lead to employment opportunities, or may be starting their own business.",
+                    imgSrc: "https://picsum.photos/256/186",
+                }
             ]
         };
     }
@@ -65,14 +122,14 @@ class StartPage extends Component {
                 })}
             </div>
             <div id="signupLogin">
-                <SignUp />
-                <Login />
+                <SignUp signUpApis={this.props.signUpApis} />
+                <Login loginApis={this.props.loginApis} getLessonProgressEmailAndUserName={this.props.getLessonProgressEmailAndUserName} />
             </div>
-            {/* <div id='loginOptions'>
-                <Link to={`/signup`}><Button color="primary" className='loginButtons'>Sign Up</Button></Link>
-                <div id='or'>OR</div>
-                <Link to={`/login`}><Button color="primary" className='loginButtons'>Login</Button></Link>
-            </div> */}
+            <div>
+                {this.state.features.map((feature, i) => {
+                    return <FeatureTile key={i} title={feature.title} content={feature.content} imgSrc="https://picsum.photos/256/186" float={i%2===0?"left":"right"} />
+                })}
+            </div>
         </div>)
     }
 }

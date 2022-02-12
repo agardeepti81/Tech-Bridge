@@ -2,37 +2,36 @@ import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 
-const NavigateToStartPage = ({ nav }) => {
-    const navigate = useNavigate();
+// const NavigateToStartPage = ({ nav }) => {
+//     const navigate = useNavigate();
 
-    if (nav)
-        navigate('/start-page');
+//     if (nav)
+//         navigate('/start-page');
 
-    return (
-        <></>
-    );
-}
+//     return (
+//         <></>
+//     );
+// }
 
 
 class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            emails: [],
-            navigate: false
+            emails: []
         }
         this.signUpAccount = this.signUpAccount.bind(this);
     }
     componentDidMount() {
-        // fetch(this.props.signUpApis.getEmails)
-        //     .then(res => res.json())
-        //     .then(
-        //         (result) => {
-        //             this.setState({
-        //                 emails: result
-        //             });
-        //         }
-        //     )
+        fetch(this.props.signUpApis.getEmails)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        emails: result
+                    });
+                }
+            )
     }
     signUpAccount(event) {
         event.preventDefault();
@@ -88,9 +87,6 @@ class SignUp extends Component {
                 let result = JSON.parse(response);
                 if (result.statusCode === 200) {
                     alert(result.body);
-                    this.setState({
-                        navigate: true
-                    })
                 }
             })
             .catch(error => {
@@ -143,7 +139,6 @@ class SignUp extends Component {
                     <Button type="submit" color="primary">
                         Create Your Account
                     </Button>
-                    <NavigateToStartPage nav={this.state.navigate} />
                 </Form>
             </div>
         )
