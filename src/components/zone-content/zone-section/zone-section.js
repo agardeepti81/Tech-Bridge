@@ -59,26 +59,43 @@ class ZoneSection extends Component {
     }
 
     componentDidMount() {
+        this.getCurrentContent();
+        this.getExerciseSolutions();
+    }
+
+    getCurrentContent(){
         let { sectionProgress } = this.props;
-        if (sectionProgress.video) {
-            let type = "exercise", exerciseIndex = 0;
-            for (exerciseIndex = 0; exerciseIndex < sectionProgress.exercises.length; exerciseIndex++) {
-                if (!sectionProgress.exercises[exerciseIndex].status)
-                    break;
-            }
-            exerciseIndex++;
+        if (sectionProgress.status) {
             this.setState({
-                type: type,
-                exerciseIndex: exerciseIndex
-            });
+                type: "video"
+            })
         }
         else {
-            let type = "video";
-            this.setState({
-                type: type
-            });
+            if (sectionProgress.video) {
+                let type = "exercise", exerciseIndex = 0;
+                for (exerciseIndex = 0; exerciseIndex < sectionProgress.exercises.length; exerciseIndex++) {
+                    if (!sectionProgress.exercises[exerciseIndex].status)
+                        break;
+                }
+                exerciseIndex++;
+                this.setState({
+                    type: type,
+                    exerciseIndex: exerciseIndex
+                });
+            }
+            else {
+                let type = "video";
+                this.setState({
+                    type: type
+                });
+            }
         }
-        this.getExerciseSolutions();
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps !== this.props){
+            this.getCurrentContent();
+        }
     }
 
     getExerciseSolutions() {
@@ -227,34 +244,6 @@ class ZoneSection extends Component {
                 let toggleIndex = exercisesIndex + 2, activeClass = '';
                 if (exerciseIndex === toggleIndex - 1)
                     activeClass = ' active';
-                exerciseHtml.push(
-                    <Card>
-                        <CardHeader className="instructionHeader">
-                            <CardTitle className="instruction">{exerciseData[exercisesIndex].code}</CardTitle>
-                            <ExerciseButton status="completed" onClick={() => this.toggle(toggleIndex)} />
-                        </CardHeader>
-                        <Collapse isOpen={this.state.openId === (toggleIndex)}>
-                            <CardBody>
-                                <div dangerouslySetInnerHTML={{ __html: exerciseData[exercisesIndex].desc }}></div>
-
-                                <Input
-                                    type="textarea"
-                                    placeholder="Enter your response"
-                                    value={sectionProgress.exercises[exercisesIndex].response}
-                                    onChange={(e) => {
-                                        let sectionProgress = sectionProgress;
-                                        sectionProgress.exercises[toggleIndex - 2].response = e.target.value
-                                        this.setState({
-                                            sectionProgress: sectionProgress
-                                        })
-                                    }}
-                                />
-                                <Button className="exerciseButtons" color="primary" onClick={() => this.sendExerciseResponse(toggleIndex - 2)} >Submit</Button>
-                                <Button className="exerciseButtons" color="primary" onClick={() => this.toggleHelpWindow()}>Ask for help</Button>
-                            </CardBody>
-                        </Collapse>
-                    </Card>
-                )
                 exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="completed" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
                 exercisesIndex++;
             }
@@ -262,33 +251,6 @@ class ZoneSection extends Component {
                 let toggleIndex = exercisesIndex + 2, activeClass = '';
                 if (exerciseIndex === toggleIndex - 1)
                     activeClass = ' active';
-                exerciseHtml.push(
-                    <Card>
-                        <CardHeader className="instructionHeader">
-                            <CardTitle className="instruction">{exerciseData[exercisesIndex].code}</CardTitle>
-                            <ExerciseButton status="start" onClick={() => this.toggle(toggleIndex)} />
-                        </CardHeader>
-                        <Collapse isOpen={this.state.openId === (toggleIndex)}>
-                            <CardBody>
-                                <div dangerouslySetInnerHTML={{ __html: exerciseData[exercisesIndex].desc }}></div>
-                                <Input
-                                    type="textarea"
-                                    placeholder="Enter your response"
-                                    value={sectionProgress.exercises[exercisesIndex].response}
-                                    onChange={(e) => {
-                                        let sectionProgress = sectionProgress;
-                                        sectionProgress.exercises[toggleIndex - 2].response = e.target.value
-                                        this.setState({
-                                            sectionProgress: sectionProgress
-                                        })
-                                    }}
-                                />
-                                <Button className="exerciseButtons" color="primary" onClick={() => this.sendExerciseResponse(toggleIndex - 2)} >Submit</Button>
-                                <Button className="exerciseButtons" color="primary" onClick={() => this.toggleHelpWindow()}>Ask for help</Button>
-                            </CardBody>
-                        </Collapse>
-                    </Card>
-                )
                 exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="start" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
                 exercisesIndex++;
             }
@@ -297,21 +259,6 @@ class ZoneSection extends Component {
             let toggleIndex = exercisesIndex + 2, activeClass = '';
             if (exerciseIndex === toggleIndex - 1)
                 activeClass = ' active';
-            exerciseHtml.push(
-                <Card>
-                    <CardHeader className="instructionHeader">
-                        <CardTitle className="instruction">{exerciseData[exercisesIndex].code}</CardTitle>
-                        <ExerciseButton status="locked" onClick={() => this.toggle(toggleIndex)} />
-                    </CardHeader>
-                    <Collapse isOpen={this.state.openId === (toggleIndex)}>
-                        <CardBody>
-                            <div dangerouslySetInnerHTML={{ __html: exerciseData[exercisesIndex].desc }}></div>
-                            <Input type="textarea" placeholder="Enter your response" />
-                            <Button color="primary">Submit</Button>
-                        </CardBody>
-                    </Collapse>
-                </Card>
-            )
             exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="locked" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
             exercisesIndex++;
         }
