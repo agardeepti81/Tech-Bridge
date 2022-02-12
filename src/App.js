@@ -65,10 +65,8 @@ class App extends Component {
             <Header userName={this.state.userName} email={this.state.email} logoutApi={this.state.baseFile.apis.login.logout} logout={this.logout} />
             <Routes>
               <Route exact path="/" element={<Navigate to="/start-page" />} />
-              <Route exact path="/start-page" element={<StartPage />} />
+              <Route exact path="/start-page" element={<StartPage signUpApis={this.state.baseFile.apis.signUp} loginApis={this.state.baseFile.apis.login} getLessonProgressEmailAndUserName={this.getLessonProgressEmailAndUserName} />} />
               <Route exact path="/facilitator" element={<Facilitator />} />
-              <Route exact path="/signup" element={<SignUp signUpApis={this.state.baseFile.apis.signUp} />} />
-              <Route exact path="/login" element={<Login loginApis={this.state.baseFile.apis.login} getLessonProgressEmailAndUserName={this.getLessonProgressEmailAndUserName} />} />
               <Route exact path="/home" element={<Home lessonProgress={this.state.lessonProgress} />} />
               <Route exact path="/:profile/:roadmap/:pathName" element={<MainRoute lessonProgress={this.state.lessonProgress} />} />
               <Route exact path="/:profile/:roadmap/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} updateLessonProgress={this.updateLessonProgress} helpApis={this.state.baseFile.apis.help} />} />
