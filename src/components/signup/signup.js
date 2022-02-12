@@ -2,24 +2,23 @@ import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 
-const NavigateToStartPage = ({nav}) => {
-    const navigate = useNavigate();
+// const NavigateToStartPage = ({ nav }) => {
+//     const navigate = useNavigate();
 
-    if(nav)
-    navigate('/start-page');
+//     if (nav)
+//         navigate('/start-page');
 
-    return (
-        <></>
-    );
-}
+//     return (
+//         <></>
+//     );
+// }
 
 
 class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            emails: [],
-            navigate: false
+            emails: []
         }
         this.signUpAccount = this.signUpAccount.bind(this);
     }
@@ -37,8 +36,8 @@ class SignUp extends Component {
     signUpAccount(event) {
         event.preventDefault();
         let isEmpty = this.checkEmptyValues();
-        if(isEmpty)
-        return;
+        if (isEmpty)
+            return;
         if (this.state.emails.find(email => email === this.email.value)) {
             alert("Account with this email altready exists");
             return;
@@ -56,16 +55,16 @@ class SignUp extends Component {
         this.sendSignUpToServerAndReportToUser(newUserData);
     }
 
-    checkEmptyValues(){
-        if(this.email.value.trim() === ""){
+    checkEmptyValues() {
+        if (this.email.value.trim() === "") {
             alert("Please Enter your Email ID");
             return true;
         }
-        if(this.userName.value.trim() === ""){
+        if (this.userName.value.trim() === "") {
             alert("Please Enter your User Name");
             return true;
         }
-        if(this.password.value.length < 8){
+        if (this.password.value.length < 8) {
             alert("Your password must contain atleast 8 characters");
             return true;
         }
@@ -88,9 +87,6 @@ class SignUp extends Component {
                 let result = JSON.parse(response);
                 if (result.statusCode === 200) {
                     alert(result.body);
-                    this.setState({
-                        navigate: true
-                    })
                 }
             })
             .catch(error => {
@@ -101,60 +97,50 @@ class SignUp extends Component {
 
     render() {
         return (
-            <Form onSubmit={this.signUpAccount}>
-                <FormGroup>
-                    <Label for="email">
-                        Email
-                    </Label>
-                    <Input
-                        id="signupEmail"
-                        name="email"
-                        placeholder="Enter your email ID"
-                        type="email"
-                        innerRef={(input) => this.email = input}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label for="name">
-                        User Name
-                    </Label>
-                    <Input
-                        id="signupUserName"
-                        name="UserName"
-                        placeholder="Enter your User Name"
-                        type="text"
-                        innerRef={(input) => this.userName = input}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label for="password">
-                        Password
-                    </Label>
-                    <Input
-                        id="signupPassword"
-                        name="password"
-                        placeholder="Enter password"
-                        type="password"
-                        innerRef={(input) => this.password = input}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label for="confirmPassword">
-                        Confirm Password
-                    </Label>
-                    <Input
-                        id="signupConfirmPassword"
-                        name="confirmPassword"
-                        placeholder="Re-Enter your password"
-                        type="password"
-                        innerRef={(input) => this.confirmPassword = input}
-                    />
-                </FormGroup>
-                <Button type="submit" color="primary">
-                    Submit
-                </Button>
-                <NavigateToStartPage nav={this.state.navigate} />
-            </Form>
+            <div id="signup">
+                <h1>Sign up to start your journey</h1>
+                <Form onSubmit={this.signUpAccount}>
+                    <FormGroup>
+                        <Input
+                            id="signupEmail"
+                            name="email"
+                            placeholder="Enter your email ID"
+                            type="email"
+                            innerRef={(input) => this.email = input}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Input
+                            id="signupUserName"
+                            name="UserName"
+                            placeholder="Enter your User Name"
+                            type="text"
+                            innerRef={(input) => this.userName = input}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Input
+                            id="signupPassword"
+                            name="password"
+                            placeholder="Enter password"
+                            type="password"
+                            innerRef={(input) => this.password = input}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Input
+                            id="signupConfirmPassword"
+                            name="confirmPassword"
+                            placeholder="Re-Enter your password"
+                            type="password"
+                            innerRef={(input) => this.confirmPassword = input}
+                        />
+                    </FormGroup>
+                    <Button type="submit" color="primary">
+                        Create Your Account
+                    </Button>
+                </Form>
+            </div>
         )
     }
 }

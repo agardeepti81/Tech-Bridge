@@ -1,23 +1,73 @@
 #start_page {
+    background: black;
+    text-align: center;
+    color: #eceded;
+}
+
+.mainpage h1 {
+    padding: 30px;
+    padding-bottom: 5px;
+}
+
+.stepTile {
+    width: 400px;
+    background: black;
+}
+
+#steps {
+    display: inline-flex;
+}
+
+#signupLogin{
     display: flex;
     width: 100%;
-    height: 500px;
+    background: #212529;
 }
 
-#loginOptions {
-    width: 200px;
-    height: 130px;
-    margin: auto;
+#signup, #login {
+    width: 50%;
+    padding: 2% 4%;
 }
 
-.loginButtons {
-    width: 200px;
-    height: 50px;
-    font-size: 20px;
+#signupLogin h1 {
+    text-align: left;
+    padding: 0px;
+    font-size: x-large;
 }
 
-#or {
-    font-size: 20px;
-    text-align: center;
-    height: 30px;
+#signupLogin button {
+    float: right;
+    width: 320px;
+}
+
+.featureTile {
+    width: 100%;
+    display: flex;
+}
+
+.featureTile img, .featureTile .info {
+    width: 50%;
+}
+
+.featureTile .left {
+    padding: 2% 5% 0% 10%;
+}
+
+.featureTile .right {
+    padding: 2% 10% 0% 5%;
+}
+
+.featureTile .info {
+    text-align: left;
+}
+
+.footer {
+    background: #212529;
+    padding: 35px 0px;
+    margin-top: 50px;
+}
+
+img {
+    width: 400px;
+    height: 300px
 }
