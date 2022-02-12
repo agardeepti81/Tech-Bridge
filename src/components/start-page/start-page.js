@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Button, Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './start-page.css';
+import SignUp from "../signup/signup";
+import Login from "../login/login";
 
 class StepTile extends Component {
     render() {
@@ -54,13 +56,17 @@ class StartPage extends Component {
     }
     render() {
 
-        return (<div class="mainpage" id='start_page'>
+        return (<div className="mainpage" id='start_page'>
             <h1>Everyone can become a software developer</h1>
             <p>Irrespective of age, prior education, existing profession, marital status etc.</p>
             <div id="steps">
                 {this.state.steps.map((step, i) => {
                     return <StepTile key={i} title={step.title} id={i} content={step.body} imgSrc="https://picsum.photos/256/186" />;
                 })}
+            </div>
+            <div id="signupLogin">
+                <SignUp />
+                <Login />
             </div>
             {/* <div id='loginOptions'>
                 <Link to={`/signup`}><Button color="primary" className='loginButtons'>Sign Up</Button></Link>

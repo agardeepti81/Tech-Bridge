@@ -5,13 +5,13 @@ import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 const NavigateToHome = ({ nav, role }) => {
     const navigate = useNavigate();
 
-    if (nav){
-        if(role === "Learner")
-        navigate('/home');
-        else if(role === "Facilitator")
-        navigate('/facilitator');
+    if (nav) {
+        if (role === "Learner")
+            navigate('/home');
+        else if (role === "Facilitator")
+            navigate('/facilitator');
         else
-        alert("Some error occured");
+            alert("Some error occured");
     }
 
     return (
@@ -42,43 +42,40 @@ class Login extends Component {
                         })
                     }
                     else
-                    alert("Incorrect email or password");
+                        alert("Incorrect email or password");
                 }
             )
     }
 
     render() {
         return (
-            <Form onSubmit={this.login}>
-                <FormGroup>
-                    <Label for="email">
-                        Email
-                    </Label>
-                    <Input
-                        id="loginEmail"
-                        name="email"
-                        placeholder="Enter your email ID"
-                        type="email"
-                        innerRef={(input) => this.email = input}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label for="password">
-                        Password
-                    </Label>
-                    <Input
-                        id="loginPassword"
-                        name="password"
-                        placeholder="Enter password"
-                        type="password"
-                        innerRef={(input) => this.password = input}
-                    />
-                </FormGroup>
-                <Button type="submit" color="primary">
-                    Submit
-                </Button>
-                <NavigateToHome nav={this.state.navigate} role={this.state.role} />
-            </Form>
+            <div id="login">
+                <h1>Login to your account</h1>
+                <Form onSubmit={this.login}>
+                    <FormGroup>
+                        <Input
+                            id="loginEmail"
+                            name="email"
+                            placeholder="Enter your email ID"
+                            type="email"
+                            innerRef={(input) => this.email = input}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Input
+                            id="loginPassword"
+                            name="password"
+                            placeholder="Enter password"
+                            type="password"
+                            innerRef={(input) => this.password = input}
+                        />
+                    </FormGroup>
+                    <Button type="submit" color="primary">
+                        Login
+                    </Button>
+                    <NavigateToHome nav={this.state.navigate} role={this.state.role} />
+                </Form>
+            </div>
         )
     }
 }
