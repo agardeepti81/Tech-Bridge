@@ -64,4 +64,10 @@
 .footer {
     background: #212529;
     padding: 35px 0px;
+    margin-top: 50px;
+}
+
+img {
+    width: 400px;
+    height: 300px
 }
