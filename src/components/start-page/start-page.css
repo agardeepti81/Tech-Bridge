@@ -18,7 +18,7 @@
     display: inline-flex;
 }
 
-#signupLogin {
+#signupLogin{
     display: flex;
     width: 100%;
     background: #212529;
@@ -59,4 +59,9 @@
 
 .featureTile .info {
     text-align: left;
+}
+
+.footer {
+    background: #212529;
+    padding: 35px 0px;
 }
