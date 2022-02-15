@@ -8,9 +8,9 @@ import ZoneSectionContent from "./zone-section-content/zone-section-content";
 class VideoButton extends Component {
     render() {
         if (this.props.status)
-            return (<Button color="success" onClick={this.props.onClick}>Video<BsPlayCircle id="videoIcon" /></Button>);
+            return (<Button color="success" onClick={this.props.onClick}>Lesson<BsPlayCircle id="videoIcon" /></Button>);
         else
-            return (<Button color="primary" onClick={this.props.onClick}>Video<BsPlayCircle id="videoIcon" /></Button>)
+            return (<Button color="primary" onClick={this.props.onClick}>Lesson<BsPlayCircle id="videoIcon" /></Button>)
     }
 }
 
@@ -238,7 +238,7 @@ class ZoneSection extends Component {
         const { sectionData, sectionProgress } = this.props;
         const { type, exerciseIndex, solutions, helpWindowActiveProblem, askedProblem } = this.state;
         const exerciseData = sectionData.exercises, exerciseHtml = [], exerciseNav = [];
-        let exercisesIndex = 0;
+        let exercisesIndex = 0, exerciseInfo;
         if (sectionProgress.video) {
             while (exercisesIndex < exerciseData.length && sectionProgress.exercises[exercisesIndex].status) {
                 let toggleIndex = exercisesIndex + 2, activeClass = '';
@@ -337,7 +337,8 @@ class ZoneSection extends Component {
                     <Col className="zoneSectionNavButton" xs="2">
                         <VideoButton status={sectionProgress.video} onClick={this.openVideo} />
                     </Col>
-                    {exerciseNav}
+                    {/* {exerciseNav} */}
+                    <Col>Exercise {exerciseIndex} of {exerciseData.length}</Col>
                 </Row>
             </Container>
             <ZoneSectionContent type={type} completeVideo={this.completeVideo} sectionProgress={sectionProgress} sectionData={sectionData} exerciseIndex={exerciseIndex} toggleHelpWindow={this.toggleHelpWindow} submitExercise={this.submitExercise} />

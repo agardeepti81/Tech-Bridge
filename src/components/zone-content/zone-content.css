@@ -81,3 +81,30 @@
 .nav-tabs {
     cursor: pointer;
 }
+
+.zoneSection .col {
+    min-width: 80px;
+}
+
+.exerciseContent {
+    height: 300px;
+    width: 100%;
+    display: flex;
+}
+
+.exerciseDesc {
+    width: 50%;
+    overflow-y: scroll;
+}
+
+.exerciseResp {
+    width: 50%;
+}
+.exerciseResp textarea {
+    width: 100%;
+    height: 85%;
+}
+
+.videoView {
+    text-align: center;
+}
