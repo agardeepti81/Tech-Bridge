@@ -330,7 +330,10 @@ class ZoneSection extends Component {
         }
         else {
             askProblemUI = <div>
-                Your problem is recorded. Please join facilitator room : {this.state.facilitatorRoom}. Hopefully this will resolve your problem.
+                Your problem is recorded. 
+                <br/>Facilitators are available between 9pm to 11pm Monday to Saturday.
+                <br/>Please join facilitator room : {this.state.facilitatorRoom}. 
+                <br/>Hopefully this will resolve your problem.
             </div>
         }
         return (<div className="zoneSection" key={this.props.sectionProgress}>
