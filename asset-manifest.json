@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/Tech-Bridge/static/css/main.cfd4d0ea.chunk.css",
-    "main.js": "/Tech-Bridge/static/js/main.b2d4bb03.chunk.js",
-    "main.js.map": "/Tech-Bridge/static/js/main.b2d4bb03.chunk.js.map",
-    "runtime-main.js": "/Tech-Bridge/static/js/runtime-main.69a6d2ec.js",
-    "runtime-main.js.map": "/Tech-Bridge/static/js/runtime-main.69a6d2ec.js.map",
+    "main.css": "/Tech-Bridge/static/css/main.81698186.chunk.css",
+    "main.js": "/Tech-Bridge/static/js/main.30389a60.chunk.js",
+    "main.js.map": "/Tech-Bridge/static/js/main.30389a60.chunk.js.map",
+    "runtime-main.js": "/Tech-Bridge/static/js/runtime-main.43fca27a.js",
+    "runtime-main.js.map": "/Tech-Bridge/static/js/runtime-main.43fca27a.js.map",
     "static/css/2.8c0e6b67.chunk.css": "/Tech-Bridge/static/css/2.8c0e6b67.chunk.css",
-    "static/js/2.c7f68617.chunk.js": "/Tech-Bridge/static/js/2.c7f68617.chunk.js",
-    "static/js/2.c7f68617.chunk.js.map": "/Tech-Bridge/static/js/2.c7f68617.chunk.js.map",
-    "static/js/3.486fbd17.chunk.js": "/Tech-Bridge/static/js/3.486fbd17.chunk.js",
-    "static/js/3.486fbd17.chunk.js.map": "/Tech-Bridge/static/js/3.486fbd17.chunk.js.map",
+    "static/js/2.8fa41e1a.chunk.js": "/Tech-Bridge/static/js/2.8fa41e1a.chunk.js",
+    "static/js/2.8fa41e1a.chunk.js.map": "/Tech-Bridge/static/js/2.8fa41e1a.chunk.js.map",
+    "static/js/3.68d8a865.chunk.js": "/Tech-Bridge/static/js/3.68d8a865.chunk.js",
+    "static/js/3.68d8a865.chunk.js.map": "/Tech-Bridge/static/js/3.68d8a865.chunk.js.map",
     "index.html": "/Tech-Bridge/index.html",
     "static/css/2.8c0e6b67.chunk.css.map": "/Tech-Bridge/static/css/2.8c0e6b67.chunk.css.map",
-    "static/css/main.cfd4d0ea.chunk.css.map": "/Tech-Bridge/static/css/main.cfd4d0ea.chunk.css.map",
-    "static/js/2.c7f68617.chunk.js.LICENSE.txt": "/Tech-Bridge/static/js/2.c7f68617.chunk.js.LICENSE.txt"
+    "static/css/main.81698186.chunk.css.map": "/Tech-Bridge/static/css/main.81698186.chunk.css.map",
+    "static/js/2.8fa41e1a.chunk.js.LICENSE.txt": "/Tech-Bridge/static/js/2.8fa41e1a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.69a6d2ec.js",
+    "static/js/runtime-main.43fca27a.js",
     "static/css/2.8c0e6b67.chunk.css",
-    "static/js/2.c7f68617.chunk.js",
-    "static/css/main.cfd4d0ea.chunk.css",
-    "static/js/main.b2d4bb03.chunk.js"
+    "static/js/2.8fa41e1a.chunk.js",
+    "static/css/main.81698186.chunk.css",
+    "static/js/main.30389a60.chunk.js"
   ]
 }
