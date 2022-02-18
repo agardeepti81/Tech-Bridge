@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/Tech-Bridge/static/css/main.81698186.chunk.css",
-    "main.js": "/Tech-Bridge/static/js/main.0e5d06de.chunk.js",
-    "main.js.map": "/Tech-Bridge/static/js/main.0e5d06de.chunk.js.map",
+    "main.css": "/Tech-Bridge/static/css/main.24f14884.chunk.css",
+    "main.js": "/Tech-Bridge/static/js/main.a34dbcc9.chunk.js",
+    "main.js.map": "/Tech-Bridge/static/js/main.a34dbcc9.chunk.js.map",
     "runtime-main.js": "/Tech-Bridge/static/js/runtime-main.43fca27a.js",
     "runtime-main.js.map": "/Tech-Bridge/static/js/runtime-main.43fca27a.js.map",
     "static/css/2.8c0e6b67.chunk.css": "/Tech-Bridge/static/css/2.8c0e6b67.chunk.css",
@@ -12,14 +12,14 @@
     "static/js/3.68d8a865.chunk.js.map": "/Tech-Bridge/static/js/3.68d8a865.chunk.js.map",
     "index.html": "/Tech-Bridge/index.html",
     "static/css/2.8c0e6b67.chunk.css.map": "/Tech-Bridge/static/css/2.8c0e6b67.chunk.css.map",
-    "static/css/main.81698186.chunk.css.map": "/Tech-Bridge/static/css/main.81698186.chunk.css.map",
+    "static/css/main.24f14884.chunk.css.map": "/Tech-Bridge/static/css/main.24f14884.chunk.css.map",
     "static/js/2.8fa41e1a.chunk.js.LICENSE.txt": "/Tech-Bridge/static/js/2.8fa41e1a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.43fca27a.js",
     "static/css/2.8c0e6b67.chunk.css",
     "static/js/2.8fa41e1a.chunk.js",
-    "static/css/main.81698186.chunk.css",
-    "static/js/main.0e5d06de.chunk.js"
+    "static/css/main.24f14884.chunk.css",
+    "static/js/main.a34dbcc9.chunk.js"
   ]
 }
