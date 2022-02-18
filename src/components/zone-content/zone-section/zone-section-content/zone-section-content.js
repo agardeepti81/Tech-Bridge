@@ -21,13 +21,13 @@ export default class ZoneSectionContent extends Component {
         }
     }
 
-    setExerciseView(){
+    setExerciseView() {
         const { sectionProgress, type, exerciseIndex } = this.props;
-        let n = sectionProgress.exercises[exerciseIndex-1]?.response.length;
+        let n = sectionProgress.exercises[exerciseIndex - 1]?.response.length;
         if (type === "exercise" && n !== 0) {
             console.log(sectionProgress.exercises, exerciseIndex, n)
             this.setState({
-                exerciseInput: sectionProgress.exercises[exerciseIndex-1]?.response[n - 1],
+                exerciseInput: sectionProgress.exercises[exerciseIndex - 1]?.response[n - 1],
                 improveAnswer: true
             })
         }
@@ -57,48 +57,51 @@ export default class ZoneSectionContent extends Component {
         const { type, sectionProgress, sectionData, exerciseIndex } = this.props;
         const { improveAnswer } = this.state;
         const completeVideoButtton = [], exerciseData = sectionData.exercises;
-        console.log(exerciseIndex, exerciseData)
         if (!sectionProgress.video)
             completeVideoButtton.push(<Button color="primary" onClick={this.props.completeVideo}>Mark Video as complete</Button>)
         if (type === "video")
-            return (<div>
-                <video width="400" controls>
+            return (<div className="videoView">
+                <video width="600" controls>
                     <source src={sectionData.video} type="video/mp4" />
                     Your browser doesn't support HTML video
                 </video>
-                {completeVideoButtton}
+                <div>{completeVideoButtton}</div>
             </div>)
         else if (type === "exercise") {
             if (improveAnswer)
-                return (<div>
-                    <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex-1]?.desc }}></div>
-                    <Input
-                        type="textarea"
-                        placeholder="Enter your response"
-                        value={this.state.exerciseInput}
-                        disabled
-                    />
-                    <Button className="exerciseButtons" color="primary" onClick={this.improveAnswer} >Improve Answer</Button>
-                    <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
+                return (<div className="exerciseContent">
+                    <div className="exerciseDesc" dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex - 1]?.desc }}></div>
+                    <div className="exerciseResp">
+                        <Input
+                            type="textarea"
+                            placeholder="Enter your response"
+                            value={this.state.exerciseInput}
+                            disabled
+                        />
+                        <Button className="exerciseButtons" color="primary" onClick={this.improveAnswer} >Improve Answer</Button>
+                        <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
+                    </div>
                 </div>)
             else
-                return (<div>
-                    <div dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex-1]?.desc }}></div>
-                    <Input
-                        type="textarea"
-                        placeholder="Enter your response"
-                        value={this.state.exerciseInput}
-                        onChange={(e) => {
-                            this.setState({
-                                exerciseInput: e.target.value
-                            });
-                        }}
-                    />
-                    <Button className="exerciseButtons" color="primary" onClick={this.submitExercise} >Submit</Button>
-                    <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
+                return (<div className="exerciseContent">
+                    <div className="exerciseDesc" dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex - 1]?.desc }}></div>
+                    <div className="exerciseResp">
+                        <Input
+                            type="textarea"
+                            placeholder="Enter your response"
+                            value={this.state.exerciseInput}
+                            onChange={(e) => {
+                                this.setState({
+                                    exerciseInput: e.target.value
+                                });
+                            }}
+                        />
+                        <Button className="exerciseButtons" color="primary" onClick={this.submitExercise} >Submit</Button>
+                        <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
+                    </div>
                 </div>)
         }
         else
-            return (<div></div>)
+            return (<div></div >)
     }
 }
