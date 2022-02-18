@@ -4,6 +4,7 @@ import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Button, Card,
 import { BsPlayCircle } from "react-icons/bs";
 
 import ZoneSectionContent from "./zone-section-content/zone-section-content";
+import SectionNav from "./sections-nav/sections-nav";
 
 class VideoButton extends Component {
     render() {
@@ -198,6 +199,7 @@ class ZoneSection extends Component {
         let problemDesc = JSON.stringify({
             "problem": this.state.problemDesc,
             "email": this.props.email,
+            "userName": this.props.userName,
             "exerciseLocation": {
                 "profile": this.props.sectionsLocation.profile,
                 "roadmap": this.props.sectionsLocation.roadmap,
@@ -332,15 +334,15 @@ class ZoneSection extends Component {
             </div>
         }
         return (<div className="zoneSection" key={this.props.sectionProgress}>
-            <Container>
+            <SectionNav activeExercise={exerciseIndex} totalExercises={exerciseData.length} currentExercise isExerciseComplete isActiveSection changeExercise nextExercise/>
+            {/* <Container>
                 <Row>
                     <Col className="zoneSectionNavButton" xs="2">
                         <VideoButton status={sectionProgress.video} onClick={this.openVideo} />
                     </Col>
-                    {/* {exerciseNav} */}
                     <Col>Exercise {exerciseIndex} of {exerciseData.length}</Col>
                 </Row>
-            </Container>
+            </Container> */}
             <ZoneSectionContent type={type} completeVideo={this.completeVideo} sectionProgress={sectionProgress} sectionData={sectionData} exerciseIndex={exerciseIndex} toggleHelpWindow={this.toggleHelpWindow} submitExercise={this.submitExercise} />
             <Modal
                 isOpen={this.state.help}

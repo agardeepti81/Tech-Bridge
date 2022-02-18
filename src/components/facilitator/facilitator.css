@@ -7,12 +7,13 @@
     width: 20%;
 }
 
-#problemsList .list-group {
+#problemsList {
     height: 100%;
     border-radius: 0px;
     background-color: black;
     border-right: 1px solid white;
 }
+
 
 .listItem {
     background-color: black;

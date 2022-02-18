@@ -16,6 +16,9 @@
         },
         "help": {
             "getSolutions": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/learner-help"
+        },
+        "facilitator": {
+            "getProblemList": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/facilitator"
         }
     }
 }
