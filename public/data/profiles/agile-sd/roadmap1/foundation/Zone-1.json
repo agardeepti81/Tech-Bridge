@@ -113,7 +113,7 @@
         },
         {
             "desc":"logical operations",
-            "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
+            "video":"https://s3.ap-southeast-1.amazonaws.com/www.sakhilearning.in/techbridge/videos/TeachBridge+Foundation+V01+Z1S4+Logical+Operations.mp4",
             "exercises":[
                 {
                     "code":"exercise 1",
@@ -159,7 +159,7 @@
         },
         {
             "desc":"Loops",
-            "video":"https://videobucketjatin.s3.ap-south-1.amazonaws.com/Countdown+5+Seconds+HD.mp4",
+            "video":"https://s3.ap-southeast-1.amazonaws.com/www.sakhilearning.in/techbridge/videos/TeachBridge+Foundation+V01+Z1S5+Loops.mp4",
             "exercises":[
                 {"code":"exercise 1","desc":"<p>Write a program to reverse a number.</p> <p>For example if the user gives 7835 as input, the program must print 5378 as output</p> <p>Here is one of the logic to do this processing</p> <p>1) Take a number<br />2) Declare a temporary variable and initialize it with 0<br />3) find the last digit of the number (use % operator)<br />4) multiply the temporary variable by 10<br />5) add that last digit to the temporary variable<br />6) remove the last digit of the number (use integer division, divide by 10).<br />7) Repeat this process from 3 to 6 until the number becomes 0.</p> <p>&nbsp;</p>"},
                 {"code":"exercise 2","desc":"<p>Find Factors of a Number</p> <p>A number which divides completely the number &ldquo;N&rdquo; is called the factor of the number &ldquo;N&rdquo;. For example:- the numbers 1, 2, 3, 4, 6 and 12 are complete divides the number 12 so they are called the factor of 12. Completly divisible means when we divide the number then it gives result zero.</p> <p>To find the factor of a positive number &ldquo;N&rdquo; divide that number using natural numbers 1 to &ldquo;N&rdquo;. If the number is divisible by the natural number then that natural number is the factor. A number N can have factors only in between 1 to N.</p> <p>Steps to find the factors of a number:-<br />1) Take a number N as input<br />2) Take an iterator variable and initialize it with 1<br />3) Dividing the number N with an iterator variable<br />4) If it is divisible then it is a factor of the given number N<br />5) Increase the iterator variable<br />6) Repeat the 4 and 5 steps until the iterator variable becomes equal to N.</p> <p>&nbsp;</p>"},
