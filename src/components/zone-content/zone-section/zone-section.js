@@ -32,21 +32,23 @@ class ZoneSection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            startTime: Math.round(new Date().getTime() / 1000),
+            startTime: false,
             help: false,
             contactFacilitator: false,
             activeHelpTab: "1",
             helpTabsClasses: ['active', ''],
             type: "",
-            exerciseIndex: 0,
             solutions: [],
             helpWindowActiveProblem: 0,
             askedProblem: false,
             problemDesc: "",
-            facilitatorRoom: ""
+            facilitatorRoom: "",
+            activeExercise: 0,
+            currentExercise: 0,
+            isExerciseComplete: false,
+            isActiveSection: false
         }
         this.toggle = this.toggle.bind(this);
-        this.completeVideo = this.completeVideo.bind(this);
         this.toggleHelpWindow = this.toggleHelpWindow.bind(this);
         this.toggleContactFacilitator = this.toggleContactFacilitator.bind(this);
         this.changeHelpActiveTab = this.changeHelpActiveTab.bind(this);
@@ -57,6 +59,8 @@ class ZoneSection extends Component {
         this.contactFacilitator = this.contactFacilitator.bind(this);
         this.sendProblem = this.sendProblem.bind(this);
         this.submitProblem = this.submitProblem.bind(this);
+        this.changeExercise = this.changeExercise.bind(this);
+        this.nextExercise = this.nextExercise.bind(this);
     }
 
     componentDidMount() {
@@ -64,46 +68,51 @@ class ZoneSection extends Component {
         this.getExerciseSolutions();
     }
 
-    getCurrentContent(){
+    getCurrentContent() {
         let { sectionProgress } = this.props;
         if (sectionProgress.status) {
             this.setState({
-                type: "video"
+                activeExercise: 0,
+                currentExercise: 0,
+                isActiveSection: false
             })
         }
         else {
             if (sectionProgress.video) {
-                let type = "exercise", exerciseIndex = 0;
-                for (exerciseIndex = 0; exerciseIndex < sectionProgress.exercises.length; exerciseIndex++) {
-                    if (!sectionProgress.exercises[exerciseIndex].status)
+                let currentExercise = 0;
+                for (currentExercise = 0; currentExercise < sectionProgress.exercises.length; currentExercise++) {
+                    if (!sectionProgress.exercises[currentExercise].status)
                         break;
                 }
-                exerciseIndex++;
                 this.setState({
-                    type: type,
-                    exerciseIndex: exerciseIndex
+                    activeExercise: currentExercise,
+                    currentExercise: currentExercise,
+                    isExerciseComplete: true,
+                    isActiveSection: true
                 });
             }
             else {
-                let type = "video";
                 this.setState({
-                    type: type
+                    activeExercise: 0,
+                    currentExercise: 0,
+                    isExerciseComplete: false,
+                    isActiveSection: true
                 });
             }
         }
     }
 
-    componentDidUpdate(prevProps){
-        if(prevProps !== this.props){
+    componentDidUpdate(prevProps) {
+        if (prevProps !== this.props) {
             this.getCurrentContent();
         }
     }
 
     getExerciseSolutions() {
         const { helpApis, sectionsLocation, sectionIndex } = this.props;
-        const { exerciseIndex } = this.state;
+        const { activeExercise } = this.state;
         const { profile, roadmap, pathName, zoneName } = sectionsLocation;
-        fetch(`${helpApis.getSolutions}?profile=${profile}&roadmap=${roadmap}&path=${pathName}&zone=${zoneName}&section=${sectionIndex}&exercise=${exerciseIndex}`)
+        fetch(`${helpApis.getSolutions}?profile=${profile}&roadmap=${roadmap}&path=${pathName}&zone=${zoneName}&section=${sectionIndex}&exercise=${activeExercise}`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -120,10 +129,10 @@ class ZoneSection extends Component {
         });
     }
 
-    openExercise(exerciseIndex) {
+    openExercise(activeExercise) {
         this.setState({
             type: "exercise",
-            exerciseIndex: exerciseIndex
+            activeExercise: activeExercise
         })
     }
 
@@ -140,20 +149,8 @@ class ZoneSection extends Component {
     }
 
     submitExercise(exerciseInput) {
-        const { startTime, exerciseIndex } = this.state;
-        if (!this.props.sectionProgress.exercises[exerciseIndex - 1].status)
-            this.setState({
-                exerciseIndex: this.state.exerciseIndex + 1
-            })
-        this.props.submitExercise(exerciseInput, startTime, exerciseIndex);
-    }
-
-    completeVideo() {
-        this.props.completeVideo();
-        this.setState({
-            type: "exercise",
-            exerciseIndex: this.state.exerciseIndex + 1
-        })
+        const { startTime, activeExercise } = this.state;
+        this.props.submitExercise(exerciseInput, startTime, activeExercise);
     }
 
     toggleHelpWindow() {
@@ -206,7 +203,7 @@ class ZoneSection extends Component {
                 "path": this.props.sectionsLocation.pathName,
                 "zone": this.props.sectionsLocation.zoneName,
                 "section": this.props.sectionIndex,
-                "exercise": this.state.exerciseIndex
+                "exercise": this.state.activeExercise
             }
         });
         this.sendProblem(problemDesc);
@@ -236,22 +233,37 @@ class ZoneSection extends Component {
             });
     }
 
+    changeExercise(exerciseIndex) {
+        this.setState({
+            activeExercise: exerciseIndex
+        })
+    }
+
+    nextExercise() {
+        this.setState({
+            startTime: Math.round(new Date().getTime() / 1000),
+            isExerciseComplete: false,
+            currentExercise: this.state.currentExercise + 1,
+            activeExercise: this.state.activeExercise + 1
+        })
+    }
+
     render() {
         const { sectionData, sectionProgress } = this.props;
-        const { type, exerciseIndex, solutions, helpWindowActiveProblem, askedProblem } = this.state;
+        const { type, activeExercise, solutions, helpWindowActiveProblem, askedProblem, currentExercise, isExerciseComplete, isActiveSection } = this.state;
         const exerciseData = sectionData.exercises, exerciseHtml = [], exerciseNav = [];
         let exercisesIndex = 0, exerciseInfo;
         if (sectionProgress.video) {
             while (exercisesIndex < exerciseData.length && sectionProgress.exercises[exercisesIndex].status) {
                 let toggleIndex = exercisesIndex + 2, activeClass = '';
-                if (exerciseIndex === toggleIndex - 1)
+                if (activeExercise === toggleIndex - 1)
                     activeClass = ' active';
                 exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="completed" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
                 exercisesIndex++;
             }
             if (exercisesIndex < exerciseData.length) {
                 let toggleIndex = exercisesIndex + 2, activeClass = '';
-                if (exerciseIndex === toggleIndex - 1)
+                if (activeExercise === toggleIndex - 1)
                     activeClass = ' active';
                 exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="start" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
                 exercisesIndex++;
@@ -259,7 +271,7 @@ class ZoneSection extends Component {
         }
         while (exercisesIndex < exerciseData.length) {
             let toggleIndex = exercisesIndex + 2, activeClass = '';
-            if (exerciseIndex === toggleIndex - 1)
+            if (activeExercise === toggleIndex - 1)
                 activeClass = ' active';
             exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="locked" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
             exercisesIndex++;
@@ -269,12 +281,11 @@ class ZoneSection extends Component {
             tempExercise.push(<Col className="zoneSectionNavButton"><Button>{exerciseData[i].code}</Button></Col>)
         }
         let hintsUI = [], hintNav = [];
-        if (sectionData.exercises[exerciseIndex - 1]?.hints?.length > 0) {
-            console.log("working")
-            for (let i = 0; i < sectionData.exercises[exerciseIndex - 1].hints.length; i++) {
+        if (sectionData.exercises[activeExercise - 1]?.hints?.length > 0) {
+            for (let i = 0; i < sectionData.exercises[activeExercise - 1].hints.length; i++) {
                 hintsUI.push(<div>
                     <div className="hintHeader">Hint {i + 1}</div>
-                    <div dangerouslySetInnerHTML={{ __html: sectionData.exercises[exerciseIndex - 1].hints[i] }}></div>
+                    <div dangerouslySetInnerHTML={{ __html: sectionData.exercises[activeExercise - 1].hints[i] }}></div>
                 </div>
                 )
             }
@@ -330,23 +341,15 @@ class ZoneSection extends Component {
         }
         else {
             askProblemUI = <div>
-                Your problem is recorded. 
-                <br/>Facilitators are available between 9pm to 11pm Monday to Saturday.
-                <br/>Please join facilitator room : {this.state.facilitatorRoom}. 
-                <br/>Hopefully this will resolve your problem.
+                Your problem is recorded.
+                <br />Facilitators are available between 9pm to 11pm Monday to Saturday.
+                <br />Please join facilitator room : {this.state.facilitatorRoom}.
+                <br />Hopefully this will resolve your problem.
             </div>
         }
         return (<div className="zoneSection" key={this.props.sectionProgress}>
-            <SectionNav activeExercise={exerciseIndex} totalExercises={exerciseData.length} currentExercise isExerciseComplete isActiveSection changeExercise nextExercise/>
-            {/* <Container>
-                <Row>
-                    <Col className="zoneSectionNavButton" xs="2">
-                        <VideoButton status={sectionProgress.video} onClick={this.openVideo} />
-                    </Col>
-                    <Col>Exercise {exerciseIndex} of {exerciseData.length}</Col>
-                </Row>
-            </Container> */}
-            <ZoneSectionContent type={type} completeVideo={this.completeVideo} sectionProgress={sectionProgress} sectionData={sectionData} exerciseIndex={exerciseIndex} toggleHelpWindow={this.toggleHelpWindow} submitExercise={this.submitExercise} />
+            <SectionNav activeExercise={activeExercise} totalExercises={exerciseData.length} currentExercise={currentExercise} isExerciseComplete={isExerciseComplete} isActiveSection={isActiveSection} changeExercise={this.changeExercise} nextExercise={this.nextExercise} />
+            <ZoneSectionContent completeVideo={this.props.completeVideo} sectionProgress={sectionProgress} sectionData={sectionData} activeExercise={activeExercise} toggleHelpWindow={this.toggleHelpWindow} submitExercise={this.submitExercise} />
             <Modal
                 isOpen={this.state.help}
             >

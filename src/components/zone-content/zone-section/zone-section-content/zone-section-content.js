@@ -18,16 +18,17 @@ export default class ZoneSectionContent extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps !== this.props) {
             this.setExerciseView();
+            console.log("view updated");
         }
     }
 
     setExerciseView() {
-        const { sectionProgress, type, exerciseIndex } = this.props;
-        let n = sectionProgress.exercises[exerciseIndex - 1]?.response.length;
-        if (type === "exercise" && n !== 0) {
-            console.log(sectionProgress.exercises, exerciseIndex, n)
+        const { sectionProgress, type, activeExercise } = this.props;
+        let n = sectionProgress.exercises[activeExercise - 1]?.response.length;
+        if (activeExercise !== 0 && n !== 0) {
+            console.log("called");
             this.setState({
-                exerciseInput: sectionProgress.exercises[exerciseIndex - 1]?.response[n - 1],
+                exerciseInput: sectionProgress.exercises[activeExercise - 1]?.response[n - 1],
                 improveAnswer: true
             })
         }
@@ -54,12 +55,12 @@ export default class ZoneSectionContent extends Component {
     }
 
     render() {
-        const { type, sectionProgress, sectionData, exerciseIndex } = this.props;
+        const { type, sectionProgress, sectionData, activeExercise } = this.props;
         const { improveAnswer } = this.state;
         const completeVideoButtton = [], exerciseData = sectionData.exercises;
         if (!sectionProgress.video)
             completeVideoButtton.push(<Button color="primary" onClick={this.props.completeVideo}>Mark Video as complete</Button>)
-        if (type === "video")
+        if (activeExercise == 0)
             return (<div className="videoView">
                 <video width="600" controls>
                     <source src={sectionData.video} type="video/mp4" />
@@ -67,10 +68,10 @@ export default class ZoneSectionContent extends Component {
                 </video>
                 <div>{completeVideoButtton}</div>
             </div>)
-        else if (type === "exercise") {
+        else {
             if (improveAnswer)
                 return (<div className="exerciseContent">
-                    <div className="exerciseDesc" dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex - 1]?.desc }}></div>
+                    <div className="exerciseDesc" dangerouslySetInnerHTML={{ __html: exerciseData[activeExercise - 1]?.desc }}></div>
                     <div className="exerciseResp">
                         <Input
                             type="textarea"
@@ -84,7 +85,7 @@ export default class ZoneSectionContent extends Component {
                 </div>)
             else
                 return (<div className="exerciseContent">
-                    <div className="exerciseDesc" dangerouslySetInnerHTML={{ __html: exerciseData[exerciseIndex - 1]?.desc }}></div>
+                    <div className="exerciseDesc" dangerouslySetInnerHTML={{ __html: exerciseData[activeExercise - 1]?.desc }}></div>
                     <div className="exerciseResp">
                         <Input
                             type="textarea"
@@ -101,7 +102,5 @@ export default class ZoneSectionContent extends Component {
                     </div>
                 </div>)
         }
-        else
-            return (<div></div >)
     }
 }
