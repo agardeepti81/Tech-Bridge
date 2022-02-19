@@ -26,7 +26,6 @@ export default class ZoneSectionContent extends Component {
         const { sectionProgress, type, activeExercise } = this.props;
         let n = sectionProgress.exercises[activeExercise - 1]?.response.length;
         if (activeExercise !== 0 && n !== 0) {
-            console.log("called");
             this.setState({
                 exerciseInput: sectionProgress.exercises[activeExercise - 1]?.response[n - 1],
                 improveAnswer: true

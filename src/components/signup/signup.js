@@ -2,23 +2,25 @@ import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 
-// const NavigateToStartPage = ({ nav }) => {
-//     const navigate = useNavigate();
+const NavigateToHome = ({ nav, role }) => {
+    const navigate = useNavigate();
 
-//     if (nav)
-//         navigate('/start-page');
+    if (nav) {
+        navigate('/home');
+    }
 
-//     return (
-//         <></>
-//     );
-// }
+    return (
+        <></>
+    );
+}
 
 
 class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            emails: []
+            emails: [],
+            navigate: false
         }
         this.signUpAccount = this.signUpAccount.bind(this);
     }
@@ -52,7 +54,7 @@ class SignUp extends Component {
             "password": this.password.value,
             "role": "Learner"
         });
-        this.sendSignUpToServerAndReportToUser(newUserData);
+        this.sendSignUpToServerAndReportToUser(newUserData, this.email.value, this.userName.value);
     }
 
     checkEmptyValues() {
@@ -71,7 +73,7 @@ class SignUp extends Component {
         return false;
     }
 
-    sendSignUpToServerAndReportToUser(dataToSend) {
+    sendSignUpToServerAndReportToUser(dataToSend, email, userName) {
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         let requestOptions = {
@@ -86,7 +88,11 @@ class SignUp extends Component {
             .then(response => {
                 let result = JSON.parse(response);
                 if (result.statusCode === 200) {
-                    alert(result.body);
+                    const lessonProgress =[];
+                    this.props.getLessonProgressEmailAndUserName(lessonProgress, email, userName);
+                    this.setState({
+                        navigate: true
+                    })
                 }
             })
             .catch(error => {
@@ -140,6 +146,7 @@ class SignUp extends Component {
                         Create Your Account
                     </Button>
                 </Form>
+                <NavigateToHome nav={this.state.navigate} />
             </div>
         )
     }

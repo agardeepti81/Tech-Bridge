@@ -7,13 +7,34 @@
     width: 20%;
 }
 
+.toggleMode {
+    text-transform: none;
+    width: 100%;
+}
+
+.toggleButtons {
+    width: 50%;
+    text-transform: none !important;
+    border: none !important;
+    border-bottom: 1px solid white !important;
+    color: white !important;
+    border-radius: 0px !important;
+}
+
+.toggleButtonLeft {
+    border-right: 0.5px solid white !important;
+}
+
+.toggleButtonRight {
+    border-left: 0.5px solid white !important;
+}
+
 #problemsList {
     height: 100%;
     border-radius: 0px;
     background-color: black;
     border-right: 1px solid white;
 }
-
 
 .listItem {
     background-color: black;
@@ -23,7 +44,7 @@
 
 #problemsList .active {
     background-color: white;
-    color: black;
+    color: black !important;
     border: 0px;
 } 
 
@@ -38,6 +59,7 @@
     color: white;
     border: 1px solid white;
     border-top: 0px;
+    overflow-y: scroll;
 }
 
 #problemDesc {
@@ -47,6 +69,7 @@
     color: white;
     border: 1px solid white;
     border-bottom: 0px;
+    overflow-y: scroll;
 }
 
 #existingSolutionsList {

@@ -32,12 +32,11 @@ export default class SectionNav extends Component {
         else {
             currentNextExercise = <Button className="currentNextExercise" variant="contained" disabled>Current Exercise</Button>;
         }
-        menuItems.push(<MenuItem value={0}>0</MenuItem>)
         for (let i = 0; i < currentExercise; i++) {
             menuItems.push(<MenuItem value={i + 1}>{i + 1}</MenuItem>)
         }
         return (<div className="sectionsNav">
-            <Button className="viewLesson" variant="contained">Lesson <AutoStoriesIcon className="iconCsss" /></Button>
+            <Button className="viewLesson" variant="contained" onClick={() => changeExercise(0)}>Lesson <AutoStoriesIcon className="iconCsss" /></Button>
             <div className="emptySpace"></div>
             <div className="exerciseInfo">
                 <div className="exerciseInfo1st">Exercise</div>

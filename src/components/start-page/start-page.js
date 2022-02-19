@@ -125,7 +125,7 @@ class StartPage extends Component {
                 })}
             </div>
             <div id="signupLogin">
-                <SignUp signUpApis={this.props.signUpApis} />
+                <SignUp signUpApis={this.props.signUpApis} getLessonProgressEmailAndUserName={this.props.getLessonProgressEmailAndUserName} />
                 <Login loginApis={this.props.loginApis} getLessonProgressEmailAndUserName={this.props.getLessonProgressEmailAndUserName} />
             </div>
             <div>
