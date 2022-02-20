@@ -1,6 +1,7 @@
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, ButtonGroup, Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem, ListGroup, ListGroupItem } from 'reactstrap';
 import './facilitator.css';
 
 class Facilitator extends Component {
@@ -13,7 +14,8 @@ class Facilitator extends Component {
             activeProblem: -1,
             exerciseDesc: "",
             mode: "problems",
-            modeVariants: ["active", ""]
+            modeVariants: ["active", ""],
+            curatedSolutions: []
         }
         this.updateActiveProblem = this.updateActiveProblem.bind(this);
         this.toggleMode = this.toggleMode.bind(this);
@@ -24,7 +26,6 @@ class Facilitator extends Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    console.log(result);
                     this.setState({
                         problemsList: result.filter(problem => problem.status === "Unresolved"),
                         solutionsList: result.filter(problem => problem.status === "Resolved")
@@ -38,20 +39,21 @@ class Facilitator extends Component {
         let currentList = [];
         if (mode === "problems")
             currentList = problemsList;
-        else if(mode === "solutions")
+        else if (mode === "solutions")
             currentList = solutionsList;
-            
-        let url = `${process.env.PUBLIC_URL}/data/profiles/${currentList[problemIndex].exerciseLocation.profile}/${currentList[problemIndex].exerciseLocation.roadmap}/${currentList[problemIndex].exerciseLocation.path}/${currentList[problemIndex].exerciseLocation.zone}.json`;
-        fetch(url)
+        const { profile, roadmap, path, zone, section, exercise } = currentList[problemIndex].exerciseLocation;
+
+        fetch(`${process.env.PUBLIC_URL}/data/profiles/${profile}/${roadmap}/${path}/${zone}.json`)
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
-                        exerciseDesc: result.sections[currentList[problemIndex].exerciseLocation.section].exercises[currentList[problemIndex].exerciseLocation.exercise].desc,
+                        exerciseDesc: result.sections[section].exercises[exercise].desc,
                         activeProblem: problemIndex
                     });
                 }
             )
+
         this.setState({
             activeProblem: problemIndex
         })
@@ -117,8 +119,81 @@ class Facilitator extends Component {
                     <div>{currentList[activeProblem]?.problem}</div>
                 </div>
             </div>
-            <div id="existingSolutionsList"></div>
+            <div id="existingSolutionsList">
+                <CuratedSolutions exerciseLocation={currentList[activeProblem]?.exerciseLocation} getCuratedSolutionApi={this.props.facilitatorApis.getSolutionsOfExercise} activeProblem={activeProblem} />
+            </div>
         </div>)
+    }
+}
+
+class CuratedSolutions extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeCuratedSolution: 0,
+            curatedSolutions: []
+        }
+        this.changeActiveCuratedSolution = this.changeActiveCuratedSolution.bind(this);
+    }
+
+    componentDidMount() {
+        this.fetchCuratedSolutions();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.exerciseLocation !== this.props.exerciseLocation)
+            this.fetchCuratedSolutions();
+    }
+
+    fetchCuratedSolutions() {
+        if (this.props.exerciseLocation) {
+            const { profile, roadmap, path, zone, section, exercise } = this.props.exerciseLocation;
+            fetch(`${this.props.getCuratedSolutionApi}?profile=${profile}&roadmap=${roadmap}&path=${path}&zone=${zone}&section=${section}&exercise=${exercise}`)
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        this.setState({
+                            curatedSolutions: result
+                        })
+                    }
+                )
+        }
+    }
+
+    changeActiveCuratedSolution(solutionIndex) {
+        this.setState({
+            activeCuratedSolution: solutionIndex
+        })
+    }
+
+    render() {
+        if (this.props.activeProblem !== -1)
+            return (<div>
+                <Accordion
+                    className='curatedSolutions'
+                    open={this.state.activeCuratedSolution}
+                    toggle={this.changeActiveCuratedSolution}
+                >
+                    {this.state.curatedSolutions.map((solution, i) => {
+                        return <AccordionItem key={i}>
+                            <AccordionHeader className='solutionHeader' targetId={i + 1}>
+                                {solution.problem}
+                            </AccordionHeader>
+                            <AccordionBody className='solutionBody' accordionId={i + 1}>
+                                <div className="solution">{solution.solution}</div>
+                                <Button variant="contained" color='info'>Attach Solution</Button>
+                            </AccordionBody>
+                        </AccordionItem>;
+                    })}
+                </Accordion>
+                <div className='addSolution'>
+                    <Fab color="primary" aria-label="add">
+                        <AddIcon />
+                    </Fab>
+                </div>
+            </div>)
+        else
+            return (<></>);
     }
 }
 

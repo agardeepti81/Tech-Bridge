@@ -311,16 +311,6 @@ class ZoneSection extends Component {
                         {solutions[i].solution}
                     </AccordionBody>
                 </AccordionItem>
-                // <Card>
-                //     <CardBody>
-                //         <CardTitle tag="h5">
-                //             {solutions[i].problem}
-                //         </CardTitle>
-                //         <CardText>
-                //             {solutions[i].solution}
-                //         </CardText>
-                //     </CardBody>
-                // </Card>
             )
         }
         let askProblemUI = [];
