@@ -18,7 +18,7 @@ class App extends Component {
     super(props);
     this.state = {
       baseFile: false,
-      lessonProgress: [],
+      lessonProgress: false,
       email: "",
       userName: false
     }
