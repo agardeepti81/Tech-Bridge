@@ -6,28 +6,6 @@ import { BsPlayCircle } from "react-icons/bs";
 import ZoneSectionContent from "./zone-section-content/zone-section-content";
 import SectionNav from "./sections-nav/sections-nav";
 
-class VideoButton extends Component {
-    render() {
-        if (this.props.status)
-            return (<Button color="success" onClick={this.props.onClick}>Lesson<BsPlayCircle id="videoIcon" /></Button>);
-        else
-            return (<Button color="primary" onClick={this.props.onClick}>Lesson<BsPlayCircle id="videoIcon" /></Button>)
-    }
-}
-
-class ExerciseButton extends Component {
-    render() {
-        if (this.props.status === "completed")
-            return (<Button color="success" onClick={this.props.onClick}>{this.props.name}</Button>);
-        else if (this.props.status === "start")
-            return (<Button color="primary" onClick={this.props.onClick}>{this.props.name}</Button>);
-        else if (this.props.status === "locked")
-            return (<Button color="danger" onClick={this.props.onClick} disabled>{this.props.name}</Button>);
-        else
-            return (<></>);
-    }
-}
-
 class ZoneSection extends Component {
     constructor(props) {
         super(props);
@@ -37,7 +15,6 @@ class ZoneSection extends Component {
             contactFacilitator: false,
             activeHelpTab: "1",
             helpTabsClasses: ['active', ''],
-            type: "",
             solutions: [],
             helpWindowActiveProblem: 0,
             askedProblem: false,
@@ -48,12 +25,9 @@ class ZoneSection extends Component {
             isExerciseComplete: false,
             isActiveSection: false
         }
-        this.toggle = this.toggle.bind(this);
         this.toggleHelpWindow = this.toggleHelpWindow.bind(this);
         this.toggleContactFacilitator = this.toggleContactFacilitator.bind(this);
         this.changeHelpActiveTab = this.changeHelpActiveTab.bind(this);
-        this.openVideo = this.openVideo.bind(this);
-        this.openExercise = this.openExercise.bind(this);
         this.submitExercise = this.submitExercise.bind(this);
         this.changeHelpWindowActiveProblem = this.changeHelpWindowActiveProblem.bind(this);
         this.contactFacilitator = this.contactFacilitator.bind(this);
@@ -105,6 +79,7 @@ class ZoneSection extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps !== this.props) {
             this.getCurrentContent();
+            this.getExerciseSolutions();
         }
     }
 
@@ -121,31 +96,6 @@ class ZoneSection extends Component {
                     });
                 }
             )
-    }
-
-    openVideo() {
-        this.setState({
-            type: "video"
-        });
-    }
-
-    openExercise(activeExercise) {
-        this.setState({
-            type: "exercise",
-            activeExercise: activeExercise
-        })
-    }
-
-    toggle(openId) {
-        if (this.state.openId === openId)
-            this.setState({
-                openId: 0
-            });
-        else
-            this.setState({
-                openId: openId,
-                startTime: Math.round(new Date().getTime() / 1000)
-            });
     }
 
     submitExercise(exerciseInput) {
@@ -166,7 +116,7 @@ class ZoneSection extends Component {
     }
 
     changeHelpActiveTab(tabNo) {
-        let helpTabsClasses = ['', '', ''];
+        let helpTabsClasses = ['', ''];
         helpTabsClasses[tabNo - 1] = 'active';
         this.setState({
             activeHelpTab: tabNo + "",
@@ -203,7 +153,7 @@ class ZoneSection extends Component {
                 "path": this.props.sectionsLocation.pathName,
                 "zone": this.props.sectionsLocation.zoneName,
                 "section": this.props.sectionIndex,
-                "exercise": this.state.activeExercise
+                "exercise": this.state.activeExercise-1
             }
         });
         this.sendProblem(problemDesc);
@@ -237,6 +187,7 @@ class ZoneSection extends Component {
         this.setState({
             activeExercise: exerciseIndex
         })
+        this.getExerciseSolutions();
     }
 
     nextExercise() {
@@ -246,26 +197,25 @@ class ZoneSection extends Component {
             currentExercise: this.state.currentExercise + 1,
             activeExercise: this.state.activeExercise + 1
         })
+        this.getExerciseSolutions();
     }
 
     render() {
         const { sectionData, sectionProgress } = this.props;
-        const { type, activeExercise, solutions, helpWindowActiveProblem, askedProblem, currentExercise, isExerciseComplete, isActiveSection } = this.state;
-        const exerciseData = sectionData.exercises, exerciseHtml = [], exerciseNav = [];
-        let exercisesIndex = 0, exerciseInfo;
+        const { activeExercise, solutions, helpWindowActiveProblem, askedProblem, currentExercise, isExerciseComplete, isActiveSection } = this.state;
+        const exerciseData = sectionData.exercises;
+        let exercisesIndex = 0;
         if (sectionProgress.video) {
             while (exercisesIndex < exerciseData.length && sectionProgress.exercises[exercisesIndex].status) {
                 let toggleIndex = exercisesIndex + 2, activeClass = '';
                 if (activeExercise === toggleIndex - 1)
                     activeClass = ' active';
-                exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="completed" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
                 exercisesIndex++;
             }
             if (exercisesIndex < exerciseData.length) {
                 let toggleIndex = exercisesIndex + 2, activeClass = '';
                 if (activeExercise === toggleIndex - 1)
                     activeClass = ' active';
-                exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="start" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
                 exercisesIndex++;
             }
         }
@@ -273,7 +223,6 @@ class ZoneSection extends Component {
             let toggleIndex = exercisesIndex + 2, activeClass = '';
             if (activeExercise === toggleIndex - 1)
                 activeClass = ' active';
-            exerciseNav.push(<Col className={"zoneSectionNavButton" + activeClass}><ExerciseButton status="locked" onClick={() => this.openExercise(toggleIndex - 1)} name={exerciseData[exercisesIndex].code} /></Col>);
             exercisesIndex++;
         }
         let tempExercise = []

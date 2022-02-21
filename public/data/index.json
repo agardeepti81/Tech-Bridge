@@ -19,7 +19,8 @@
         },
         "facilitator": {
             "getProblemList": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/facilitator",
-            "getSolutionsOfExercise": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/learner-help"
+            "getSolutionsOfExercise": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/learner-help",
+            "updateProblem": "https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/facilitator"
         }
     }
 }

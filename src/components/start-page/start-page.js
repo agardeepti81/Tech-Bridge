@@ -59,7 +59,7 @@ class StartPage extends Component {
             steps: [
                 {
                     placement: 'bottom',
-                    title: 'Chose Profile',
+                    title: 'Choose Profile',
                     body: 'Understand what someone in a specific profile does. How does this work affect people. If this looks exciting to you, understand what are the essential qualities to do well in this area. If this seems a good match with you, go for it',
                     imgSrc: process.env.PUBLIC_URL + "/images/start-page/profile.jpg",
                     text: 'Step 1'
