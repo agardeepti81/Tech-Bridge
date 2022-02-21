@@ -6,11 +6,11 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 export default class SectionNav extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.changeExercise = this.changeExercise.bind(this);
     }
-    changeExercise(exerciseIndexEvent){
+    changeExercise(exerciseIndexEvent) {
         let exerciseIndex = exerciseIndexEvent.target.value;
         this.props.changeExercise(exerciseIndex);
     }
@@ -19,11 +19,11 @@ export default class SectionNav extends Component {
         let menuItems = [], currentNextExercise;
 
         if (isActiveSection) {
-            if (currentExercise === activeExercise){
-                if(isExerciseComplete)
-                currentNextExercise = <Button className="currentNextExercise" variant="contained" onClick={nextExercise}>Start Next Exercise</Button>;
+            if (currentExercise === activeExercise) {
+                if (isExerciseComplete)
+                    currentNextExercise = <Button className="currentNextExercise" variant="contained" onClick={nextExercise}>Start Next Exercise</Button>;
                 else
-                currentNextExercise = <Button className="currentNextExercise" variant="contained" disabled>Current Exercise</Button>;
+                    currentNextExercise = <Button className="currentNextExercise" variant="contained" disabled>Current Exercise</Button>;
             }
             else
                 currentNextExercise = <Button className="currentNextExercise" variant="contained" onClick={() => changeExercise(currentExercise)}>Current Exercise</Button>;
@@ -37,7 +37,7 @@ export default class SectionNav extends Component {
         }
         return (<div className="sectionsNav">
             <Button className="viewLesson" variant="contained" onClick={() => changeExercise(0)}>Lesson <AutoStoriesIcon className="iconCsss" /></Button>
-            <div className="emptySpace"></div>
+            <div className="emptySpace">Join room Room{this.props.sectionsLocationIndex.zoneIndex+1} <a href={this.props.meetingLink} target="_blank">here</a></div>
             <div className="exerciseInfo">
                 <div className="exerciseInfo1st">Exercise</div>
                 <Select

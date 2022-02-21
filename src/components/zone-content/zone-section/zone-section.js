@@ -287,7 +287,7 @@ class ZoneSection extends Component {
             </div>
         }
         return (<div className="zoneSection" key={this.props.sectionProgress}>
-            <SectionNav activeExercise={activeExercise} totalExercises={exerciseData.length} currentExercise={currentExercise} isExerciseComplete={isExerciseComplete} isActiveSection={isActiveSection} changeExercise={this.changeExercise} nextExercise={this.nextExercise} />
+            <SectionNav activeExercise={activeExercise} totalExercises={exerciseData.length} currentExercise={currentExercise} isExerciseComplete={isExerciseComplete} isActiveSection={isActiveSection} changeExercise={this.changeExercise} nextExercise={this.nextExercise} sectionsLocationIndex={this.props.sectionsLocationIndex} meetingLink={this.props.meetingLink} />
             <ZoneSectionContent completeVideo={this.props.completeVideo} sectionProgress={sectionProgress} sectionData={sectionData} activeExercise={activeExercise} toggleHelpWindow={this.toggleHelpWindow} submitExercise={this.submitExercise} />
             <Modal
                 isOpen={this.state.help}

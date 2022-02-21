@@ -189,12 +189,34 @@ class CuratedSolutions extends Component {
         })
     }
 
-    attachSolution(solutionIndex) {
+    attachSolution() {
+        let solutionToSend = JSON.stringify({
+            "statusMsg": "Resolved",
+            "email": this.props.activeProblem.email,
+            "problem": this.props.activeProblem.problem,
+            "curatedSolution": this.state.curatedSolutions[this.state.activeCuratedSolution-1]
+        });
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: solutionToSend,
+            redirect: 'follow'
+        };
 
+        fetch(this.props.facilitatorApis.updateProblem, requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                this.props.refresh();
+            })
+            .catch(error => {
+                alert("Some error occured, Please try again later");
+                console.log('error', error)
+            });
     }
 
     addSolution() {
-        debugger
         let solutionToSend;
         if (this.props.mode === "problems") {
             solutionToSend = JSON.stringify({
@@ -216,7 +238,6 @@ class CuratedSolutions extends Component {
                 }
             });
         }
-        console.log(solutionToSend);
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         let requestOptions = {
@@ -258,7 +279,7 @@ class CuratedSolutions extends Component {
                     toggle={this.changeActiveCuratedSolution}
                 >
                     {this.state.curatedSolutions.map((solution, i) => {
-                        let attachSolution = this.props.mode === "problems" ? <Button variant="contained" color='info' onClick={() => this.attachSolution(i)}>Attach Solution</Button> : [];
+                        let attachSolution = this.props.mode === "problems" ? <Button variant="contained" color='info' onClick={this.attachSolution}>Attach Solution</Button> : [];
                         return <AccordionItem key={i}>
                             <AccordionHeader className='solutionHeader' targetId={i + 1}>
                                 {solution.problem}

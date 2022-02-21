@@ -69,7 +69,7 @@ class App extends Component {
               <Route exact path="/facilitator" element={<Facilitator facilitatorApis={this.state.baseFile.apis.facilitator} />} />
               <Route exact path="/home" element={<Home lessonProgress={this.state.lessonProgress} />} />
               <Route exact path="/:profile/:roadmap/:pathName" element={<MainRoute lessonProgress={this.state.lessonProgress} />} />
-              <Route exact path="/:profile/:roadmap/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} userName={this.state.userName} updateLessonProgress={this.updateLessonProgress} helpApis={this.state.baseFile.apis.help} />} />
+              <Route exact path="/:profile/:roadmap/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} userName={this.state.userName} updateLessonProgress={this.updateLessonProgress} helpApis={this.state.baseFile.apis.help} meetingLink={this.state.baseFile.meetingLink} />} />
             </Routes>
           </Router>
         </div>
