@@ -14,7 +14,7 @@ class ZoneSection extends Component {
             help: false,
             contactFacilitator: false,
             activeHelpTab: "1",
-            helpTabsClasses: ['active', ''],
+            helpTabsClasses: ['', 'active'],
             solutions: [],
             helpWindowActiveProblem: 0,
             askedProblem: false,
@@ -185,7 +185,8 @@ class ZoneSection extends Component {
 
     changeExercise(exerciseIndex) {
         this.setState({
-            activeExercise: exerciseIndex
+            activeExercise: exerciseIndex,
+            askedProblem: false
         })
         this.getExerciseSolutions();
     }
