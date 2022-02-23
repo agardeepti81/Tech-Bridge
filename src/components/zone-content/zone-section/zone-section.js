@@ -13,7 +13,7 @@ class ZoneSection extends Component {
             startTime: false,
             help: false,
             contactFacilitator: false,
-            activeHelpTab: "1",
+            activeHelpTab: "2",
             helpTabsClasses: ['', 'active'],
             solutions: [],
             helpWindowActiveProblem: 0,
@@ -110,8 +110,13 @@ class ZoneSection extends Component {
     }
 
     toggleContactFacilitator() {
+        let askedProblem = this.state.askedProblem;
+        if(this.state.contactFacilitator === true){
+            askedProblem = false
+        }
         this.setState({
-            contactFacilitator: !this.state.contactFacilitator
+            contactFacilitator: !this.state.contactFacilitator,
+            askedProblem: askedProblem
         });
     }
 
@@ -120,7 +125,8 @@ class ZoneSection extends Component {
         helpTabsClasses[tabNo - 1] = 'active';
         this.setState({
             activeHelpTab: tabNo + "",
-            helpTabsClasses: helpTabsClasses
+            helpTabsClasses: helpTabsClasses,
+            problemDesc: ""
         })
     }
 
@@ -185,8 +191,7 @@ class ZoneSection extends Component {
 
     changeExercise(exerciseIndex) {
         this.setState({
-            activeExercise: exerciseIndex,
-            askedProblem: false
+            activeExercise: exerciseIndex
         })
         this.getExerciseSolutions();
     }
