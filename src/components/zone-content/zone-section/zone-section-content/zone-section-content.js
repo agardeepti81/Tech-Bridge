@@ -1,25 +1,90 @@
 import { Component } from "react";
-import { Button, Input } from "reactstrap";
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Button, Input, Modal, ModalBody, ModalHeader, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 
 export default class ZoneSectionContent extends Component {
     constructor(props) {
         super(props);
         this.state = {
             exerciseInput: "",
-            improveAnswer: false
+            improveAnswer: false,
+            help: false,
+            contactFacilitator: false,
+            activeHelpTab: "2",
+            helpTabsClasses: ['', 'active'],
+            solutions: [],
+            helpWindowActiveProblem: 0,
+            askedProblem: false,
+            problemDesc: ""
         }
-        this.submitExercise = this.submitExercise.bind(this);
         this.improveAnswer = this.improveAnswer.bind(this);
+        this.toggleHelpWindow = this.toggleHelpWindow.bind(this);
+        this.toggleContactFacilitator = this.toggleContactFacilitator.bind(this);
+        this.changeHelpActiveTab = this.changeHelpActiveTab.bind(this);
+        this.submitExercise = this.submitExercise.bind(this);
+        this.changeHelpWindowActiveProblem = this.changeHelpWindowActiveProblem.bind(this);
+        this.contactFacilitator = this.contactFacilitator.bind(this);
+        this.sendProblem = this.sendProblem.bind(this);
+        this.submitProblem = this.submitProblem.bind(this);
     }
     componentDidMount() {
         this.setExerciseView();
+        this.getExerciseSolutions();
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps !== this.props) {
             this.setExerciseView();
-            console.log("view updated");
+            this.getExerciseSolutions();
         }
+    }
+
+    getExerciseSolutions() {
+        const { helpApis, sectionsLocation, sectionIndex, activeExercise } = this.props;
+        const { profile, roadmap, pathName, zoneName } = sectionsLocation;
+        fetch(`${helpApis.getSolutions}?profile=${profile}&roadmap=${roadmap}&path=${pathName}&zone=${zoneName}&section=${sectionIndex}&exercise=${activeExercise-1}`)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        solutions: result
+                    });
+                }
+            )
+    }
+
+    toggleContactFacilitator() {
+        let askedProblem = this.state.askedProblem;
+        if(this.state.contactFacilitator === true){
+            askedProblem = false
+        }
+        this.setState({
+            contactFacilitator: !this.state.contactFacilitator,
+            askedProblem: askedProblem
+        });
+    }
+
+    sendProblem(dataToSend) {
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: dataToSend,
+            redirect: 'follow'
+        };
+
+        fetch(this.props.helpApis.getSolutions, requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                this.setState({
+                    facilitatorRoom: response.room,
+                    askedProblem: true
+                })
+            })
+            .catch(error => {
+                alert("Some error occured, Please try again later");
+                console.log('error', error)
+            });
     }
 
     setExerciseView() {
@@ -53,14 +118,65 @@ export default class ZoneSectionContent extends Component {
         })
     }
 
+    toggleHelpWindow() {
+        this.setState({
+            help: !this.state.help
+        });
+    }
+
+    contactFacilitator() {
+        this.setState({
+            help: false,
+            contactFacilitator: true
+        })
+    }
+
+    changeHelpActiveTab(tabNo) {
+        let helpTabsClasses = ['', ''];
+        helpTabsClasses[tabNo - 1] = 'active';
+        this.setState({
+            activeHelpTab: tabNo + "",
+            helpTabsClasses: helpTabsClasses,
+            problemDesc: ""
+        })
+    }
+
+    changeHelpWindowActiveProblem(problemIndex) {
+        if (problemIndex === this.state.helpWindowActiveProblem)
+            this.setState({
+                helpWindowActiveProblem: 0
+            })
+        else
+            this.setState({
+                helpWindowActiveProblem: problemIndex
+            })
+    }
+
+    submitProblem() {
+        let problemDesc = JSON.stringify({
+            "problem": this.state.problemDesc,
+            "email": this.props.email,
+            "userName": this.props.userName,
+            "exerciseLocation": {
+                "profile": this.props.sectionsLocation.profile,
+                "roadmap": this.props.sectionsLocation.roadmap,
+                "path": this.props.sectionsLocation.pathName,
+                "zone": this.props.sectionsLocation.zoneName,
+                "section": this.props.sectionIndex,
+                "exercise": this.props.activeExercise-1
+            }
+        });
+        this.sendProblem(problemDesc);
+    }
+
     render() {
         const { type, sectionProgress, sectionData, activeExercise } = this.props;
-        const { improveAnswer } = this.state;
-        const completeVideoButtton = [], exerciseData = sectionData.exercises;
+        const { improveAnswer, solutions, askedProblem, helpWindowActiveProblem } = this.state;
+        const completeVideoButtton = [], exerciseData = sectionData.exercises, zoneSectionContent=[];
         if (!sectionProgress.video)
             completeVideoButtton.push(<Button color="primary" onClick={this.props.completeVideo}>Mark Video as complete</Button>)
         if (activeExercise == 0)
-            return (<div className="videoView">
+            zoneSectionContent.push(<div className="videoView">
                 <video width="600" controls>
                     <source src={sectionData.video} type="video/mp4" />
                     Your browser doesn't support HTML video
@@ -69,7 +185,7 @@ export default class ZoneSectionContent extends Component {
             </div>)
         else {
             if (improveAnswer)
-                return (<div className="exerciseContent">
+                zoneSectionContent.push(<div className="exerciseContent">
                     <div className="exerciseDesc" dangerouslySetInnerHTML={{ __html: exerciseData[activeExercise - 1]?.desc }}></div>
                     <div className="exerciseResp">
                         <Input
@@ -79,11 +195,11 @@ export default class ZoneSectionContent extends Component {
                             disabled
                         />
                         <Button className="exerciseButtons" color="primary" onClick={this.improveAnswer} >Improve Answer</Button>
-                        <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
+                        <Button className="exerciseButtons" color="primary" onClick={this.toggleHelpWindow}>Ask for help</Button>
                     </div>
                 </div>)
             else
-                return (<div className="exerciseContent">
+                zoneSectionContent.push(<div className="exerciseContent">
                     <div className="exerciseDesc" dangerouslySetInnerHTML={{ __html: exerciseData[activeExercise - 1]?.desc }}></div>
                     <div className="exerciseResp">
                         <Input
@@ -97,9 +213,121 @@ export default class ZoneSectionContent extends Component {
                             }}
                         />
                         <Button className="exerciseButtons" color="primary" onClick={this.submitExercise} >Submit</Button>
-                        <Button className="exerciseButtons" color="primary" onClick={this.props.toggleHelpWindow}>Ask for help</Button>
+                        <Button className="exerciseButtons" color="primary" onClick={this.toggleHelpWindow}>Ask for help</Button>
                     </div>
                 </div>)
         }
+        let hintsUI = [], hintNav = [];
+        if (sectionData.exercises[activeExercise - 1]?.hints?.length > 0) {
+            for (let i = 0; i < sectionData.exercises[activeExercise - 1].hints.length; i++) {
+                hintsUI.push(<div>
+                    <div className="hintHeader">Hint {i + 1}</div>
+                    <div dangerouslySetInnerHTML={{ __html: sectionData.exercises[activeExercise - 1].hints[i] }}></div>
+                </div>
+                )
+            }
+            hintNav.push(
+                <NavItem>
+                    <NavLink
+                        className={this.state.helpTabsClasses[0]}
+                        onClick={() => this.changeHelpActiveTab(1)}
+                    >
+                        Hint
+                    </NavLink>
+                </NavItem>
+            )
+        }
+        let solutionsListUI = [];
+        for (let i = 0; i < solutions.length; i++) {
+            solutionsListUI.push(
+                <AccordionItem>
+                    <AccordionHeader targetId={i + 1}>
+                        {solutions[i].problem}
+                    </AccordionHeader>
+                    <AccordionBody accordionId={i + 1}>
+                        {solutions[i].solution}
+                    </AccordionBody>
+                </AccordionItem>
+            )
+        }
+        let askProblemUI = [];
+        if (!askedProblem) {
+            askProblemUI = <div>
+                <Input
+                    type="textarea"
+                    placeholder="Enter your problem here"
+                    value={this.state.problemDesc}
+                    onChange={(e) => {
+                        this.setState({
+                            problemDesc: e.target.value
+                        });
+                    }}
+                />
+                <Button onClick={this.submitProblem}>Ask your problem</Button>
+            </div>
+        }
+        else {
+            askProblemUI = <div>
+                Your problem is recorded.
+                <br />Facilitators are available between 9pm to 11pm Monday to Saturday.
+                <br />Please join facilitator room : {this.state.facilitatorRoom}.
+                <br />Hopefully this will resolve your problem.
+            </div>
+        }
+        return (<div>
+            {zoneSectionContent}
+            <Modal
+                isOpen={this.state.help}
+            >
+                <ModalHeader
+                    toggle={this.toggleHelpWindow}
+                >
+                    Help Window
+                </ModalHeader>
+                <ModalBody>
+                    <Nav tabs>
+                        {hintNav}
+                        <NavItem>
+                            <NavLink
+                                className={this.state.helpTabsClasses[1]}
+                                onClick={() => this.changeHelpActiveTab(2)}
+                            >
+                                Ask your problem
+                            </NavLink>
+                        </NavItem>
+                    </Nav>
+
+                    <TabContent activeTab={this.state.activeHelpTab}>
+                        <TabPane tabId="1">
+                            {hintsUI}
+                        </TabPane>
+                        <TabPane tabId="2">
+                            <div id="searchResultsPane">
+                                <Accordion
+                                    open={helpWindowActiveProblem}
+                                    toggle={this.changeHelpWindowActiveProblem}
+                                >
+                                    {solutionsListUI}
+                                </Accordion>
+                            </div>
+                            <Button id="newProblem" color="info" onClick={this.contactFacilitator}>Contact Facilitator</Button>
+                        </TabPane>
+                    </TabContent>
+                </ModalBody>
+            </Modal>
+            <Modal
+                isOpen={this.state.contactFacilitator}
+            >
+                <ModalHeader
+                    toggle={this.toggleContactFacilitator}
+                >
+                    Describe your Problem
+                </ModalHeader>
+                <ModalBody>
+                    {askProblemUI}
+                </ModalBody>
+            </Modal>
+
+        </div>)
     }
 }
