@@ -16,7 +16,7 @@
 }
 
 .sectionsNav .emptySpace {
-    width: 55%;
+    width: 40%;
     padding: 5px;
 }
 
@@ -52,7 +52,7 @@
     width: 50px;
 }
 
-.sectionsNav .currentNextExercise {
+.sectionsNav .currentNextExercise, .sectionsNav .shareFeedback {
     width: 15%;
     border-radius: 0px;
     text-transform: none;

@@ -115,7 +115,7 @@ class ZoneSection extends Component {
             tempExercise.push(<Col className="zoneSectionNavButton"><Button>{exerciseData[i].code}</Button></Col>)
         }
         return (<div className="zoneSection" key={this.props.sectionProgress}>
-            <SectionNav activeExercise={activeExercise} totalExercises={exerciseData.length} currentExercise={currentExercise} isExerciseComplete={isExerciseComplete} isActiveSection={isActiveSection} changeExercise={this.changeExercise} nextExercise={this.nextExercise} sectionsLocationIndex={this.props.sectionsLocationIndex} meetingLink={this.props.meetingLink} />
+            <SectionNav activeExercise={activeExercise} totalExercises={exerciseData.length} currentExercise={currentExercise} isExerciseComplete={isExerciseComplete} isActiveSection={isActiveSection} changeExercise={this.changeExercise} nextExercise={this.nextExercise} sectionsLocationIndex={this.props.sectionsLocationIndex} meetingLink={this.props.meetingLink} email={this.props.email} userName={this.props.userName} sectionsLocation={this.props.sectionsLocation} sectionIndex={this.props.sectionIndex} feedbackApis={this.props.feedbackApis} />
             <ZoneSectionContent completeVideo={this.props.completeVideo} sectionProgress={sectionProgress} sectionData={sectionData} activeExercise={activeExercise} toggleHelpWindow={this.toggleHelpWindow} submitExercise={this.submitExercise} email={this.props.email} userName={this.props.userName} sectionsLocation={this.props.sectionsLocation} sectionIndex={this.props.sectionIndex} helpApis={this.props.helpApis} />
         </div>)
     }

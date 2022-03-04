@@ -8,8 +8,6 @@ import Header from './components/header/header';
 import MainRoute from './components/main/main';
 import ZoneRoute from './components/zone-content/zone-content'
 import StartPage from './components/start-page/start-page';
-import SignUp from './components/signup/signup';
-import Login from './components/login/login';
 import Home from './components/home/home';
 import Facilitator from './components/facilitator/facilitator';
 
@@ -69,7 +67,7 @@ class App extends Component {
               <Route exact path="/facilitator" element={<Facilitator facilitatorApis={this.state.baseFile.apis.facilitator} />} />
               <Route exact path="/home" element={<Home lessonProgress={this.state.lessonProgress} />} />
               <Route exact path="/:profile/:roadmap/:pathName" element={<MainRoute lessonProgress={this.state.lessonProgress} />} />
-              <Route exact path="/:profile/:roadmap/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} userName={this.state.userName} updateLessonProgress={this.updateLessonProgress} helpApis={this.state.baseFile.apis.help} meetingLink={this.state.baseFile.meetingLink} />} />
+              <Route exact path="/:profile/:roadmap/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} userName={this.state.userName} updateLessonProgress={this.updateLessonProgress} helpApis={this.state.baseFile.apis.help} meetingLink={this.state.baseFile.meetingLink} feedbackApis={this.state.baseFile.apis.feedback} />} />
             </Routes>
           </Router>
         </div>
