@@ -1,5 +1,6 @@
 import { Button, ButtonGroup, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { Component } from 'react';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Input, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import './facilitator.css';
@@ -15,7 +16,9 @@ class Facilitator extends Component {
             exerciseDesc: "",
             mode: "problems",
             modeVariants: ["active", ""],
-            curatedSolutions: []
+            curatedSolutions: [],
+            type: "",
+            videoLink: ""
         }
         this.updateActiveProblem = this.updateActiveProblem.bind(this);
         this.toggleMode = this.toggleMode.bind(this);
@@ -53,10 +56,18 @@ class Facilitator extends Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    this.setState({
-                        exerciseDesc: result.sections[section].exercises[exercise].desc,
-                        activeProblem: problemIndex
-                    });
+                    if (exercise == 0)
+                        this.setState({
+                            activeProblem: problemIndex,
+                            type: "video",
+                            videoLink: result.sections[section].video
+                        })
+                    else
+                        this.setState({
+                            exerciseDesc: result.sections[section].exercises[exercise - 1].desc,
+                            activeProblem: problemIndex,
+                            type: "exercise"
+                        });
                 }
             )
 
@@ -77,12 +88,18 @@ class Facilitator extends Component {
         })
     }
 
+    unixTimestamptoString(unixTimestamp) {
+        let date = new Date(unixTimestamp * 1000);
+        let dateString = date.toString();
+        return dateString;
+    }
+
     render() {
-        const { problemsList, activeProblem, exerciseDesc, modeVariants, solutionsList, mode } = this.state;
-        let currentList, note;
+        const { problemsList, activeProblem, exerciseDesc, modeVariants, solutionsList, mode, type, videoLink } = this.state;
+        let currentList, note, askedInfo;
         if (mode === "problems")
             currentList = problemsList;
-        else if (mode == "solutions"){
+        else if (mode == "solutions") {
             currentList = solutionsList;
             note = solutionsList[activeProblem]?.note
         }
@@ -110,6 +127,11 @@ class Facilitator extends Component {
                 </ListGroupItem>);
             }
         }
+
+        if (activeProblem != -1) {
+
+            askedInfo = "Asked By " + currentList[activeProblem].userName + "(" + currentList[activeProblem].email + ") at " + this.unixTimestamptoString(currentList[activeProblem].askedAt);
+        }
         return (<div id='facilitator'>
             <div id="problemsList">
                 <ButtonGroup className='toggleMode' aria-label="outlined white button group">
@@ -121,11 +143,17 @@ class Facilitator extends Component {
                 </ListGroup>
             </div>
             <div id="problemAndExerciseDesc">
-                <div id="exerciseDesc" dangerouslySetInnerHTML={{ __html: exerciseDesc }}></div>
+                {type === "" && <div id="exerciseDesc"></div>}
+                {type === "video" && <video id="exerciseDesc" controls>
+                    <source src={videoLink} type="video/mp4" />
+                    Your browser doesn't support HTML video
+                </video>}
+                {type === "exercise" && <div id="exerciseDesc" dangerouslySetInnerHTML={{ __html: exerciseDesc }}></div>}
                 <div id="problemDesc">
-                    <div>{currentList[activeProblem]?.problem}</div>
-                    <div>{note}</div>
+                    <div id="problem">{currentList[activeProblem]?.problem}</div>
+                    {note && <div><hr /><div>Note : {note}</div></div>}
                 </div>
+                <div id="userInfo">{askedInfo}</div>
             </div>
             <div id="existingSolutionsList">
                 <CuratedSolutions activeProblem={currentList[activeProblem]} facilitatorApis={this.props.facilitatorApis} activeProblemIndex={activeProblem} mode={mode} refresh={this.fetchProblems} />
@@ -147,6 +175,7 @@ class CuratedSolutions extends Component {
         this.changeActiveCuratedSolution = this.changeActiveCuratedSolution.bind(this);
         this.toggleSolutionWindow = this.toggleSolutionWindow.bind(this);
         this.addSolution = this.addSolution.bind(this);
+        this.cancelProblem = this.cancelProblem.bind(this);
     }
 
     componentDidMount() {
@@ -154,14 +183,14 @@ class CuratedSolutions extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.exerciseLocation !== this.props.exerciseLocation)
+        if (prevProps.activeProblem !== this.props.activeProblem)
             this.fetchCuratedSolutions();
     }
 
     fetchCuratedSolutions() {
         if (this.props.activeProblem?.exerciseLocation) {
-            const { profile, roadmap, path, zone, section, exercise } = this.props.exerciseLocation;
-            fetch(`${this.props.facilitatorApis.getCuratedSolutionApi}?profile=${profile}&roadmap=${roadmap}&path=${path}&zone=${zone}&section=${section}&exercise=${exercise}`)
+            const { profile, roadmap, path, zone, section, exercise } = this.props.activeProblem.exerciseLocation;
+            fetch(`${this.props.facilitatorApis.getSolutionsOfExercise}?profile=${profile}&roadmap=${roadmap}&path=${path}&zone=${zone}&section=${section}&exercise=${exercise}`)
                 .then(res => res.json())
                 .then(
                     (result) => {
@@ -194,7 +223,7 @@ class CuratedSolutions extends Component {
             "statusMsg": "Resolved",
             "email": this.props.activeProblem.email,
             "problem": this.props.activeProblem.problem,
-            "curatedSolution": this.state.curatedSolutions[this.state.activeCuratedSolution-1]
+            "curatedSolution": this.state.curatedSolutions[this.state.activeCuratedSolution - 1]
         });
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -259,6 +288,32 @@ class CuratedSolutions extends Component {
             });
     }
 
+    cancelProblem() {
+        let solutionToSend = JSON.stringify({
+            "statusMsg": "Completed",
+            "email": this.props.activeProblem.email,
+            "problem": this.props.activeProblem.problem
+        });
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: solutionToSend,
+            redirect: 'follow'
+        };
+        fetch(this.props.facilitatorApis.updateProblem, requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                this.props.refresh();
+                alert("Problem is discarded");
+            })
+            .catch(error => {
+                alert("Some error occured, Please try again later");
+                console.log('error', error)
+            });
+    }
+
     render() {
         if (this.props.activeProblemIndex !== -1) {
             let problemUI;
@@ -294,6 +349,9 @@ class CuratedSolutions extends Component {
                 <div className='addSolution'>
                     <Fab color="primary" aria-label="add" onClick={this.toggleSolutionWindow}>
                         <AddIcon />
+                    </Fab>
+                    <Fab color="primary" aria-label='add' onClick={this.cancelProblem}>
+                        <CloseIcon color='primary'  id="closeIcon"/>
                     </Fab>
                     <Modal
                         isOpen={this.state.addSolutionWindow}

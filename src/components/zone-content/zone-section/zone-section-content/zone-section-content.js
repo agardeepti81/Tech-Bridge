@@ -41,7 +41,7 @@ export default class ZoneSectionContent extends Component {
     getExerciseSolutions() {
         const { helpApis, sectionsLocation, sectionIndex, activeExercise } = this.props;
         const { profile, roadmap, pathName, zoneName } = sectionsLocation;
-        fetch(`${helpApis.getSolutions}?profile=${profile}&roadmap=${roadmap}&path=${pathName}&zone=${zoneName}&section=${sectionIndex}&exercise=${activeExercise-1}`)
+        fetch(`${helpApis.getSolutions}?profile=${profile}&roadmap=${roadmap}&path=${pathName}&zone=${zoneName}&section=${sectionIndex}&exercise=${activeExercise}`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -59,7 +59,8 @@ export default class ZoneSectionContent extends Component {
         }
         this.setState({
             contactFacilitator: !this.state.contactFacilitator,
-            askedProblem: askedProblem
+            askedProblem: askedProblem,
+            problemDesc: ""
         });
     }
 
@@ -163,14 +164,14 @@ export default class ZoneSectionContent extends Component {
                 "path": this.props.sectionsLocation.pathName,
                 "zone": this.props.sectionsLocation.zoneName,
                 "section": this.props.sectionIndex,
-                "exercise": this.props.activeExercise-1
+                "exercise": this.props.activeExercise
             }
         });
         this.sendProblem(problemDesc);
     }
 
     render() {
-        const { type, sectionProgress, sectionData, activeExercise } = this.props;
+        const { sectionProgress, sectionData, activeExercise } = this.props;
         const { improveAnswer, solutions, askedProblem, helpWindowActiveProblem } = this.state;
         const completeVideoButtton = [], exerciseData = sectionData.exercises, zoneSectionContent=[];
         if (!sectionProgress.video)
@@ -181,7 +182,10 @@ export default class ZoneSectionContent extends Component {
                     <source src={sectionData.video} type="video/mp4" />
                     Your browser doesn't support HTML video
                 </video>
-                <div>{completeVideoButtton}</div>
+                <div>
+                    {completeVideoButtton}
+                    <Button color="primary" onClick={this.toggleHelpWindow}>Ask for help</Button>
+                </div>
             </div>)
         else {
             if (improveAnswer)
