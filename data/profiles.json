@@ -13,6 +13,9 @@
         "roadmaps": [
             {
                 "name": "roadmap1",
+                "facilitationRoom": {
+                    "name":"Support Room 1"
+                },
                 "path": [
                     {
                         "name": "Foundation",
