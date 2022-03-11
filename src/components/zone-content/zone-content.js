@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./zone-content.css"
 
 import { Link, useParams } from "react-router-dom";
-import { Accordion, AccordionItem, AccordionHeader, AccordionBody, Button, Badge } from "reactstrap";
+import { Accordion, AccordionItem, AccordionHeader, AccordionBody, Button, Spinner } from "reactstrap";
 import ZoneSection from "./zone-section/zone-section";
 
 const ZoneRoute = (props) => {
@@ -19,6 +19,7 @@ class ZoneContent extends Component {
             isLoaded: false,
             sectionsJson: [],
             activeSectionIndex: 0,
+            currentSectionIndex: 0,
             lessonProgress: this.props.lessonProgress,
             sectionsLocation: {
                 zoneName: this.props.zoneName,
@@ -32,6 +33,7 @@ class ZoneContent extends Component {
         this.toggle = this.toggle.bind(this);
         this.completeVideo = this.completeVideo.bind(this);
         this.submitExercise = this.submitExercise.bind(this);
+        this.goToActiveSection = this.goToActiveSection.bind(this);
     }
 
     async componentDidMount() {
@@ -42,41 +44,42 @@ class ZoneContent extends Component {
 
     checkAndAddNewUserProgress(sectionsJson) {
         let { lessonProgress, sectionsLocation } = this.state;
-        if (!lessonProgress.find(currProfile => currProfile.profileCode === sectionsLocation.profile)) {
+        const { profile, roadmap, pathName, zoneName } = sectionsLocation;
+        if (!lessonProgress.find(currProfile => currProfile.profileCode === profile)) {
             let newProfile = {
-                "profileCode": sectionsLocation.profile,
+                "profileCode": profile,
                 "roadmaps": []
             }
             lessonProgress.push(newProfile);
         }
-        const profileIndex = lessonProgress.findIndex(currProfile => currProfile.profileCode === sectionsLocation.profile);
-        if (!lessonProgress[profileIndex].roadmaps.find(currRoadmap => currRoadmap.name === sectionsLocation.roadmap)) {
+        const profileIndex = lessonProgress.findIndex(currProfile => currProfile.profileCode === profile);
+        if (!lessonProgress[profileIndex].roadmaps.find(currRoadmap => currRoadmap.name === roadmap)) {
             let newRoadmap = {
-                "name": sectionsLocation.roadmap,
+                "name": roadmap,
                 "status": false,
                 "paths": []
             }
             lessonProgress[profileIndex].roadmaps.push(newRoadmap);
         }
-        const roadmapIndex = lessonProgress[profileIndex].roadmaps.findIndex(currRoadmap => currRoadmap.name === sectionsLocation.roadmap);
-        if (!lessonProgress[profileIndex].roadmaps[roadmapIndex].paths.find(currPath => currPath.code === sectionsLocation.pathName)) {
+        const roadmapIndex = lessonProgress[profileIndex].roadmaps.findIndex(currRoadmap => currRoadmap.name === roadmap);
+        if (!lessonProgress[profileIndex].roadmaps[roadmapIndex].paths.find(currPath => currPath.code === pathName)) {
             let newPath = {
-                "code": sectionsLocation.pathName,
+                "code": pathName,
                 "status": false,
                 "progress": []
             }
             lessonProgress[profileIndex].roadmaps[roadmapIndex].paths.push(newPath);
         }
-        const pathIndex = lessonProgress[profileIndex].roadmaps[roadmapIndex].paths.findIndex(currPath => currPath.code === sectionsLocation.pathName)
-        if (!lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress.find(currZone => currZone.name === sectionsLocation.zoneName)) {
+        const pathIndex = lessonProgress[profileIndex].roadmaps[roadmapIndex].paths.findIndex(currPath => currPath.code === pathName)
+        if (!lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress.find(currZone => currZone.name === zoneName)) {
             let newZone = {
-                "name": sectionsLocation.zoneName,
+                "name": zoneName,
                 "status": false,
                 "progress": []
             }
             lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress.push(newZone);
         }
-        const zoneIndex = lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress.findIndex(currZone => currZone.name === sectionsLocation.zoneName);
+        const zoneIndex = lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress.findIndex(currZone => currZone.name === zoneName);
         let activeSectionIndex = lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress.length;
         if (activeSectionIndex === 0) {
             let newZoneJson = [];
@@ -116,6 +119,7 @@ class ZoneContent extends Component {
         this.setState({
             lessonProgress: lessonProgress,
             activeSectionIndex: activeSectionIndex,
+            currentSectionIndex: activeSectionIndex,
             sectionsJson: sectionsJson,
             isLoaded: true,
             sectionsLocationIndex: sectionsLocationIndex
@@ -127,7 +131,6 @@ class ZoneContent extends Component {
             this.checkAndAddNewUserProgress();
             this.fetchSectionsJson();
             this.getRoomNo();
-            console.log("room updated")
         }
     }
 
@@ -187,6 +190,12 @@ class ZoneContent extends Component {
             })
     }
 
+    goToActiveSection() {
+        this.setState({
+            activeSectionIndex: this.state.currentSectionIndex
+        })
+    }
+
     completeVideo() {
         let { lessonProgress, sectionsLocationIndex, activeSectionIndex } = this.state;
         lessonProgress[sectionsLocationIndex.profileIndex].roadmaps[sectionsLocationIndex.roadmapIndex].paths[sectionsLocationIndex.pathIndex].progress[sectionsLocationIndex.zoneIndex].progress[activeSectionIndex - 1].video = true;
@@ -198,19 +207,19 @@ class ZoneContent extends Component {
         let { profile, roadmap, pathName, zoneName } = sectionsLocation;
         let { profileIndex, roadmapIndex, pathIndex, zoneIndex } = sectionsLocationIndex;
         lessonProgress = this.updateLessonProgressOnExerciseAndUpdateRoomIfRequired(lessonProgress, startTime, exerciseInput, sectionsLocationIndex, activeSectionIndex, exerciseIndex);
-        
+
         let exerciseData = {
             "profile": profile,
             "roadmap": roadmap,
             "pathName": pathName,
             "zoneName": zoneName,
-            "sectionIndex": activeSectionIndex-1,
-            "exerciseIndex": exerciseIndex-1,
-            "timeTaken": lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex-1].endTime - startTime,
+            "sectionIndex": activeSectionIndex - 1,
+            "exerciseIndex": exerciseIndex - 1,
+            "timeTaken": lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex - 1].endTime - startTime,
             "startTime": startTime
         }
         this.updateLessonProgress(lessonProgress, exerciseData);
-        if (this.state.sectionsJson[activeSectionIndex-1].exercises.length === exerciseIndex) {
+        if (this.state.sectionsJson[activeSectionIndex - 1].exercises.length === exerciseIndex) {
             activeSectionIndex++;
         }
         this.setState({
@@ -221,16 +230,20 @@ class ZoneContent extends Component {
         //     this.getRoomNo();
     }
 
-    updateLessonProgressOnExerciseAndUpdateRoomIfRequired(lessonProgress, startTime, exerciseInput, sectionsLocationIndex, activeSectionIndex, exerciseIndex){
-        let updateRoom=false;
+    updateLessonProgressOnExerciseAndUpdateRoomIfRequired(lessonProgress, startTime, exerciseInput, sectionsLocationIndex, activeSectionIndex, exerciseIndex) {
+        let updateRoom = false, isSectionComplete = true;
         let { profileIndex, roadmapIndex, pathIndex, zoneIndex } = sectionsLocationIndex;
-        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex-1].status = true;
-        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex-1].startTime = startTime;
-        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex-1].endTime = Math.round(new Date().getTime() / 1000);
-        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex-1].response.push(exerciseInput);
-        if (lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises.length === exerciseIndex) {
+        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex - 1].status = true;
+        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex - 1].startTime = startTime;
+        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex - 1].endTime = Math.round(new Date().getTime() / 1000);
+        lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[exerciseIndex - 1].response.push(exerciseInput);
+        for(let i=0; i < lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises.length; i++){
+            if(!lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].exercises[i].status)
+            isSectionComplete = false
+        }
+        if (isSectionComplete) {
             lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].status = true;
-            if (lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress.length === activeSectionIndex){
+            if (lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress.length === activeSectionIndex) {
                 lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].status = true
             }
             else
@@ -269,13 +282,16 @@ class ZoneContent extends Component {
     }
 
     render() {
-        const { error, isLoaded, lessonProgress, sectionsJson, activeSectionIndex, room, sectionsLocation, sectionsLocationIndex } = this.state;
+        const { error, isLoaded, lessonProgress, sectionsJson, activeSectionIndex, sectionsLocation, sectionsLocationIndex, currentSectionIndex } = this.state;
+        const { zoneName, helpApis, feedbackApis, email, userName, meetingLink } = this.props;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
-            return <div>Loading...</div>;
+            return <Spinner id='appSpinner'>
+                Loading...
+            </Spinner>
         } else {
-            let sectionsHtml = [], sectionPos = 0, zoneProgress, zoneIndex, moveToNextZone = [];
+            let zoneProgress, moveToNextZone = [];
             zoneProgress = lessonProgress[sectionsLocationIndex.profileIndex].roadmaps[sectionsLocationIndex.roadmapIndex].paths[sectionsLocationIndex.pathIndex].progress[sectionsLocationIndex.zoneIndex].progress;
             // zoneProgress = lessonProgress.find(zone => zone.zoneName === zoneName).zoneProgress;
             // zoneIndex = lessonProgress.findIndex(zone => zone.zoneName === zoneName);
@@ -297,55 +313,20 @@ class ZoneContent extends Component {
             //         </Card>
             //     )
             // }
-            while (sectionPos < sectionsJson.length && zoneProgress[sectionPos].status === true) {
-                let toggleValue = sectionPos + 1;
-                sectionsHtml.push(
-                    <AccordionItem>
-                        <AccordionHeader targetId={toggleValue}>
-                            {sectionsJson[sectionPos].desc}
-                        </AccordionHeader>
-                        <AccordionBody accordionId={toggleValue}>
-                            <ZoneSection completeVideo={this.completeVideo} submitExercise={this.submitExercise} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} helpApis={this.props.helpApis} feedbackApis={this.props.feedbackApis} sectionsLocation={sectionsLocation} sectionIndex={toggleValue-1} email={this.props.email} userName={this.props.userName} sectionsLocationIndex={sectionsLocationIndex} meetingLink={this.props.meetingLink} />
-                        </AccordionBody>
-                    </AccordionItem>
-                );
-                sectionPos++;
-            }
-            if (sectionPos < sectionsJson.length) {
-                let roomInfo = [], toggleValue = sectionPos + 1;
-                // if (activeSectionIndex === sectionPos + 1)
-                //     roomInfo.push(
-                //         <Badge color="primary">{room}</Badge>
-                //     )
-                sectionsHtml.push(
-                    <AccordionItem>
-                        <AccordionHeader targetId={toggleValue}>
-                            {sectionsJson[sectionPos].desc}
-                            {roomInfo}
-                        </AccordionHeader>
-                        <AccordionBody accordionId={toggleValue}>
-                            <ZoneSection completeVideo={this.completeVideo} submitExercise={this.submitExercise} sectionProgress={zoneProgress[sectionPos]} sectionData={sectionsJson[sectionPos]} helpApis={this.props.helpApis} feedbackApis={this.props.feedbackApis} sectionsLocation={sectionsLocation} sectionIndex={toggleValue-1} email={this.props.email} userName={this.props.userName} sectionsLocationIndex={sectionsLocationIndex} meetingLink={this.props.meetingLink} />
-                        </AccordionBody>
-                    </AccordionItem>
-                );
-                sectionPos++;
-            }
-            while (sectionPos < sectionsJson.length) {
-                let toggleValue = sectionPos + 1;
-                sectionsHtml.push(
-                    <AccordionItem>
-                        <AccordionHeader targetId={toggleValue}>
-                            {sectionsJson[sectionPos].desc}
-                        </AccordionHeader>
-                    </AccordionItem>
-                );
-                sectionPos++;
-            }
             return (
-                <div key={this.props.zoneName} className="sections">
+                <div key={zoneName} className="sections">
                     <Link to={`/${sectionsLocation.profile}/${sectionsLocation.roadmap}/${sectionsLocation.pathName}`}><Button color="primary">Back to Home</Button></Link>
-                    <Accordion open={this.state.activeSectionIndex} toggle={this.toggle}>
-                        {sectionsHtml}
+                    <Accordion open={activeSectionIndex} toggle={this.toggle}>
+                        {zoneProgress.map((section, i) => {
+                            return <AccordionItem key={i}>
+                                <AccordionHeader targetId={i + 1}>
+                                    {sectionsJson[i].desc}
+                                </AccordionHeader>
+                                {(section.status || currentSectionIndex === (i + 1)) && <AccordionBody accordionId={i + 1}>
+                                <ZoneSection completeVideo={this.completeVideo} submitExercise={this.submitExercise} sectionProgress={section} sectionData={sectionsJson[i]} helpApis={helpApis} feedbackApis={feedbackApis} sectionsLocation={sectionsLocation} sectionIndex={i} email={email} userName={userName} sectionsLocationIndex={sectionsLocationIndex} meetingLink={meetingLink} goToActiveSection={this.goToActiveSection} />
+                                </AccordionBody>}
+                            </AccordionItem>;
+                        })}
                     </Accordion>
                     {/* {moveToNextZone} */}
                 </div>

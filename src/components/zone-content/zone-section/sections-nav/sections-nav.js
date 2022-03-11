@@ -6,6 +6,31 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Input, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
+class ExerciseNavigation extends Component {
+    render(){
+        const { activeExercise, currentExercise, sectionProgress, goToActiveSection, skipExercise, goToSkippedExercise, nextExercise } = this.props;
+        console.log(sectionProgress)
+        if(sectionProgress.status){
+            return(<Button className="exerciseNavigation" variant="contained" onClick={goToActiveSection}>Go to Active Section</Button>)
+        }
+        else{
+            if(activeExercise === 0){
+                if(!sectionProgress.video)
+                return(<Button className="exerciseNavigation" variant="contained" disabled>Current Exercise</Button>)
+            }
+            else{
+                if(currentExercise === activeExercise && !sectionProgress.exercises[activeExercise-1].status && activeExercise<sectionProgress.exercises.length)
+                return(<Button className="exerciseNavigation" variant="contained" onClick={skipExercise}>Skip Exercise</Button>)
+            }
+            if(currentExercise === activeExercise && activeExercise<sectionProgress.exercises.length && ((activeExercise === 0 && sectionProgress.video) || (activeExercise !== 0 && sectionProgress.exercises[activeExercise-1].status)))
+            return(<Button className="exerciseNavigation" variant="contained" onClick={nextExercise}>Next Exercise</Button>)
+            if(sectionProgress.exercises[sectionProgress.exercises.length-1].status && (activeExercise === 0 || sectionProgress.exercises[activeExercise-1].status))
+            return(<Button className="exerciseNavigation" variant="contained" onClick={goToSkippedExercise}>Skipped Exercise</Button>)
+        }
+        return(<Button className="exerciseNavigation" variant="contained" disabled>Current Exercise</Button>)
+    }
+}
+
 export default class SectionNav extends Component {
     constructor(props) {
         super(props);
@@ -73,45 +98,34 @@ export default class SectionNav extends Component {
     }
 
     render() {
-        const { isActiveSection, currentExercise, activeExercise, isExerciseComplete, nextExercise, changeExercise } = this.props;
+        const { currentExercise, activeExercise, isExerciseComplete, nextExercise, changeExercise, sectionsLocationIndex, meetingLink, sectionProgress, goToActiveSection, skipExercise, goToSkippedExercise } = this.props;
         let menuItems = [], currentNextExercise;
 
-        if (isActiveSection) {
-            if (currentExercise === activeExercise) {
-                if (isExerciseComplete)
-                    currentNextExercise = <Button className="currentNextExercise" variant="contained" onClick={nextExercise}>Start Next Exercise</Button>;
-                else
-                    currentNextExercise = <Button className="currentNextExercise" variant="contained" disabled>Current Exercise</Button>;
-            }
-            else
-                currentNextExercise = <Button className="currentNextExercise" variant="contained" onClick={() => changeExercise(currentExercise)}>Current Exercise</Button>;
-
-        }
-        else {
-            currentNextExercise = <Button className="currentNextExercise" variant="contained" disabled>Current Exercise</Button>;
-        }
-        for (let i = 0; i < currentExercise; i++) {
-            menuItems.push(<MenuItem value={i + 1}>{i + 1}</MenuItem>)
+        for (let i = 0; i <= currentExercise && i<sectionProgress.exercises.length; i++) {
+            let exerciseActionClass=""
+            if(sectionProgress.exercises[i].status)
+            exerciseActionClass="completeExerciseAction"
+            menuItems.push(<MenuItem className={exerciseActionClass} value={i + 1}>{i + 1}</MenuItem>)
         }
         return (<div className="sectionsNav">
             <Button className="viewLesson" variant="contained" onClick={() => changeExercise(0)}>Lesson <AutoStoriesIcon className="iconCsss" /></Button>
-            <div className="emptySpace">Join room Room{this.props.sectionsLocationIndex.zoneIndex + 1} <a href={this.props.meetingLink} target="_blank">here</a></div>
+            <div className="emptySpace">Join room Room{sectionsLocationIndex.zoneIndex + 1} <a href={meetingLink} target="_blank">here</a></div>
             <Button className="shareFeedback" variant="contained" onClick={this.toggleFeedbackWindow}>Share Feedback</Button>
             <div className="exerciseInfo">
                 <div className="exerciseInfo1st">Exercise</div>
                 <Select
                     className="exerciseInfo2nd"
-                    value={this.props.activeExercise}
+                    value={activeExercise}
                     onChange={this.changeExercise}
                     variant="standard"
                     disableUnderline
                 >
                     {menuItems}
                 </Select>
-                <div className="exerciseInfo3rd">of {this.props.totalExercises}</div>
+                <div className="exerciseInfo3rd">of {sectionProgress.exercises.length}</div>
             </div>
             {currentNextExercise}
-
+            <ExerciseNavigation nextExercise={nextExercise} skipExercise={skipExercise} goToSkippedExercise={goToSkippedExercise} currentExercise={currentExercise} activeExercise={activeExercise} isExerciseComplete={isExerciseComplete} sectionProgress={sectionProgress} goToActiveSection={goToActiveSection} />
             <Modal
                 isOpen={this.state.shareFeedbackWindow}
                 toggle={this.toggleFeedbackWindow}
