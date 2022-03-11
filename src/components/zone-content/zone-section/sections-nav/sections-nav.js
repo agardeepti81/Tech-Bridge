@@ -101,7 +101,7 @@ export default class SectionNav extends Component {
         const { currentExercise, activeExercise, isExerciseComplete, nextExercise, changeExercise, sectionsLocationIndex, meetingLink, sectionProgress, goToActiveSection, skipExercise, goToSkippedExercise } = this.props;
         let menuItems = [], currentNextExercise;
 
-        for (let i = 0; i <= currentExercise && i<sectionProgress.exercises.length; i++) {
+        for (let i = 0; i < currentExercise && i<sectionProgress.exercises.length; i++) {
             let exerciseActionClass=""
             if(sectionProgress.exercises[i].status)
             exerciseActionClass="completeExerciseAction"
