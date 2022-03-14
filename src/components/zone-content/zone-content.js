@@ -203,7 +203,7 @@ class ZoneContent extends Component {
     }
 
     submitExercise(exerciseInput, startTime, exerciseIndex) {
-        let { lessonProgress, sectionsLocationIndex, activeSectionIndex, sectionsLocation } = this.state;
+        let { lessonProgress, sectionsLocationIndex, activeSectionIndex, sectionsLocation, currentSectionIndex } = this.state;
         let { profile, roadmap, pathName, zoneName } = sectionsLocation;
         let { profileIndex, roadmapIndex, pathIndex, zoneIndex } = sectionsLocationIndex;
         lessonProgress = this.updateLessonProgressOnExerciseAndUpdateRoomIfRequired(lessonProgress, startTime, exerciseInput, sectionsLocationIndex, activeSectionIndex, exerciseIndex);
@@ -219,12 +219,14 @@ class ZoneContent extends Component {
             "startTime": startTime
         }
         this.updateLessonProgress(lessonProgress, exerciseData);
-        if (this.state.sectionsJson[activeSectionIndex - 1].exercises.length === exerciseIndex) {
+        if (lessonProgress[profileIndex].roadmaps[roadmapIndex].paths[pathIndex].progress[zoneIndex].progress[activeSectionIndex - 1].status && activeSectionIndex === currentSectionIndex) {
             activeSectionIndex++;
+            currentSectionIndex++;
         }
         this.setState({
             lessonProgress: lessonProgress,
-            activeSectionIndex: activeSectionIndex
+            activeSectionIndex: activeSectionIndex,
+            currentSectionIndex: currentSectionIndex
         })
         // if (updateRoom)
         //     this.getRoomNo();

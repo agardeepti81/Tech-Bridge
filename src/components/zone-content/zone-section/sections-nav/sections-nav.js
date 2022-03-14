@@ -9,7 +9,6 @@ import { Input, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 class ExerciseNavigation extends Component {
     render(){
         const { activeExercise, currentExercise, sectionProgress, goToActiveSection, skipExercise, goToSkippedExercise, nextExercise } = this.props;
-        console.log(sectionProgress)
         if(sectionProgress.status){
             return(<Button className="exerciseNavigation" variant="contained" onClick={goToActiveSection}>Go to Active Section</Button>)
         }
@@ -81,14 +80,12 @@ export default class SectionNav extends Component {
             body: feedback,
             redirect: 'follow'
         };
-        console.log(this.props)
         fetch(this.props.feedbackApis.sendFeedback, requestOptions)
             .then(response => response.json())
             .then(response => {
                 this.setState({
                     shareFeedbackWindow: false
                 })
-                console.log(response);
                 alert("Thanks for sharing your valuable feedback");
             })
             .catch(error => {

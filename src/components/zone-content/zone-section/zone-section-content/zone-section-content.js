@@ -175,7 +175,7 @@ export default class ZoneSectionContent extends Component {
         const { improveAnswer, solutions, askedProblem, helpWindowActiveProblem } = this.state;
         const completeVideoButtton = [], exerciseData = sectionData.exercises, zoneSectionContent=[];
         if (!sectionProgress.video)
-            completeVideoButtton.push(<Button color="primary" onClick={this.props.completeVideo}>Mark Video as complete</Button>)
+            completeVideoButtton.push(<Button color="primary" id="videoCompleteButton" onClick={this.props.completeVideo}>Mark Video as complete</Button>)
         if (activeExercise == 0)
             zoneSectionContent.push(<div className="videoView">
                 <video width="600" controls>

@@ -108,3 +108,7 @@
 .videoView {
     text-align: center;
 }
+
+#videoCompleteButton {
+    margin-right: 5px;
+}
