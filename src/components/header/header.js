@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarText, Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
+import Login from "../login/login"
 
 class Header extends Component {
     constructor(props) {
@@ -62,6 +63,9 @@ class Header extends Component {
                     </Dropdown>
                 </NavbarText>
             )
+        }
+        else if (window.screen.width > 768){
+            userToggle.push(<Login loginApis={this.props.loginApis} getLessonProgressEmailAndUserName={this.props.getLessonProgressEmailAndUserName} />);
         }
         return (
             <div id="navbar">

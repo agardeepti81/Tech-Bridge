@@ -2,7 +2,7 @@ import './App.css';
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Spinner } from 'reactstrap';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Header from './components/header/header';
 import MainRoute from './components/main/main';
@@ -49,7 +49,7 @@ class App extends Component {
     })
   }
 
-  updateLessonProgress(lessonProgress){
+  updateLessonProgress(lessonProgress) {
     this.setState({
       lessonProgress: lessonProgress
     })
@@ -59,17 +59,15 @@ class App extends Component {
     if (this.state.baseFile)
       return (
         <div className="App">
-          <Router>
-            <Header userName={this.state.userName} email={this.state.email} logoutApi={this.state.baseFile.apis.login.logout} logout={this.logout} />
-            <Routes>
-              <Route exact path="/" element={<Navigate to="/start-page" />} />
-              <Route exact path="/start-page" element={<StartPage signUpApis={this.state.baseFile.apis.signUp} loginApis={this.state.baseFile.apis.login} getLessonProgressEmailAndUserName={this.getLessonProgressEmailAndUserName} />} />
-              <Route exact path="/facilitator" element={<Facilitator facilitatorApis={this.state.baseFile.apis.facilitator} />} />
-              <Route exact path="/home" element={<Home lessonProgress={this.state.lessonProgress} />} />
-              <Route exact path="/:profile/:roadmap/:pathName" element={<MainRoute lessonProgress={this.state.lessonProgress} />} />
-              <Route exact path="/:profile/:roadmap/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} userName={this.state.userName} updateLessonProgress={this.updateLessonProgress} helpApis={this.state.baseFile.apis.help} meetingLink={this.state.baseFile.meetingLink} feedbackApis={this.state.baseFile.apis.feedback} />} />
-            </Routes>
-          </Router>
+          <Header userName={this.state.userName} email={this.state.email} logoutApi={this.state.baseFile.apis.login.logout} logout={this.logout} loginApis={this.state.baseFile.apis.login} getLessonProgressEmailAndUserName={this.getLessonProgressEmailAndUserName} />
+          <Routes>
+            <Route exact path="/" element={<Navigate to="/start-page" />} />
+            <Route exact path="/start-page" element={<StartPage signUpApis={this.state.baseFile.apis.signUp} getLessonProgressEmailAndUserName={this.getLessonProgressEmailAndUserName} />} />
+            <Route exact path="/facilitator" element={<Facilitator facilitatorApis={this.state.baseFile.apis.facilitator} />} />
+            <Route exact path="/home" element={<Home lessonProgress={this.state.lessonProgress} />} />
+            <Route exact path="/:profile/:roadmap/:pathName" element={<MainRoute lessonProgress={this.state.lessonProgress} />} />
+            <Route exact path="/:profile/:roadmap/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} userName={this.state.userName} updateLessonProgress={this.updateLessonProgress} helpApis={this.state.baseFile.apis.help} meetingLink={this.state.baseFile.meetingLink} feedbackApis={this.state.baseFile.apis.feedback} />} />
+          </Routes>
         </div>
       );
     else

@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import "./signup.css";
 
 const NavigateToHome = ({ nav, role }) => {
     const navigate = useNavigate();
 
     if (nav) {
-        navigate('/home');
+        navigate('/agile-sd/roadmap1/foundation/Zone-1');
     }
 
     return (
@@ -14,6 +15,76 @@ const NavigateToHome = ({ nav, role }) => {
     );
 }
 
+// import React, { useState } from 'react';
+// import UserPool from "../UserPool";
+// import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+
+// const SignUp = () => {
+//     const [email, setEmail] = useState('');
+//     const [password, setPassword] = useState('');
+
+//     const onSubmit = event => {
+//         event.preventDefault();
+
+//         UserPool.signUp(email, password, [], null, (err, data) => {
+//             if (err) console.error(err);
+//             console.log(data);
+//         });
+//     };
+
+//     return (
+//         <div id="signup">
+//             <h1>Sign up to start your journey</h1>
+//             <Form onSubmit={onSubmit}>
+//                 <Input
+//                     id="signupEmail"
+//                     name="email"
+//                     placeholder="Enter your email ID"
+//                     type="email"
+//                     value={email}
+//                     onChange={event => setEmail(event.target.value)}
+//                 />
+
+//                 {/* <Input
+//                     id="signupUserName"
+//                     name="UserName"
+//                     placeholder="Enter your User Name"
+//                     type="text"
+//                     innerRef={(input) => this.userName = input}
+//                 /> */}
+//                 <Input
+//                     id="signupPassword"
+//                     name="password"
+//                     placeholder="Enter password"
+//                     type="password"
+//                     value={password}
+//                     onChange={event => setPassword(event.target.value)}
+//                 />
+//                 {/* <Input
+//                     id="signupConfirmPassword"
+//                     name="confirmPassword"
+//                     placeholder="Re-Enter your password"
+//                     type="password"
+//                     innerRef={(input) => this.confirmPassword = input}
+//                 /> */}
+//             <Button type="submit" color="primary">
+//                 Create Your Account
+//             </Button>
+//             {/* <input
+//                 value={email}
+//                 onChange={event => setEmail(event.target.value)}
+//             />
+
+//             <input
+//                 value={password}
+//                 onChange={event => setPassword(event.target.value)}
+//             />
+
+//             <button type='submit'>Signup</button> */}
+//         </Form>
+//     </div >
+//   );
+// };
 
 class SignUp extends Component {
     constructor(props) {
@@ -88,7 +159,7 @@ class SignUp extends Component {
             .then(response => {
                 let result = JSON.parse(response);
                 if (result.statusCode === 200) {
-                    const lessonProgress =[];
+                    const lessonProgress = [];
                     this.props.getLessonProgressEmailAndUserName(lessonProgress, email, userName);
                     this.setState({
                         navigate: true
@@ -104,48 +175,46 @@ class SignUp extends Component {
     render() {
         return (
             <div id="signup">
-                <h1>Sign up to start your journey</h1>
-                <Form onSubmit={this.signUpAccount}>
-                    <FormGroup>
+                <div id="signupBody">
+                    <div className="title">Start your free course now:</div>
+                    <Form onSubmit={this.signUpAccount}>
                         <Input
+                            className="signUpInput"
                             id="signupEmail"
                             name="email"
                             placeholder="Enter your email ID"
                             type="email"
                             innerRef={(input) => this.email = input}
                         />
-                    </FormGroup>
-                    <FormGroup>
                         <Input
+                            className="signUpInput"
                             id="signupUserName"
                             name="UserName"
                             placeholder="Enter your User Name"
                             type="text"
                             innerRef={(input) => this.userName = input}
                         />
-                    </FormGroup>
-                    <FormGroup>
                         <Input
+                            className="signUpInput"
                             id="signupPassword"
                             name="password"
                             placeholder="Enter password"
                             type="password"
                             innerRef={(input) => this.password = input}
                         />
-                    </FormGroup>
-                    <FormGroup>
                         <Input
+                            className="signUpInput"
                             id="signupConfirmPassword"
                             name="confirmPassword"
                             placeholder="Re-Enter your password"
                             type="password"
                             innerRef={(input) => this.confirmPassword = input}
                         />
-                    </FormGroup>
-                    <Button type="submit" color="primary">
-                        Create Your Account
-                    </Button>
-                </Form>
+                        <Button type="submit" color="primary">
+                            Let's start your course
+                        </Button>
+                    </Form>
+                </div>
                 <NavigateToHome nav={this.state.navigate} />
             </div>
         )

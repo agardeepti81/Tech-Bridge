@@ -1,83 +1,56 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import "./login.css";
+import { Form, Input, Button } from "reactstrap";
 
-const NavigateToHome = ({ nav, role }) => {
+const Login = (props) => {
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
     const navigate = useNavigate();
-
-    if (nav) {
-        if (role === "Learner")
-            navigate('/home');
-        else if (role === "Facilitator")
-            navigate('/facilitator');
-        else
-            alert("Some error occured");
-    }
-
-    return (
-        <></>
-    );
-}
-
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            navigate: false,
-            role: ""
-        }
-        this.login = this.login.bind(this);
-    }
-    login(event) {
-        event.preventDefault();
-        fetch(`${this.props.loginApis.loginUser}?email=${this.email.value.trim()}&password=${this.password.value}`)
+    const handleLogin = (e) => {
+        e.preventDefault();
+        fetch(`${props.loginApis.loginUser}?email=${email.trim()}&password=${password}`)
             .then(res => res.json())
             .then(
                 (result) => {
                     if (result.authorized) {
-                        this.props.getLessonProgressEmailAndUserName(result.lessonProgress, this.email.value.trim(), result.name);
-                        this.setState({
-                            navigate: true,
-                            role: result.role
-                        })
+                        props.getLessonProgressEmailAndUserName(result.lessonProgress, email.trim(), result.name);
+                        if (result.role === "Learner")
+                            navigate('/agile-sd/roadmap1/foundation/Zone-1');
+                        else if (result.role === "Facilitator")
+                            navigate('/facilitator');
+
                     }
                     else
                         alert("Incorrect email or password");
                 }
             )
     }
-
-    render() {
-        return (
-            <div id="login">
-                <h1>Login to your account</h1>
-                <Form onSubmit={this.login}>
-                    <FormGroup>
-                        <Input
-                            id="loginEmail"
-                            name="email"
-                            placeholder="Enter your email ID"
-                            type="email"
-                            innerRef={(input) => this.email = input}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Input
-                            id="loginPassword"
-                            name="password"
-                            placeholder="Enter password"
-                            type="password"
-                            innerRef={(input) => this.password = input}
-                        />
-                    </FormGroup>
-                    <Button type="submit" color="primary">
-                        Login
-                    </Button>
-                    <NavigateToHome nav={this.state.navigate} role={this.state.role} />
-                </Form>
-            </div>
-        )
-    }
+    return (
+        <div id="login">
+            <Form id="loginForm" onSubmit={handleLogin}>
+                <Input
+                    className="loginElement"
+                    placeholder="Enter your email ID"
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                />
+                <Input
+                    className="loginElement"
+                    placeholder="Enter password"
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
+                <Button className="loginElement" id="loginAction" type="submit" color="primary">
+                    Login
+                </Button>
+            </Form>
+        </div>
+    );
 }
 
 export default Login;

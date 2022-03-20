@@ -317,7 +317,7 @@ class ZoneContent extends Component {
             // }
             return (
                 <div key={zoneName} className="sections">
-                    <Link to={`/${sectionsLocation.profile}/${sectionsLocation.roadmap}/${sectionsLocation.pathName}`}><Button color="primary">Back to Home</Button></Link>
+                    {/* <Link to={`/${sectionsLocation.profile}/${sectionsLocation.roadmap}/${sectionsLocation.pathName}`}><Button color="primary">Back to Home</Button></Link> */}
                     <Accordion open={activeSectionIndex} toggle={this.toggle}>
                         {zoneProgress.map((section, i) => {
                             return <AccordionItem key={i}>
