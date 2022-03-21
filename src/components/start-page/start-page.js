@@ -8,14 +8,14 @@ class StartPage extends Component {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
-    
+
     render() {
         return (<div>
             <div className="mainpage" id='start_page'>
                 <div id="title"><h1>Want to learn to Code?</h1></div>
                 <div id="subtitle"><p>Learn to Code for Free with Our Foundation Course Today</p></div>
                 <div id="main">
-                    {window.screen.width < 768 && <SignUp signUpApis={this.props.signUpApis} getLessonProgressEmailAndUserName={this.props.getLessonProgressEmailAndUserName}/>}
+                    {window.screen.width < 768 && <SignUp signUpApis={this.props.signUpApis} getLessonProgressEmailAndUserName={this.props.getLessonProgressEmailAndUserName} />}
                     <div id="content">
                         <div id="content-head">What is this Free Course About?</div>
                         <div id="content-info">
@@ -30,7 +30,7 @@ class StartPage extends Component {
                             </ul>
                         </div>
                     </div>
-                    {window.screen.width >= 768 && <SignUp signUpApis={this.props.signUpApis} getLessonProgressEmailAndUserName={this.props.getLessonProgressEmailAndUserName}/>}
+                    {window.screen.width >= 768 && <SignUp signUpApis={this.props.signUpApis} getLessonProgressEmailAndUserName={this.props.getLessonProgressEmailAndUserName} />}
                 </div>
                 <div id="certificate">
                     <div className="head">Free Course Completion Certificate</div>
@@ -47,6 +47,11 @@ class StartPage extends Component {
             </div>
             <div id="footer">
                 <Button id="footerButton" variant='contained' onClick={this.moveToTop}>Sign Up For the Free Course</Button>
+                <div><a href="mailto:sakhilearn@gmail.com" class="strong">sakhilearn@gmail.com</a></div>
+                <div><a href="https://www.google.com/maps/place/SG+Beta+Tower/@28.667001,77.3814773,17z/data=!3m1!4b1!4m5!3m4!1s0x390cf0740ec8d2cf:0x5ef5cff2a183e57!8m2!3d28.6670086!4d77.3836584" class="strong">
+                    21, SG Beta Tower, Secor 3, Vasundhara, Ghaziabad, UP, India 201012
+                </a></div>
+                <div><a href="https://twitter.com/sakhilearn" class="strong">@sakhilearn</a></div>
             </div>
         </div>)
     }
