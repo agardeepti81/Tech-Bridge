@@ -10,6 +10,10 @@ import ZoneRoute from './components/zone-content/zone-content'
 import StartPage from './components/start-page/start-page';
 import Home from './components/home/home';
 import Facilitator from './components/facilitator/facilitator';
+import ReactGA from 'react-ga';
+
+const TRACKING_ID = process.env.REACT_APP_ANALYTICS_TRACKING_ID; // OUR_TRACKING_ID
+ReactGA.initialize(TRACKING_ID);
 
 class App extends Component {
   constructor(props) {
@@ -34,7 +38,13 @@ class App extends Component {
           });
         }
       )
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
+
+  componentDidUpdate() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
   getLessonProgressEmailAndUserName(lessonProgress, email, userName) {
     this.setState({
       lessonProgress: lessonProgress,

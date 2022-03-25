@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { Form, Input, Button } from "reactstrap";
+import ReactGA from "react-ga";
 
 const Login = (props) => {
     const [email, setEmail] = useState();
@@ -9,6 +10,10 @@ const Login = (props) => {
     const navigate = useNavigate();
     const handleLogin = (e) => {
         e.preventDefault();
+        ReactGA.event({
+            category: 'Start Page',
+            action: 'Login'
+        });
         fetch(`${props.loginApis.loginUser}?email=${email.trim()}&password=${password}`)
             .then(res => res.json())
             .then(

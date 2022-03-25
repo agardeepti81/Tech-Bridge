@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import "./signup.css";
+import ReactGA from 'react-ga';
 
 const NavigateToHome = ({ nav, role }) => {
     const navigate = useNavigate();
@@ -161,6 +162,10 @@ class SignUp extends Component {
                 if (result.statusCode === 200) {
                     const lessonProgress = [];
                     this.props.getLessonProgressEmailAndUserName(lessonProgress, email, userName);
+                    ReactGA.event({
+                        category: 'Start Page',
+                        action: 'Sign Up'
+                    });
                     this.setState({
                         navigate: true
                     })
