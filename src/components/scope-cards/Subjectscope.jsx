@@ -6,6 +6,20 @@ class SubjectScope extends Component {
   state = {
     categories: null,
     loading: true,
+    progress: [
+      {
+        name: "singleandmultipleinheritance",
+        selected: [false, true, false, false, true, false, false, true],
+      },
+      {
+        name: "templates",
+        selected: [false, true, false, true],
+      },
+      {
+        name: "references",
+        selected: [false, true, false],
+      },
+    ],
   };
 
   async componentDidUpdate() {
@@ -80,6 +94,9 @@ class SubjectScope extends Component {
                   <TopicTiles
                     topic={element}
                     changeTopicView={this.props.changeTopicView}
+                    progressTopicid={this.state.progress.find(
+                      (topicProgress) => topicProgress.name == element.id
+                    )}
                   />
                 ))}
               </Col>
