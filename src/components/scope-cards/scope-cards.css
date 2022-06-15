@@ -1,0 +1,47 @@
+#scope-window {
+  width: 100%;
+  display: flex;
+}
+
+#scopeSelection {
+  width: 15%;
+  height: 90vh;
+  overflow-y: scroll;
+}
+
+#scopeView {
+  width: 85%;
+  height: 90vh;
+  overflow-y: scroll;
+}
+
+.subjectCard {
+  text-align: center;
+  padding: 10px;
+}
+
+.subjectLogo{
+  height: 50px;
+}
+
+.cardstyle{
+  max-width: 30%;
+  float: left;
+}
+
+.questionTable{
+  margin: 20px;
+}
+
+#message{
+  text-align: center;
+  margin-top: 300px;
+  font-size: 25px;
+}
+
+#topictitle {
+  text-align: left;
+  font-size: 40px;
+  font-weight: 430;
+  margin: 10px 61px;
+}
