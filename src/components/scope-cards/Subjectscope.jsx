@@ -31,15 +31,11 @@ class SubjectScope extends Component {
     //this.getProgressData();
     if (prevProps.currentScope != this.props.currentScope) {
       let email = "deepti7206@gmail.com";
-      const url =
-        process.env.PUBLIC_URL +
-        `/data/scope-cards/Subjects/${this.props.currentScope}/topics.json`;
+      const url = process.env.PUBLIC_URL + `/data/scope-cards/Subjects/${this.props.currentScope}/topics.json`;
       const response = await fetch(url);
       const data = await response.json();
       let categories = {};
-
-      const progress_url =
-        `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.currentScope}`;
+      const progress_url = `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.currentScope}`;
       const response_progress = await fetch(progress_url);
       const data_progress = await response_progress.json();
       console.log(data_progress);
@@ -54,7 +50,7 @@ class SubjectScope extends Component {
         categories: categories,
         loading: false,
         viewTopic: false,
-        progress: data_progress.body.Item.progress,
+        progress: data_progress.progress,
       });
     }
   }
@@ -64,20 +60,15 @@ class SubjectScope extends Component {
     let email = "deepti7206@gmail.com";
     let categories = null;
     let data_progress = [];
-    if (!this.props.currentScope) {
-      const url =
-        process.env.PUBLIC_URL +
-        `/data/scope-cards/Subjects/${this.props.currentScope}/topics.json`;
+    if (this.props.currentScope) {
+      const url = process.env.PUBLIC_URL + `/data/scope-cards/Subjects/${this.props.currentScope}/topics.json`;
       const response = await fetch(url);
       const data = await response.json();
       categories = {};
-
-      console.log(this.props.currentScope);
-      const progress_url =
-        `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.currentScope}`;
+      const progress_url = `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.currentScope}`;
       const response_progress = await fetch(progress_url);
       data_progress = await response_progress.json();
-      console.log(data_progress);
+      data_progress = data_progress.progress;
 
       data.forEach((topic) => {
         if (!(topic.category in categories)) categories[topic.category] = [];
@@ -88,7 +79,7 @@ class SubjectScope extends Component {
     this.setState({
       categories: categories,
       loading: false,
-      progress: data_progress.body.Item.progress
+      progress: data_progress
     });
   }
 
@@ -106,13 +97,26 @@ class SubjectScope extends Component {
   changeProgress = (topicid, index) => {
     let changedProgress = this.state.progress;
     for (let i = 0; i < changedProgress.length; i++) {
-      if (changedProgress[i].name == topicid) {
+      if (changedProgress[i].id == topicid) {
         changedProgress[i].selected[index] =
           !changedProgress[i].selected[index];
       }
     }
     this.setState({ progress: changedProgress });
+    //Push this progress to Server
   };
+
+  setNewTopicProgress = (topicId, newTopicProgress) => {
+    let progress = this.state.progress;
+    let newTopicProgressUpdate = {
+      "topic_id": topicId,
+      "completed": newTopicProgress
+    }
+    progress.push(newTopicProgressUpdate);
+    this.setState({
+      progress: progress
+    })
+  }
 
   changeTopicView = (topicId, topicName) => {
     this.setState({
@@ -184,6 +188,7 @@ class SubjectScope extends Component {
             )}
             back={this.toggleTopicView}
             changeProgress={this.changeProgress}
+            setNewTopicProgress={this.setNewTopicProgress}
           />
         ) : (
           <div>
