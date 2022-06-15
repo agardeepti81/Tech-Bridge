@@ -10,30 +10,39 @@ class SubjectScope extends Component {
     activeTopicName: null,
     categories: null,
     loading: true,
-    progress: [
-      {
-        name: "singleandmultipleinheritance",
-        selected: [false, true, false, false, true, false, false, true],
-      },
-      {
-        name: "templates",
-        selected: [false, true, false, true],
-      },
-      {
-        name: "references",
-        selected: [false, true, false],
-      },
-    ],
+    progress: [],
+    // progress: [
+    //   {
+    //     name: "singleandmultipleinheritance",
+    //     selected: [false, true, false, false, true, false, false, true],
+    //   },
+    //   {
+    //     name: "templates",
+    //     selected: [false, true, false, true],
+    //   },
+    //   {
+    //     name: "references",
+    //     selected: [false, true, false],
+    //   },
+    // ],
   };
 
   async componentDidUpdate(prevProps) {
+    //this.getProgressData();
     if (prevProps.currentScope != this.props.currentScope) {
+      let email = "deepti7206@gmail.com";
       const url =
         process.env.PUBLIC_URL +
         `/data/scope-cards/Subjects/${this.props.currentScope}/topics.json`;
       const response = await fetch(url);
       const data = await response.json();
       let categories = {};
+
+      const progress_url =
+        `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.currentScope}`;
+      const response_progress = await fetch(progress_url);
+      const data_progress = await response_progress.json();
+      console.log(data_progress);
 
       data.forEach((topic) => {
         if (!(topic.category in categories)) categories[topic.category] = [];
@@ -45,12 +54,16 @@ class SubjectScope extends Component {
         categories: categories,
         loading: false,
         viewTopic: false,
+        progress: data_progress.body.Item.progress,
       });
     }
   }
 
   async componentDidMount() {
+    // this.getProgressData();
+    let email = "deepti7206@gmail.com";
     let categories = null;
+    let data_progress = [];
     if (!this.props.currentScope) {
       const url =
         process.env.PUBLIC_URL +
@@ -58,6 +71,13 @@ class SubjectScope extends Component {
       const response = await fetch(url);
       const data = await response.json();
       categories = {};
+
+      console.log(this.props.currentScope);
+      const progress_url =
+        `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.currentScope}`;
+      const response_progress = await fetch(progress_url);
+      data_progress = await response_progress.json();
+      console.log(data_progress);
 
       data.forEach((topic) => {
         if (!(topic.category in categories)) categories[topic.category] = [];
@@ -68,18 +88,31 @@ class SubjectScope extends Component {
     this.setState({
       categories: categories,
       loading: false,
+      progress: data_progress.body.Item.progress
     });
+  }
+
+  getProgressData = () => {
+    console.log(this.props.currentScope)
+    let email = "deepti7206@gmail.com";
+    let data_progress = [];
+    const progress_url =
+    `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.currentScope}`;
+    const response_progress = fetch(progress_url);
+    data_progress = response_progress.json();
+    this.setState({progress: data_progress.body.Item.progress});
   }
 
   changeProgress = (topicid, index) => {
     let changedProgress = this.state.progress;
     for (let i = 0; i < changedProgress.length; i++) {
       if (changedProgress[i].name == topicid) {
-        changedProgress[i].selected[index] = !changedProgress[i].selected[index];
+        changedProgress[i].selected[index] =
+          !changedProgress[i].selected[index];
       }
     }
     this.setState({ progress: changedProgress });
-  }
+  };
 
   changeTopicView = (topicId, topicName) => {
     this.setState({
