@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import TopicTiles from "./TopicTiles";
+import TopicQuestions from "./TopicQuestions";
 
 class SubjectScope extends Component {
   state = {
+    viewTopic: false,
+    activeTopicId: false,
+    activeTopicName: null,
     categories: null,
     loading: true,
     progress: [
@@ -22,24 +26,27 @@ class SubjectScope extends Component {
     ],
   };
 
-  async componentDidUpdate() {
-    const url =
-      process.env.PUBLIC_URL +
-      `/data/scope-cards/Subjects/${this.props.currentScope}/topics.json`;
-    const response = await fetch(url);
-    const data = await response.json();
-    let categories = {};
+  async componentDidUpdate(prevProps) {
+    if (prevProps.currentScope != this.props.currentScope) {
+      const url =
+        process.env.PUBLIC_URL +
+        `/data/scope-cards/Subjects/${this.props.currentScope}/topics.json`;
+      const response = await fetch(url);
+      const data = await response.json();
+      let categories = {};
 
-    data.forEach((topic) => {
-      if (!(topic.category in categories)) categories[topic.category] = [];
+      data.forEach((topic) => {
+        if (!(topic.category in categories)) categories[topic.category] = [];
 
-      categories[topic.category].push({ name: topic.name, id: topic.id });
-    });
+        categories[topic.category].push({ name: topic.name, id: topic.id });
+      });
 
-    this.setState({
-      categories: categories,
-      loading: false,
-    });
+      this.setState({
+        categories: categories,
+        loading: false,
+        viewTopic: false,
+      });
+    }
   }
 
   async componentDidMount() {
@@ -63,6 +70,28 @@ class SubjectScope extends Component {
       loading: false,
     });
   }
+
+  changeProgress = (topicid, index) => {
+    let changedProgress = this.state.progress;
+    for (let i = 0; i < changedProgress.length; i++) {
+      if (changedProgress[i].name == topicid) {
+        changedProgress[i].selected[index] = !changedProgress[i].selected[index];
+      }
+    }
+    this.setState({ progress: changedProgress });
+  }
+
+  changeTopicView = (topicId, topicName) => {
+    this.setState({
+      activeTopicId: topicId,
+      activeTopicName: topicName,
+    });
+    this.toggleTopicView();
+  };
+
+  toggleTopicView = () => {
+    this.setState({ viewTopic: !this.state.viewTopic });
+  };
 
   render() {
     const categoriesHTML = [];
@@ -93,7 +122,7 @@ class SubjectScope extends Component {
                 {this.state.categories[category].map((element) => (
                   <TopicTiles
                     topic={element}
-                    changeTopicView={this.props.changeTopicView}
+                    changeTopicView={this.changeTopicView}
                     progressTopicid={this.state.progress.find(
                       (topicProgress) => topicProgress.name == element.id
                     )}
@@ -112,8 +141,23 @@ class SubjectScope extends Component {
       return <div>loading... </div>;
     return (
       <div>
-        <p id="topictitle">{this.props.currentScopeName}</p>
-        {categoriesHTML}
+        {this.state.viewTopic ? (
+          <TopicQuestions
+            activeTopicId={this.state.activeTopicId}
+            activeTopicName={this.state.activeTopicName}
+            currentScope={this.props.currentScope}
+            progressTopicid={this.state.progress.find(
+              (topicProgress) => topicProgress.name == this.state.activeTopicId
+            )}
+            back={this.toggleTopicView}
+            changeProgress={this.changeProgress}
+          />
+        ) : (
+          <div>
+            <p id="topictitle">{this.props.currentScopeName}</p>
+            {categoriesHTML}
+          </div>
+        )}
       </div>
     );
   }

@@ -12,9 +12,9 @@ class ScopeView extends Component {
     loading: true,
     data: null,
     currentScope: null,
-    viewTopic: false,
-    activeTopicId: false,
-    activeTopicName: null,
+    // viewTopic: false,
+    // activeTopicId: false,
+    // activeTopicName: null,
     currentScopeName: null
   };
 
@@ -23,28 +23,27 @@ class ScopeView extends Component {
     const response = await fetch(url);
     const data = await response.json();
     this.setState({ data: data, loading: false });
-    console.log(data);
   }
 
   changeActiveScope = (scopeId, scopeName) => {
     this.setState({
       currentScope: scopeId,
       currentScopeName: scopeName,
-      viewTopic: false,
+      // viewTopic: false,
     });
   };
 
-  changeTopicView = (topicId, topicName) => {
-    this.setState({
-      activeTopicId: topicId,
-      activeTopicName: topicName
-    });
-    this.toggleTopicView();
-  };
+  // changeTopicView = (topicId, topicName) => {
+  //   this.setState({
+  //     activeTopicId: topicId,
+  //     activeTopicName: topicName
+  //   });
+  //   // this.toggleTopicView();
+  // };
 
-  toggleTopicView = () => {
-    this.setState({ viewTopic: !this.state.viewTopic });
-  };
+  // toggleTopicView = () => {
+  //   this.setState({ viewTopic: !this.state.viewTopic });
+  // };
 
   render() {
     if (this.state.loading || !this.state.data) return <div>loading...</div>;
@@ -60,20 +59,20 @@ class ScopeView extends Component {
           ))}
         </div>
         <div id="scopeView">
-          {this.state.viewTopic ? (
+          {/* {this.state.viewTopic ? (
             <TopicQuestions
               activeTopicId={this.state.activeTopicId}
               activeTopicName={this.state.activeTopicName}
               currentScope={this.state.currentScope}
               back={this.toggleTopicView}
-            />
-          ) : (
+            /> */}
+          {/* ) : ( */}
             <SubjectScope
               currentScope={this.state.currentScope}
               currentScopeName={this.state.currentScopeName}
-              changeTopicView={this.changeTopicView}
+              // changeTopicView={this.changeTopicView}
             />
-          )}
+          {/* )} */}
         </div>
       </div>
     );

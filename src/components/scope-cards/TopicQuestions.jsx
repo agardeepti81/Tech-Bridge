@@ -5,11 +5,17 @@ class TopicQuestions extends Component {
   state = { data: null, loading: true };
 
   async componentDidMount() {
-    const url = process.env.PUBLIC_URL + `/data/scope-cards/Subjects/${this.props.currentScope}/${this.props.activeTopicId}.json`;
+    const url =
+      process.env.PUBLIC_URL +
+      `/data/scope-cards/Subjects/${this.props.currentScope}/${this.props.activeTopicId}.json`;
     const response = await fetch(url);
     const data = await response.json();
     this.setState({ data: data, loading: false });
-    console.log(data);
+  }
+
+  changeProgress(index)
+  {
+    this.props.changeProgress(this.props.progressTopicid.name, index)
   }
 
   render() {
@@ -30,7 +36,11 @@ class TopicQuestions extends Component {
             {this.state.data.map((qus, i) => (
               <tr>
                 <td>
-                  <input type="checkbox" />
+                  {this.props.progressTopicid.selected[i] ? (
+                    <input type="checkbox" checked onClick={() => this.changeProgress(i)}/>
+                  ) : (
+                    <input type="checkbox" onClick={() => this.changeProgress(i)} />
+                  )}
                 </td>
                 <td>{i + 1}</td>
                 <td>{qus}</td>
