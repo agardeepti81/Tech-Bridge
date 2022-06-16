@@ -11,33 +11,18 @@ class SubjectScope extends Component {
     categories: null,
     loading: true,
     progress: [],
-    // progress: [
-    //   {
-    //     name: "singleandmultipleinheritance",
-    //     selected: [false, true, false, false, true, false, false, true],
-    //   },
-    //   {
-    //     name: "templates",
-    //     selected: [false, true, false, true],
-    //   },
-    //   {
-    //     name: "references",
-    //     selected: [false, true, false],
-    //   },
-    // ],
   };
 
   async componentDidUpdate(prevProps) {
-    //this.getProgressData();
-    if (prevProps.currentScope != this.props.currentScope) {
-      let email = "testemail@gmail.com";
+    if (prevProps.activeSubjectId != this.props.activeSubjectId) {
+      let email = this.props.email;
       const url =
         process.env.PUBLIC_URL +
-        `/data/scope-cards/Subjects/${this.props.currentScope}/topics.json`;
+        `/data/scope-cards/Subjects/${this.props.activeSubjectId}/topics.json`;
       const response = await fetch(url);
       const data = await response.json();
       let categories = {};
-      const progress_url = `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.currentScope}`;
+      const progress_url = `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.activeSubjectId}`;
       const response_progress = await fetch(progress_url);
       const data_progress = await response_progress.json();
       data.forEach((topic) => {
@@ -56,18 +41,17 @@ class SubjectScope extends Component {
   }
 
   async componentDidMount() {
-    // this.getProgressData();
-    let email = "deepti7206@gmail.com";
+    let email = this.props.email;
     let categories = null;
     let data_progress = [];
-    if (this.props.currentScope) {
+    if (this.props.activeSubjectId) {
       const url =
         process.env.PUBLIC_URL +
-        `/data/scope-cards/Subjects/${this.props.currentScope}/topics.json`;
+        `/data/scope-cards/Subjects/${this.props.activeSubjectId}/topics.json`;
       const response = await fetch(url);
       const data = await response.json();
       categories = {};
-      const progress_url = `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.currentScope}`;
+      const progress_url = `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.activeSubjectId}`;
       const response_progress = await fetch(progress_url);
       data_progress = await response_progress.json();
       data_progress = data_progress.progress;
@@ -86,9 +70,9 @@ class SubjectScope extends Component {
   }
 
   getProgressData = () => {
-    let email = "testemail@gmail.com";
+    let email = this.props.email;
     let data_progress = [];
-    const progress_url = `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.currentScope}`;
+    const progress_url = `https://bbjzmgdir5.execute-api.ap-south-1.amazonaws.com/dev/scope-cards?email=${email}&subject_id=${this.props.activeSubjectId}`;
     const response_progress = fetch(progress_url);
     data_progress = response_progress.json();
     this.setState({ progress: data_progress.body.Item.progress });
@@ -105,10 +89,10 @@ class SubjectScope extends Component {
     }
     this.setState({ progress: changedProgress });
     //Push this progress to Server
-    let email = "testemail@gmail.com";
+    let email = this.props.email;
     let progressUpdate = JSON.stringify({
       "email": email,
-      "subject_id": this.props.currentScope,
+      "subject_id": this.props.activeSubjectId,
       "progress": changedProgress
     })
     let myHeaders = new Headers();
@@ -197,17 +181,17 @@ class SubjectScope extends Component {
         </div>
       );
     }
-    if (!this.props.currentScope)
+    if (!this.props.activeSubjectId)
       return <div id="message">Please click on subject to view scope</div>;
     if (this.state.loading || !this.state.categories)
       return <div>loading... </div>;
     return (
-      <div key={this.props.currentScope}>
+      <div key={this.props.activeSubjectId}>
         {this.state.viewTopic ? (
           <TopicQuestions
             activeTopicId={this.state.activeTopicId}
             activeTopicName={this.state.activeTopicName}
-            currentScope={this.props.currentScope}
+            currentScope={this.props.activeSubjectId}
             progressTopicid={this.state.progress.find(
               (topicProgress) => topicProgress.topic_id == this.state.activeTopicId
             )}
@@ -217,7 +201,7 @@ class SubjectScope extends Component {
           />
         ) : (
           <div>
-            <p id="topictitle">{this.props.currentScopeName}</p>
+            <p id="topictitle">{this.props.activeSubjectName}</p>
             {categoriesHTML}
           </div>
         )}

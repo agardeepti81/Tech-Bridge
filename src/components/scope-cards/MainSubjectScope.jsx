@@ -47,8 +47,10 @@ class MainSubjectScope extends Component {
         </div>
         <div id="subjectView">
           <SubjectScope
-            currentScope={this.state.activeSubjectId}
-            currentScopeName={this.state.activeSubjectName}
+            activeSubjectId={this.state.activeSubjectId}
+            activeSubjectName={this.state.activeSubjectName}
+            scopeCardApis={this.props.scopeCardsApis}
+            email = {this.props.email}
           />
         </div>
       </div>
