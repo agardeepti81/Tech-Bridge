@@ -7,15 +7,15 @@ class TopicTiles extends Component {
     if(this.props.progressTopicid)
     {
       let count = 0;
-      for (let i = 0; i < this.props.progressTopicid.selected.length; i++) {
-        if(this.props.progressTopicid.selected[i])
+      for (let i = 0; i < this.props.progressTopicid.completed.length; i++) {
+        if(this.props.progressTopicid.completed[i])
         count++;
       }
-      percentage = count/this.props.progressTopicid.selected.length*100;
+      percentage = count/this.props.progressTopicid.completed.length*100;
     }
 
     return (
-      <Card
+      <Card key={this.props.topic.id}
         id={this.props.topic.id}
         className="cardstyle"
         style={{

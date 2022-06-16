@@ -20,28 +20,29 @@ class TopicQuestions extends Component {
 
   changeProgress(index)
   {
-    this.props.changeProgress(this.props.progressTopicid.id, index)
+    console.log(this.props.progressTopicid)
+    this.props.changeProgress(this.props.progressTopicid.topic_id, index)
   }
 
   render() {
     return this.state.loading || !this.state.data ? (
       <div>loading... </div>
     ) : (
-      <div className="questionTable">
+      <div className="questionTable" key={this.props.progressTopicid}>
         <p id="topictitle">{this.props.activeTopicName}</p>
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th class="col-sm-1"> </th>
-              <th class="col-sm-1">Q-ID</th>
-              <th class="col-md-8">Questions</th>
+              <th className="col-sm-1"> </th>
+              <th className="col-sm-1">Q-ID</th>
+              <th className="col-md-8">Questions</th>
             </tr>
           </thead>
           <tbody>
             {this.state.data.map((qus, i) => (
-              <tr>
+              <tr key={i}>
                 <td>
-                  {this.props.progressTopicid?.selected[i] ? (
+                  {this.props.progressTopicid?.completed[i] ? (
                     <input type="checkbox" checked onClick={() => this.changeProgress(i)}/>
                   ) : (
                     <input type="checkbox" onClick={() => this.changeProgress(i)} />
