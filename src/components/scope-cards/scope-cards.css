@@ -15,6 +15,15 @@
   overflow-y: scroll;
 }
 
+#subjectTitle {
+  background: black;
+  color: white;
+  font-size: 35px;
+  padding: 5px 20px;
+  font-weight: 400;
+  margin: 0;
+}
+
 .subjectCard {
   text-align: center;
   padding: 10px;
@@ -27,11 +36,6 @@
   margin: auto;
 }
 
-.cardstyle{
-  max-width: 30%;
-  float: left;
-}
-
 .questionTable{
   margin: 20px;
 }
@@ -42,9 +46,51 @@
   font-size: 25px;
 }
 
-#topictitle {
-  text-align: left;
-  font-size: 40px;
-  font-weight: 430;
-  margin: 10px 61px;
+.category {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.categoryName {
+  width: 5%;
+  background: #d7e6ef;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.categoryName .head {
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+  letter-spacing: -3px;
+  font-size: 19px;
+}
+
+.categoryContent {
+  width: 95%;
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.topicTiles {
+  min-width: 10%;
+  max-width: 15%;
+  height: 100px;
+}
+
+.card-body {
+  padding: 0;
+}
+
+.topicTitle {
+  font-size: 15px;
+  height: 60px;
+  margin: 0;
+}
+
+.topicProgress {
+  height: 20px;
+}
+
+.topicButton {
+  height: 20px;
 }
