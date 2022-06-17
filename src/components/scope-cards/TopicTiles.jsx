@@ -11,7 +11,7 @@ class TopicTiles extends Component {
         if(this.props.progressTopicid.completed[i])
         count++;
       }
-      percentage = count/this.props.progressTopicid.completed.length*100;
+      percentage = parseFloat(count/this.props.progressTopicid.completed.length*100).toFixed(2);
     }
 
     return (

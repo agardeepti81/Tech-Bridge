@@ -9,7 +9,7 @@ import MainRoute from './components/main/main';
 import ZoneRoute from './components/zone-content/zone-content'
 import StartPage from './components/start-page/start-page';
 import Home from './components/home/home';
-import ScopeView from './components/scope-cards/ScopeView';
+import MainSubjectScope from './components/scope-cards/MainSubjectScope';
 import Facilitator from './components/facilitator/facilitator';
 import ReactGA from 'react-ga';
 
@@ -76,7 +76,7 @@ class App extends Component {
             <Route exact path="/start-page" element={<StartPage signUpApis={this.state.baseFile.apis.signUp} getLessonProgressEmailAndUserName={this.getLessonProgressEmailAndUserName} />} />
             <Route exact path="/facilitator" element={<Facilitator facilitatorApis={this.state.baseFile.apis.facilitator} />} />
             <Route exact path="/home" element={<Home lessonProgress={this.state.lessonProgress} />} />
-            <Route exact path="/scope-cards" element={<ScopeView />} />
+            <Route exact path="/scope-cards" element={<MainSubjectScope scopeCardsApis={this.state.baseFile.apis.scopeCards} email={this.state.email}/>} />
             <Route exact path="/:profile/:roadmap/:pathName" element={<MainRoute lessonProgress={this.state.lessonProgress} />} />
             <Route exact path="/:profile/:roadmap/:pathName/:zoneName" element={<ZoneRoute lessonProgress={this.state.lessonProgress} mainApis={this.state.baseFile.apis.main} roomManagementApis={this.state.baseFile.apis.roomManagement} email={this.state.email} userName={this.state.userName} updateLessonProgress={this.updateLessonProgress} helpApis={this.state.baseFile.apis.help} meetingLink={this.state.baseFile.meetingLink} feedbackApis={this.state.baseFile.apis.feedback} />} />
           </Routes>
