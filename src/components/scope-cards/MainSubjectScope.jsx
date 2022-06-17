@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./scope-cards.css";
-import SubjectScope from "./Subjectscope";
+import SubjectScope from "./SubjectScope";
 import SubjectCard from "./SubjectCard";
 
 class MainSubjectScope extends Component {
