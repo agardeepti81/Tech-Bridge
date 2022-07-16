@@ -22,7 +22,7 @@ class App extends Component {
     this.state = {
       baseFile: false,
       lessonProgress: false,
-      email: "",
+      email: "testUser3@email.com",
       userName: false
     }
     this.getLessonProgressEmailAndUserName = this.getLessonProgressEmailAndUserName.bind(this);

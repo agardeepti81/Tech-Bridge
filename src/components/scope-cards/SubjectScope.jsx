@@ -139,8 +139,47 @@ class SubjectScope extends Component {
     const categoriesHTML = [];
     for (const category in this.state.categories) {
       categoriesHTML.push(
-        <div>
-          <Container fluid>
+        <div className="category">
+          <div className="categoryName"><div className="head">{category}</div></div>
+          <div className="categoryContent">
+            {this.state.categories[category].map((element) => (
+              <TopicTiles
+                topic={element}
+                changeTopicView={this.changeTopicView}
+                progressTopicid={this.state.progress.find(
+                  (topicProgress) => topicProgress.topic_id == element.id
+                )}
+              />
+            ))}
+            {this.state.categories[category].map((element) => (
+              <TopicTiles
+                topic={element}
+                changeTopicView={this.changeTopicView}
+                progressTopicid={this.state.progress.find(
+                  (topicProgress) => topicProgress.topic_id == element.id
+                )}
+              />
+            ))}
+            {this.state.categories[category].map((element) => (
+              <TopicTiles
+                topic={element}
+                changeTopicView={this.changeTopicView}
+                progressTopicid={this.state.progress.find(
+                  (topicProgress) => topicProgress.topic_id == element.id
+                )}
+              />
+            ))}
+            {this.state.categories[category].map((element) => (
+              <TopicTiles
+                topic={element}
+                changeTopicView={this.changeTopicView}
+                progressTopicid={this.state.progress.find(
+                  (topicProgress) => topicProgress.topic_id == element.id
+                )}
+              />
+            ))}
+          </div>
+          {/* <Container fluid>
             <Row
               className="bg-primary p-3 m-5"
               style={{
@@ -172,7 +211,7 @@ class SubjectScope extends Component {
                 ))}
               </Col>
             </Row>
-          </Container>
+          </Container> */}
         </div>
       );
     }
@@ -197,7 +236,7 @@ class SubjectScope extends Component {
           />
         ) : (
           <div>
-            <p id="topictitle">{this.props.activeSubjectName}</p>
+            <h1 id="subjectTitle">{this.props.activeSubjectName}</h1>
             {categoriesHTML}
           </div>
         )}

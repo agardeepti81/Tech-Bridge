@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Table, Button } from "react-bootstrap";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Button } from "react-bootstrap";
 
 class TopicQuestions extends Component {
   state = { data: null, loading: true };
@@ -8,7 +10,7 @@ class TopicQuestions extends Component {
     const url = process.env.PUBLIC_URL + `/data/scope-cards/Subjects/${this.props.currentScope}/${this.props.activeTopicId}.json`;
     const response = await fetch(url);
     const data = await response.json();
-    if(!this.props.progressTopicid){
+    if (!this.props.progressTopicid) {
       let newTopicProgress = [];
       for (let i = 0; i < data.length; i++) {
         newTopicProgress.push(false);
@@ -18,8 +20,7 @@ class TopicQuestions extends Component {
     this.setState({ data: data, loading: false });
   }
 
-  changeProgress(index)
-  {
+  changeProgress(index) {
     console.log(this.props.progressTopicid)
     this.props.changeProgress(this.props.progressTopicid.topic_id, index)
   }
@@ -28,33 +29,37 @@ class TopicQuestions extends Component {
     return this.state.loading || !this.state.data ? (
       <div>loading... </div>
     ) : (
-      <div className="questionTable" key={this.props.progressTopicid}>
-        <p id="topictitle">{this.props.activeTopicName}</p>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th className="col-sm-1"> </th>
-              <th className="col-sm-1">Q-ID</th>
-              <th className="col-md-8">Questions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.data.map((qus, i) => (
-              <tr key={i}>
-                <td>
-                  {this.props.progressTopicid?.completed[i] ? (
-                    <input type="checkbox" checked onClick={() => this.changeProgress(i)}/>
-                  ) : (
-                    <input type="checkbox" onClick={() => this.changeProgress(i)} />
-                  )}
-                </td>
-                <td>{i + 1}</td>
-                <td>{qus}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-        <Button onClick={this.props.back}> back</Button>
+      <div key={this.props.progressTopicid}>
+        <div id="questionsHead"><Button id="questionsBack" onClick={this.props.back}>Back</Button>{this.props.activeTopicName}</div>
+        <div id="questionsTable">
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell>Q-ID</TableCell>
+                <TableCell>Questions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.data
+                .map((ques, i) => {
+                  return (
+                    <TableRow hover>
+                      <TableCell>
+                        {this.props.progressTopicid?.completed[i] ? (
+                          <input type="checkbox" checked onClick={() => this.changeProgress(i)} />
+                        ) : (
+                          <input type="checkbox" onClick={() => this.changeProgress(i)} />
+                        )}
+                      </TableCell>
+                      <TableCell>{i + 1}</TableCell>
+                      <TableCell>{ques}</TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     );
   }
