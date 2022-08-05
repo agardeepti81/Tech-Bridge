@@ -11,4 +11,3 @@ while(i<count):
     f.write(json_str)
     f.close()
     i = i+1
- 
